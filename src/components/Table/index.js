@@ -11,6 +11,11 @@ const styles = {
 }
 
 class Table extends Component {
+
+    getCards = () => {
+        
+    }
+    
     render() {
         const { classes } = this.props
         return (

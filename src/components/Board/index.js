@@ -14,7 +14,7 @@ class Board extends Component {
         const { classes } = this.props
         return (
             <div className={classes.board}>
-                <Table name={'To do'}/>           
+                <Table name={'To do'}/>          
                 <Table name={'Doing'}/>           
                 <Table name={'Done'}/>           
             </div>
