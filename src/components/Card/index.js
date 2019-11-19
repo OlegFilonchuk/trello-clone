@@ -1,11 +1,5 @@
 import React, { Component } from "react"
-import {
-    Card as MaterialCard,
-    CardContent,
-    CardActions,
-    Typography,
-    withStyles,
-} from "@material-ui/core"
+import { Card as MaterialCard, CardContent, Typography, withStyles } from "@material-ui/core"
 
 const styles = {
     card: {
@@ -19,15 +13,13 @@ const styles = {
 class Card extends Component {
     render() {
         const { classes } = this.props
+        const { text } = this.props.card
 
         return (
             <MaterialCard className={classes.card}>
                 <CardContent>
-                    <Typography>some text</Typography>
+                    <Typography>{text}</Typography>
                 </CardContent>
-                <CardActions>
-                    <Typography>some action</Typography>
-                </CardActions>
             </MaterialCard>
         )
     }

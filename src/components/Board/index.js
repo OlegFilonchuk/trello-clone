@@ -13,9 +13,9 @@ const Board = (props) => {
     const classes = useStyles(props)
     return (
         <div className={classes.board}>
-            <Table name={"To do"} />
-            <Table name={"Doing"} />
-            <Table name={"Done"} />
+            <Table id={0} name={"To do"} />
+            <Table id={1} name={"Doing"} />
+            <Table id={2} name={"Done"} />
         </div>
     )
 }

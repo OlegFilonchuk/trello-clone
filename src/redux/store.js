@@ -1,6 +1,9 @@
 import { createStore, combineReducers, compose, applyMiddleware } from "redux"
+import { cardsReducer } from "./reducers/cardsReducer"
 
-const rootReducer = combineReducers({})
+const rootReducer = combineReducers({
+    cardsState: cardsReducer,
+})
 
 const composeEnhancers =
     typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
