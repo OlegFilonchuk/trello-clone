@@ -1,4 +1,4 @@
-export const CREATE_CARD = "CREATE_CARD"
+export const CREATE_CARD = 'CREATE_CARD'
 
 export const createCardAction = (newCard) => ({
     type: CREATE_CARD,
@@ -6,18 +6,21 @@ export const createCardAction = (newCard) => ({
 })
 
 const initialState = {
-    cards: [
-        {
-            id: 0,
-            text: "some text",
-            tableId: 0,
-        },
-        {
-            id: 1,
-            text: "lorem ipsum",
-            tableId: 0,
-        },
-    ],
+    aaaaa: {
+        id: 'aaaaa',
+        text: 'aaaaa',
+        tableId: 'table1',
+    },
+    bbbbb: {
+        id: 'bbbbb',
+        text: 'bbbbb',
+        tableId: 'table1',
+    },
+    ccccc: {
+        id: 'ccccc',
+        text: 'ccccc',
+        tableId: 'table1',
+    },
 }
 
 export const cardsReducer = (state = initialState, action) => {
@@ -27,7 +30,7 @@ export const cardsReducer = (state = initialState, action) => {
         case CREATE_CARD:
             return {
                 ...state,
-                cards: [...state.cards, newCard],
+                [newCard.id]: newCard,
             }
         default:
             return state

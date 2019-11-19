@@ -1,25 +1,28 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createCardAction } from '../../redux/reducers/cardsReducer'
-import { Typography, withStyles, TextField } from '@material-ui/core'
+import { Typography, withStyles, TextField, Button, List } from '@material-ui/core'
+import { Droppable } from 'react-beautiful-dnd'
 import Card from '../Card'
-import './Table.css'
 
 const styles = {
     table: {
         textAlign: 'center',
         backgroundColor: '#ddd',
-        margin: 20,
+        margin: 10,
+        width: 390,
     },
 }
 
 class Table extends Component {
-    state = {
+    initialState = {
         creatingCard: false,
         textFieldValue: '',
     }
 
-    handleAddButton = (ev) => {
+    state = { ...this.initialState }
+
+    handleAddButton = () => {
         this.setState({
             creatingCard: true,
         })
@@ -32,44 +35,61 @@ class Table extends Component {
     }
 
     handleCreateButton = () => {
+        if (!this.state.textFieldValue) return
+
         const newCard = {
             id: Math.random()
                 .toString(36)
                 .substring(2, 15),
             text: this.state.textFieldValue,
-            tableId: this.props.id,
+            tableId: this.props.table.id,
         }
 
         this.props.createCard(newCard)
-        this.setState({
-            creatingCard: false,
-        })
+        this.setState(this.initialState)
+    }
+
+    handleCancelButton = () => {
+        this.setState(this.initialState)
     }
 
     getCards = () => {
-        return this.props.cardsState.cards.reduce(
-            (acc, item) =>
-                item.tableId === this.props.id ? [...acc, <Card key={item.id} card={item} />] : acc,
-            []
-        )
+        const cards = this.props.table.cardIds.map((cardId) => this.props.cardsState[cardId])
+        return cards.map((item, index) => <Card key={item.id} card={item} index={index} />)
     }
 
     render() {
-        const { classes } = this.props
+        const { classes, table } = this.props
         const { creatingCard } = this.state
 
         return (
             <div className={classes.table}>
-                <Typography>{this.props.name}</Typography>
-                {this.getCards()}
-                {!creatingCard && <button onClick={this.handleAddButton}>create new card</button>}
+                <Typography variant="h4">{table.title}</Typography>
+
+                <Droppable droppableId={this.props.table.id}>
+                    {(provided) => (
+                        <List innerRef={provided.innerRef} {...provided.droppableProps}>
+                            {this.getCards()}
+                            {provided.placeholder}
+                        </List>
+                    )}
+                </Droppable>
+
+                {!creatingCard && <Button onClick={this.handleAddButton}>create new card</Button>}
+
                 {creatingCard && (
                     <div>
                         <TextField
-                            label={'enter a title for this card'}
+                            label={'enter a title for this card...'}
                             onChange={this.handleTextFieldChange}
+                            autoFocus
                         />
-                        <button onClick={this.handleCreateButton}>Create</button>
+                        <Button variant="contained" onClick={this.handleCreateButton}>
+                            Create
+                        </Button>
+                        <Button variant="contained" onClick={this.handleCancelButton}>
+                            Cancel
+                        </Button>
                     </div>
                 )}
             </div>
