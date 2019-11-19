@@ -1,20 +1,14 @@
-import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
+import { createStore, combineReducers, compose, applyMiddleware } from "redux"
 
-const rootReducer = combineReducers({
+const rootReducer = combineReducers({})
 
-})
+const composeEnhancers =
+    typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+        ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+        : compose
 
-const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-	? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-	: compose
+const enhancer = composeEnhancers(applyMiddleware())
 
-const enhancer = composeEnhancers(
-	applyMiddleware()
-)
-
-const store = createStore(
-    rootReducer,
-    enhancer
-)
+const store = createStore(rootReducer, enhancer)
 
 export default store

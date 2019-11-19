@@ -1,34 +1,25 @@
-import React, { Component } from 'react'
-import { Typography, withStyles } from '@material-ui/core'
-import Card from '../Card'
+import React from "react"
+import { Typography, makeStyles } from "@material-ui/core"
+import Card from "../Card"
 
-const styles = {
+const useStyles = makeStyles({
     table: {
         textAlign: "center",
         backgroundColor: "#ddd",
-        margin: 20
-    }
+        margin: 20,
+    },
+})
+
+const Table = (props) => {
+    const classes = useStyles(props)
+    return (
+        <div className={classes.table}>
+            <Typography>{props.name}</Typography>
+            <Card />
+            <Card />
+            <Card />
+        </div>
+    )
 }
 
-class Table extends Component {
-
-    getCards = () => {
-        
-    }
-    
-    render() {
-        const { classes } = this.props
-        return (
-            <div className={classes.table}>
-                <Typography>
-                    {this.props.name}
-                </Typography>
-                <Card/>
-                <Card/>
-                <Card/>
-            </div>
-        )
-    }
-}
-
-export default withStyles(styles)(Table)
+export default Table
