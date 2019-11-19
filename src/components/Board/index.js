@@ -19,21 +19,56 @@ const Board = (props) => {
         Object.values(props.tablesState).map((item) => <Table key={item.id} table={item} />)
 
     const onDragEnd = (result) => {
+        const { tablesState } = props
         const { destination, source, draggableId } = result
 
         if (!destination) return
 
-        const table = props.tablesState[source.droppableId]
-        const newCardIds = [...table.cardIds]
-        newCardIds.splice(source.index, 1)
-        newCardIds.splice(destination.index, 0, draggableId)
+        const start = tablesState[source.droppableId]
+        const finish = tablesState[destination.droppableId]
 
-        const newTable = {
-            ...table,
-            cardIds: newCardIds,
+        if (start === finish) {
+            const newCardIds = [...start.cardIds]
+            newCardIds.splice(source.index, 1)
+            newCardIds.splice(destination.index, 0, draggableId)
+
+            const newTable = {
+                ...start,
+                cardIds: newCardIds,
+            }
+
+            const newState = {
+                ...tablesState,
+                [newTable.id]: newTable,
+            }
+
+            props.dragEnd(newState)
+            return
         }
 
-        props.dragEnd(newTable)
+        const startCardIds = [...start.cardIds]
+        startCardIds.splice(source.index, 1)
+
+        const newStart = {
+            ...start,
+            cardIds: startCardIds,
+        }
+
+        const finishCardIds = [...finish.cardIds]
+        finishCardIds.splice(destination.index, 0, draggableId)
+
+        const newFinish = {
+            ...finish,
+            cardIds: finishCardIds,
+        }
+
+        const newState = {
+            ...tablesState,
+            [newStart.id]: newStart,
+            [newFinish.id]: newFinish,
+        }
+        props.dragEnd(newState)
+        return
     }
 
     return (

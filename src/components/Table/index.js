@@ -7,10 +7,15 @@ import Card from '../Card'
 
 const styles = {
     table: {
-        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
         backgroundColor: '#ddd',
         margin: 10,
         width: 390,
+    },
+    list: {
+        flexGrow: 1,
+        minHeight: 100,
     },
 }
 
@@ -68,7 +73,11 @@ class Table extends Component {
 
                 <Droppable droppableId={this.props.table.id}>
                     {(provided) => (
-                        <List innerRef={provided.innerRef} {...provided.droppableProps}>
+                        <List
+                            className={classes.list}
+                            innerRef={provided.innerRef}
+                            {...provided.droppableProps}
+                        >
                             {this.getCards()}
                             {provided.placeholder}
                         </List>

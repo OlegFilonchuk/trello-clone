@@ -21,6 +21,11 @@ const initialState = {
         text: 'ccccc',
         tableId: 'table1',
     },
+    ddddd: {
+        id: 'ddddd',
+        text: 'ddddd',
+        tableId: 'table1',
+    },
 }
 
 export const cardsReducer = (state = initialState, action) => {

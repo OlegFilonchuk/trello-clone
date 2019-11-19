@@ -2,21 +2,21 @@ import { CREATE_CARD } from './cardsReducer'
 
 export const DRAG_END = 'DRAG_END'
 
-export const dragEndAction = (table) => ({
+export const dragEndAction = (newState) => ({
     type: DRAG_END,
-    table,
+    newState,
 })
 
 const initialState = {
     table1: {
         id: 'table1',
         title: 'To do',
-        cardIds: ['bbbbb', 'aaaaa', 'ccccc'],
+        cardIds: ['aaaaa', 'bbbbb', 'ccccc'],
     },
     table2: {
         id: 'table2',
-        title: 'Doing',
-        cardIds: [],
+        title: 'In progress',
+        cardIds: ['ddddd'],
     },
     table3: {
         id: 'table3',
@@ -26,7 +26,7 @@ const initialState = {
 }
 
 export const tablesReducer = (state = initialState, action) => {
-    const { type, newCard, table } = action
+    const { type, newCard, newState } = action
 
     switch (type) {
         case CREATE_CARD:
@@ -40,7 +40,7 @@ export const tablesReducer = (state = initialState, action) => {
         case DRAG_END:
             return {
                 ...state,
-                [table.id]: table,
+                ...newState,
             }
         default:
             return state
