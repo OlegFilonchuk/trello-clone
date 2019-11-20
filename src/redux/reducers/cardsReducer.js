@@ -1,43 +1,49 @@
 import produce from 'immer'
 
+export const FETCH_CARDS = 'FETCH_CARDS'
 export const CREATE_CARD = 'CREATE_CARD'
 
-export const createCardAction = (newCard) => ({
-    type: CREATE_CARD,
-    newCard,
-})
-
-const initialState = {
-    aaaaa: {
-        id: 'aaaaa',
-        text: 'aaaaa',
-        tableId: 'table1',
-    },
-    bbbbb: {
-        id: 'bbbbb',
-        text: 'bbbbb',
-        tableId: 'table1',
-    },
-    ccccc: {
-        id: 'ccccc',
-        text: 'ccccc',
-        tableId: 'table1',
-    },
-    ddddd: {
-        id: 'ddddd',
-        text: 'ddddd',
-        tableId: 'table1',
-    },
+export const fetchCardsAction = () => async (dispatch) => {
+    const rawData = await fetch('http://localhost:3001/cards')
+    const cards = await rawData.json()
+    dispatch({
+        type: FETCH_CARDS,
+        cards,
+    })
 }
 
-export const cardsReducer = produce((draft = initialState, action) => {
-    const { type, newCard } = action
+export const createCardAction = (newCard) => async (dispatch) => {
+    fetch('http://localhost:3001/cards', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(newCard),
+    })
+    // fetch(`http://localhost:3001/tables/${newCard.tableId}`, )
+    dispatch({
+        type: CREATE_CARD,
+        newCard,
+    })
+}
 
-    switch (type) {
-        case CREATE_CARD:
-            draft[newCard.id] = newCard
-            break
-        default:
-            return draft
-    }
-})
+export const cardsReducer = (state = {}, action) =>
+    produce(state, (draft) => {
+        const { type, newCard, cards } = action
+
+        switch (type) {
+            case FETCH_CARDS:
+                draft = {
+                    ...draft,
+                    ...cards,
+                }
+                break
+
+            case CREATE_CARD:
+                draft[newCard.id] = newCard
+                break
+
+            default:
+                return draft
+        }
+    })

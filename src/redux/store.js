@@ -1,5 +1,5 @@
-/* global window */
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
 import { cardsReducer } from './reducers/cardsReducer'
 import { tablesReducer } from './reducers/tablesReducer'
 
@@ -13,7 +13,7 @@ const composeEnhancers =
         ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
         : compose
 
-const enhancer = composeEnhancers(applyMiddleware())
+const enhancer = composeEnhancers(applyMiddleware(thunk))
 
 const store = createStore(rootReducer, enhancer)
 

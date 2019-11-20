@@ -1,0 +1,24 @@
+{
+  "tables": {
+    "table1": {
+      "id": "table1",
+      "title": "To do",
+      "cardIds": []
+    },
+    "table2": {
+      "id": "table2",
+      "title": "In progress",
+      "cardIds": []
+    },
+    "table3": {
+      "id": "table3",
+      "title": "Done",
+      "cardIds": []
+    }
+  },
+  "cards": {
+    "id": "486617i5suh",
+    "text": "dwdawa",
+    "tableId": "table1"
+  }
+}

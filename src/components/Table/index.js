@@ -62,7 +62,11 @@ class Table extends Component {
 
     getCards = () => {
         const cards = this.props.table.cardIds.map((cardId) => this.props.cardsState[cardId])
-        return cards.map((item, index) => <Card key={item.id} card={item} index={index} />)
+        return cards.length ? (
+            cards.map((item, index) => <Card key={item.id} card={item} index={index} />)
+        ) : (
+            <Typography>No cards yet...</Typography>
+        )
     }
 
     render() {

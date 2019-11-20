@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { DragDropContext } from 'react-beautiful-dnd'
 import Table from '../Table'
-import { localDragEndAction, globalDragEndAction } from '../../redux/reducers/tablesReducer'
+import {
+    localDragEndAction,
+    globalDragEndAction,
+    fetchTablesAction,
+} from '../../redux/reducers/tablesReducer'
+import { fetchCardsAction } from '../../redux/reducers/cardsReducer'
 
 const useStyles = makeStyles({
     board: {
@@ -14,6 +19,12 @@ const useStyles = makeStyles({
 })
 
 const Board = (props) => {
+    useEffect(() => {
+        props.fetchTables()
+        props.fetchCards()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     const classes = useStyles(props)
 
     const getTables = () =>
@@ -67,6 +78,8 @@ Board.propTypes = {
     tablesState: PropTypes.objectOf(PropTypes.object).isRequired,
     localDragEnd: PropTypes.func.isRequired,
     globalDragEnd: PropTypes.func.isRequired,
+    fetchCards: PropTypes.func.isRequired,
+    fetchTables: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = ({ tablesState }) => ({
@@ -74,8 +87,10 @@ const mapStateToProps = ({ tablesState }) => ({
 })
 
 const mapDispatchToProps = {
+    fetchTables: fetchTablesAction,
     localDragEnd: localDragEndAction,
     globalDragEnd: globalDragEndAction,
+    fetchCards: fetchCardsAction,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board)
