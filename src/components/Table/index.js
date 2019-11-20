@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { createCardAction } from '../../redux/reducers/cardsReducer'
 import { Typography, withStyles, TextField, Button, List } from '@material-ui/core'
@@ -16,6 +17,7 @@ const styles = {
     list: {
         flexGrow: 1,
         minHeight: 100,
+        padding: 10,
     },
 }
 
@@ -104,6 +106,14 @@ class Table extends Component {
             </div>
         )
     }
+}
+
+Table.propTypes = {
+    table: PropTypes.shape({
+        id: PropTypes.string,
+        title: PropTypes.string,
+        cardIds: PropTypes.arrayOf(PropTypes.string),
+    }).isRequired,
 }
 
 const mapStateToProps = ({ cardsState }) => ({

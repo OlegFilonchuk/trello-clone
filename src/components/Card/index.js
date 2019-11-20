@@ -1,20 +1,25 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Card as MaterialCard, CardContent, Typography, withStyles } from '@material-ui/core'
 import { Draggable } from 'react-beautiful-dnd'
 
 const styles = {
     card: {
         width: 300,
-        margin: 20,
+        marginBottom: 10,
         backgroundColor: '#eee',
-        textAlign: 'left',
+    },
+    red: {
+        color: 'red',
     },
 }
 
 class Card extends Component {
     render() {
-        const { classes } = this.props
-        const { text, id } = this.props.card
+        const {
+            classes,
+            card: { text, id },
+        } = this.props
 
         return (
             <Draggable draggableId={id} index={this.props.index}>
@@ -33,6 +38,15 @@ class Card extends Component {
             </Draggable>
         )
     }
+}
+
+Card.propTypes = {
+    index: PropTypes.number.isRequired,
+    card: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+        tableId: PropTypes.string.isRequired,
+    }).isRequired,
 }
 
 export default withStyles(styles)(Card)

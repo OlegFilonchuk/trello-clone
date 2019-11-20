@@ -1,3 +1,5 @@
+## PropTypes
+
 ## убрать eslint из package.json
 
 ## наладить линтинг проекта на уровне сборки, а не IDE с помощью файла .env или EXTEND_ESLINT
