@@ -1,10 +1,19 @@
+import produce from 'immer'
 import { CREATE_CARD } from './cardsReducer'
 
-export const DRAG_END = 'DRAG_END'
+export const LOCAL_DRAG_END = 'LOCAL_DRAG_END'
+export const GLOBAL_DRAG_END = 'GLOBAL_DRAG_END'
 
-export const dragEndAction = (newState) => ({
-    type: DRAG_END,
-    newState,
+export const localDragEndAction = (tableId, newCardIds) => ({
+    type: LOCAL_DRAG_END,
+    tableId,
+    newCardIds,
+})
+
+export const globalDragEndAction = (start, finish) => ({
+    type: GLOBAL_DRAG_END,
+    start,
+    finish,
 })
 
 const initialState = {
@@ -25,24 +34,24 @@ const initialState = {
     },
 }
 
-export const tablesReducer = (state = initialState, action) => {
-    const { type, newCard, newState } = action
+export const tablesReducer = produce((draft = initialState, action) => {
+    const { type, newCard, tableId, newCardIds, start, finish } = action
 
     switch (type) {
         case CREATE_CARD:
-            return {
-                ...state,
-                [newCard.tableId]: {
-                    ...state[newCard.tableId],
-                    cardIds: [...state[newCard.tableId].cardIds, newCard.id],
-                },
-            }
-        case DRAG_END:
-            return {
-                ...state,
-                ...newState,
-            }
+            draft[newCard.tableId].cardIds.push(newCard.id)
+            break
+
+        case LOCAL_DRAG_END:
+            draft[tableId].cardIds = newCardIds
+            break
+
+        case GLOBAL_DRAG_END:
+            draft[start.id] = start
+            draft[finish.id] = finish
+            break
+
         default:
-            return state
+            return draft
     }
-}
+})

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { createCardAction } from '../../redux/reducers/cardsReducer'
-import { Typography, withStyles, TextField, Button, List } from '@material-ui/core'
 import { Droppable } from 'react-beautiful-dnd'
+import { Typography, withStyles, TextField, Button, List } from '@material-ui/core'
+import { createCardAction } from '../../redux/reducers/cardsReducer'
 import Card from '../Card'
 
 const styles = {
@@ -91,7 +91,7 @@ class Table extends Component {
                 {creatingCard && (
                     <div>
                         <TextField
-                            label={'enter a title for this card...'}
+                            label="enter a title for this card..."
                             onChange={this.handleTextFieldChange}
                             autoFocus
                         />
@@ -110,10 +110,13 @@ class Table extends Component {
 
 Table.propTypes = {
     table: PropTypes.shape({
-        id: PropTypes.string,
-        title: PropTypes.string,
-        cardIds: PropTypes.arrayOf(PropTypes.string),
+        id: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        cardIds: PropTypes.arrayOf(PropTypes.string).isRequired,
     }).isRequired,
+    cardsState: PropTypes.objectOf(PropTypes.object).isRequired,
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    createCard: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = ({ cardsState }) => ({

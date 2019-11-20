@@ -1,7 +1,23 @@
 {
-    "extends": ["airbnb", "prettier", "plugin:node/recommended"],
+    "extends": ["airbnb", "prettier", "eslint:recommended", "plugin:react/recommended"],
     "plugins": ["prettier"],
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "sourceType": "module"
+    },
     "rules": {
-        "prettier/prettier": "error"
+        "prettier/prettier": ["warn"],
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "no-unused-vars": "warn",
+        "react/jsx-indent": "off",
+        "react/jsx-indent-props": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/destructuring-assignment": "off",
+        "react/state-in-constructor": "off",
+        "consistent-return": "off",
+        "no-param-reassign": "off"
     }
 }

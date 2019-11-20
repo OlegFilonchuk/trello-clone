@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { Card as MaterialCard, CardContent, Typography, withStyles } from '@material-ui/core'
+import { Card as MaterialCard, CardContent, Typography, makeStyles } from '@material-ui/core'
 import { Draggable } from 'react-beautiful-dnd'
 
-const styles = {
+const useStyles = makeStyles({
     card: {
         width: 300,
         marginBottom: 10,
@@ -12,32 +12,30 @@ const styles = {
     red: {
         color: 'red',
     },
-}
+})
 
-class Card extends Component {
-    render() {
-        const {
-            classes,
-            card: { text, id },
-        } = this.props
-
-        return (
-            <Draggable draggableId={id} index={this.props.index}>
-                {(provided) => (
-                    <MaterialCard
-                        className={classes.card}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        innerRef={provided.innerRef}
-                    >
-                        <CardContent>
-                            <Typography>{text}</Typography>
-                        </CardContent>
-                    </MaterialCard>
-                )}
-            </Draggable>
-        )
-    }
+const Card = (props) => {
+    const {
+        index,
+        card: { id, text },
+    } = props
+    const classes = useStyles(props)
+    return (
+        <Draggable draggableId={id} index={index}>
+            {(provided) => (
+                <MaterialCard
+                    className={classes.card}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    innerRef={provided.innerRef}
+                >
+                    <CardContent>
+                        <Typography>{text}</Typography>
+                    </CardContent>
+                </MaterialCard>
+            )}
+        </Draggable>
+    )
 }
 
 Card.propTypes = {
@@ -49,4 +47,4 @@ Card.propTypes = {
     }).isRequired,
 }
 
-export default withStyles(styles)(Card)
+export default Card

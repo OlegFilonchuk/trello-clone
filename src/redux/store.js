@@ -1,3 +1,4 @@
+/* global window */
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import { cardsReducer } from './reducers/cardsReducer'
 import { tablesReducer } from './reducers/tablesReducer'

@@ -1,3 +1,5 @@
+import produce from 'immer'
+
 export const CREATE_CARD = 'CREATE_CARD'
 
 export const createCardAction = (newCard) => ({
@@ -28,16 +30,14 @@ const initialState = {
     },
 }
 
-export const cardsReducer = (state = initialState, action) => {
+export const cardsReducer = produce((draft = initialState, action) => {
     const { type, newCard } = action
 
     switch (type) {
         case CREATE_CARD:
-            return {
-                ...state,
-                [newCard.id]: newCard,
-            }
+            draft[newCard.id] = newCard
+            break
         default:
-            return state
+            return draft
     }
-}
+})

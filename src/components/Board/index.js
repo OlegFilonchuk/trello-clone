@@ -1,9 +1,10 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { DragDropContext } from 'react-beautiful-dnd'
 import Table from '../Table'
-import { dragEndAction } from '../../redux/reducers/tablesReducer'
+import { localDragEndAction, globalDragEndAction } from '../../redux/reducers/tablesReducer'
 
 const useStyles = makeStyles({
     board: {
@@ -32,17 +33,7 @@ const Board = (props) => {
             newCardIds.splice(source.index, 1)
             newCardIds.splice(destination.index, 0, draggableId)
 
-            const newTable = {
-                ...start,
-                cardIds: newCardIds,
-            }
-
-            const newState = {
-                ...tablesState,
-                [newTable.id]: newTable,
-            }
-
-            props.dragEnd(newState)
+            props.localDragEnd(source.droppableId, newCardIds)
             return
         }
 
@@ -62,13 +53,7 @@ const Board = (props) => {
             cardIds: finishCardIds,
         }
 
-        const newState = {
-            ...tablesState,
-            [newStart.id]: newStart,
-            [newFinish.id]: newFinish,
-        }
-        props.dragEnd(newState)
-        return
+        props.globalDragEnd(newStart, newFinish)
     }
 
     return (
@@ -78,12 +63,19 @@ const Board = (props) => {
     )
 }
 
+Board.propTypes = {
+    tablesState: PropTypes.objectOf(PropTypes.object).isRequired,
+    localDragEnd: PropTypes.func.isRequired,
+    globalDragEnd: PropTypes.func.isRequired,
+}
+
 const mapStateToProps = ({ tablesState }) => ({
     tablesState,
 })
 
 const mapDispatchToProps = {
-    dragEnd: dragEndAction,
+    localDragEnd: localDragEndAction,
+    globalDragEnd: globalDragEndAction,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board)
