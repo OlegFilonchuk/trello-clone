@@ -3,46 +3,33 @@
     {
       "id": "table1",
       "title": "To do",
-      "cardIds": []
+      "cardIds": [
+        "n8jqc25ras"
+      ]
     },
     {
       "id": "table2",
       "title": "In progress",
-      "cardIds": [
-        "55xusvpvi3f",
-        "vlw786vfj3"
-      ]
+      "cardIds": []
     },
     {
       "id": "table3",
       "title": "Done",
-      "cardIds": [
-        "eqw1h0h74iq"
-      ]
+      "cardIds": []
     }
   ],
   "cards": [
     {
-      "id": "eqw1h0h74iq",
-      "text": "dwdadwwa",
-      "tableId": "table3"
-    },
-    {
-      "id": "55xusvpvi3f",
+      "id": "n8jqc25ras",
       "text": "dawdaw",
-      "tableId": "table2"
-    },
-    {
-      "id": "vlw786vfj3",
-      "text": "dasd",
-      "tableId": "table2"
+      "tableId": "table1"
     }
   ],
   "order": {
     "order": [
-      "table3",
+      "table1",
       "table2",
-      "table1"
+      "table3"
     ]
   }
 }

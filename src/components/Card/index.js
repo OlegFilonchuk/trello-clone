@@ -1,63 +1,92 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
     Card as MaterialCard,
     CardContent,
     Typography,
-    makeStyles,
+    withStyles,
     CardActions,
-    Button,
+    Modal,
 } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { Draggable } from 'react-beautiful-dnd'
 import { removeCardAction } from '../../redux/reducers/cardsReducer'
+import './Card.css'
+import OpenCard from '../OpenCard'
 
-const useStyles = makeStyles({
+const styles = {
     card: {
+        cursor: 'pointer !important',
         width: 300,
         marginBottom: 10,
         backgroundColor: '#eee',
         display: 'flex',
         flexDirection: 'row',
+        '&:hover .trial': {
+            display: 'flex',
+        },
     },
     content: {
         flex: 1,
     },
-    remove: {},
-})
+}
 
-const Card = (props) => {
-    const {
-        index,
-        card: { id, text },
-    } = props
-    const classes = useStyles(props)
-
-    const handleRemoveButton = () => {
-        const table = props.tablesState.find((item) => item.id === props.card.tableId)
-        const newCardIds = table.cardIds.filter((item) => item !== props.card.id)
-        props.removeCard(props.card, newCardIds)
+class Card extends Component {
+    state = {
+        // eslint-disable-next-line react/no-unused-state
+        isOpen: false,
     }
 
-    return (
-        <Draggable draggableId={id} index={index}>
-            {(provided) => (
-                <MaterialCard
-                    className={classes.card}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    innerRef={provided.innerRef}
-                >
-                    <CardContent className={classes.content}>
-                        <Typography>{text}</Typography>
-                    </CardContent>
-                    <CardActions className={classes.remove}>
-                        <Button onClick={handleRemoveButton}>x</Button>
-                    </CardActions>
-                </MaterialCard>
-            )}
-        </Draggable>
-    )
+    handleCardClick = async () => {
+        await this.setState((prevState) => ({
+            isOpen: !prevState.isOpen,
+        }))
+    }
+
+    handleRemoveButton = () => {
+        const { tablesState, card, removeCard } = this.props
+        const table = tablesState.find((item) => item.id === card.tableId)
+        const newCardIds = table.cardIds.filter((item) => item !== card.id)
+        removeCard(card, newCardIds)
+    }
+
+    render() {
+        const {
+            index,
+            card: { id, text },
+            classes,
+        } = this.props
+
+        return (
+            <Draggable draggableId={id} index={index}>
+                {(provided) => (
+                    <MaterialCard
+                        onClick={this.handleCardClick}
+                        className={classes.card}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        innerRef={provided.innerRef}
+                    >
+                        <CardContent className={classes.content}>
+                            <Typography>{text}</Typography>
+                        </CardContent>
+                        <CardActions className={classes.remove}>
+                            <button
+                                type="button"
+                                onClick={this.handleRemoveButton}
+                                className="trial"
+                            >
+                                x
+                            </button>
+                        </CardActions>
+                        <Modal open={this.state.isOpen} onClose={this.handleClose}>
+                            <OpenCard />
+                        </Modal>
+                    </MaterialCard>
+                )}
+            </Draggable>
+        )
+    }
 }
 
 Card.propTypes = {
@@ -69,6 +98,7 @@ Card.propTypes = {
     }).isRequired,
     removeCard: PropTypes.func.isRequired,
     tablesState: PropTypes.arrayOf(PropTypes.object).isRequired,
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
 }
 
 const mapStateToProps = ({ tablesState }) => ({
@@ -78,4 +108,4 @@ const mapDispathToProps = {
     removeCard: removeCardAction,
 }
 
-export default connect(mapStateToProps, mapDispathToProps)(Card)
+export default withStyles(styles)(connect(mapStateToProps, mapDispathToProps)(Card))

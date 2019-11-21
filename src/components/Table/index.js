@@ -19,6 +19,9 @@ const styles = {
         minHeight: 100,
         padding: 10,
     },
+    newCard: {
+        display: 'flex',
+    },
 }
 
 class Table extends Component {
@@ -77,11 +80,11 @@ class Table extends Component {
     }
 
     render() {
-        const { classes, table } = this.props
+        const { classes, table, index } = this.props
         const { creatingCard } = this.state
 
         return (
-            <Draggable draggableId={table.id} index={this.props.index}>
+            <Draggable draggableId={table.id} index={index}>
                 {(provided) => (
                     <Container
                         className={classes.table}
@@ -110,8 +113,9 @@ class Table extends Component {
                         )}
 
                         {creatingCard && (
-                            <div>
+                            <div className={classes.newCard}>
                                 <TextField
+                                    className={classes.textField}
                                     label="enter a title for this card..."
                                     onChange={this.handleTextFieldChange}
                                     autoFocus
