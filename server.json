@@ -3,10 +3,7 @@
     {
       "id": "table1",
       "title": "To do",
-      "cardIds": [
-        "8ffi4wkce7v",
-        "8frrocbepjv"
-      ]
+      "cardIds": []
     },
     {
       "id": "table2",
@@ -19,16 +16,5 @@
       "cardIds": []
     }
   ],
-  "cards": [
-    {
-      "id": "8frrocbepjv",
-      "text": "11111111111",
-      "tableId": "table1"
-    },
-    {
-      "id": "8ffi4wkce7v",
-      "text": "2222222222",
-      "tableId": "table1"
-    }
-  ]
+  "cards": []
 }

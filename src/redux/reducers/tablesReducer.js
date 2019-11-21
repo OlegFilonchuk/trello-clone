@@ -1,5 +1,5 @@
 import produce from 'immer'
-import { CREATE_CARD } from './cardsReducer'
+import { CREATE_CARD, REMOVE_CARD } from './cardsReducer'
 
 export const FETCH_TABLES = 'FETCH_TABLES'
 export const LOCAL_DRAG_END = 'LOCAL_DRAG_END'
@@ -51,28 +51,32 @@ export const globalDragEndAction = (start, finish) => (dispatch) => {
     })
 }
 
-export const tablesReducer = (state = [], action) =>
-    produce(state, (draft) => {
-        const { type, newCard, tableId, newCardIds, start, finish, tables } = action
+export const tablesReducer = produce((draft = [], action) => {
+    const { type, newCard, tableId, newCardIds, start, finish, tables, card } = action
 
-        switch (type) {
-            case FETCH_TABLES:
-                for (const table of tables) {
-                    draft.push(table)
-                }
-                break
+    switch (type) {
+        case FETCH_TABLES:
+            tables.forEach((item) => draft.push(item))
+            break
 
-            case CREATE_CARD:
-                draft.find((item) => item.id === newCard.tableId).cardIds.push(newCard.id)
-                break
+        case CREATE_CARD:
+            draft.find((item) => item.id === newCard.tableId).cardIds.push(newCard.id)
+            break
 
-            case LOCAL_DRAG_END:
-                draft.find((item) => item.id === tableId).cardIds = [...newCardIds]
-                break
+        case REMOVE_CARD:
+            draft.find((item) => item.id === card.tableId).cardIds = newCardIds
+            break
 
-            case GLOBAL_DRAG_END:
-                draft.find((item) => item.id === start.id).cardIds = start.cardIds
-                draft.find((item) => item.id === finish.id).cardIds = finish.cardIds
-                break
-        }
-    })
+        case LOCAL_DRAG_END:
+            draft.find((item) => item.id === tableId).cardIds = newCardIds
+            break
+
+        case GLOBAL_DRAG_END:
+            draft.find((item) => item.id === start.id).cardIds = start.cardIds
+            draft.find((item) => item.id === finish.id).cardIds = finish.cardIds
+            break
+
+        default:
+            return draft
+    }
+})
