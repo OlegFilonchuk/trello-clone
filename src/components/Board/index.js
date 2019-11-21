@@ -27,8 +27,7 @@ const Board = (props) => {
 
     const classes = useStyles(props)
 
-    const getTables = () =>
-        Object.values(props.tablesState).map((item) => <Table key={item.id} table={item} />)
+    const getTables = () => props.tablesState.map((item) => <Table key={item.id} table={item} />)
 
     const onDragEnd = (result) => {
         const { tablesState } = props
@@ -36,8 +35,8 @@ const Board = (props) => {
 
         if (!destination) return
 
-        const start = tablesState[source.droppableId]
-        const finish = tablesState[destination.droppableId]
+        const start = tablesState.find((item) => item.id === source.droppableId)
+        const finish = tablesState.find((item) => item.id === destination.droppableId)
 
         if (start === finish) {
             const newCardIds = [...start.cardIds]
@@ -75,7 +74,7 @@ const Board = (props) => {
 }
 
 Board.propTypes = {
-    tablesState: PropTypes.objectOf(PropTypes.object).isRequired,
+    tablesState: PropTypes.arrayOf(PropTypes.object).isRequired,
     localDragEnd: PropTypes.func.isRequired,
     globalDragEnd: PropTypes.func.isRequired,
     fetchCards: PropTypes.func.isRequired,

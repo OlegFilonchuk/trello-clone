@@ -24,6 +24,7 @@
         "react/destructuring-assignment": "off",
         "react/state-in-constructor": "off",
         "consistent-return": "off",
-        "no-param-reassign": "off"
+        "no-param-reassign": "off",
+        "default-case": "off"
     }
 }

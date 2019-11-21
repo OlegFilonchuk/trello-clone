@@ -1,24 +1,34 @@
 {
-  "tables": {
-    "table1": {
+  "tables": [
+    {
       "id": "table1",
       "title": "To do",
-      "cardIds": []
+      "cardIds": [
+        "8ffi4wkce7v",
+        "8frrocbepjv"
+      ]
     },
-    "table2": {
+    {
       "id": "table2",
       "title": "In progress",
       "cardIds": []
     },
-    "table3": {
+    {
       "id": "table3",
       "title": "Done",
       "cardIds": []
     }
-  },
-  "cards": {
-    "id": "486617i5suh",
-    "text": "dwdawa",
-    "tableId": "table1"
-  }
+  ],
+  "cards": [
+    {
+      "id": "8frrocbepjv",
+      "text": "11111111111",
+      "tableId": "table1"
+    },
+    {
+      "id": "8ffi4wkce7v",
+      "text": "2222222222",
+      "tableId": "table1"
+    }
+  ]
 }

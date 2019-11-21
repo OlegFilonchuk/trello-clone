@@ -12,7 +12,7 @@ export const fetchCardsAction = () => async (dispatch) => {
     })
 }
 
-export const createCardAction = (newCard) => async (dispatch) => {
+export const createCardAction = (newCard, cardIds) => async (dispatch) => {
     fetch('http://localhost:3001/cards', {
         method: 'POST',
         headers: {
@@ -20,30 +20,34 @@ export const createCardAction = (newCard) => async (dispatch) => {
         },
         body: JSON.stringify(newCard),
     })
-    // fetch(`http://localhost:3001/tables/${newCard.tableId}`, )
+    fetch(`http://localhost:3001/tables/${newCard.tableId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify({ cardIds: cardIds.concat(newCard.id) }),
+    })
     dispatch({
         type: CREATE_CARD,
         newCard,
     })
 }
 
-export const cardsReducer = (state = {}, action) =>
-    produce(state, (draft) => {
-        const { type, newCard, cards } = action
+export const cardsReducer = produce((draft = [], action) => {
+    const { type, newCard, cards } = action
 
-        switch (type) {
-            case FETCH_CARDS:
-                draft = {
-                    ...draft,
-                    ...cards,
-                }
-                break
+    switch (type) {
+        case FETCH_CARDS:
+            for (const card of cards) {
+                draft.push(card)
+            }
+            break
 
-            case CREATE_CARD:
-                draft[newCard.id] = newCard
-                break
+        case CREATE_CARD:
+            draft.push(newCard)
+            break
 
-            default:
-                return draft
-        }
-    })
+        default:
+            return draft
+    }
+})

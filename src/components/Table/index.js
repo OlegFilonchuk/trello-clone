@@ -42,6 +42,7 @@ class Table extends Component {
     }
 
     handleCreateButton = () => {
+        const { createCard, table } = this.props
         if (!this.state.textFieldValue) return
 
         const newCard = {
@@ -49,10 +50,10 @@ class Table extends Component {
                 .toString(36)
                 .substring(2, 15),
             text: this.state.textFieldValue,
-            tableId: this.props.table.id,
+            tableId: table.id,
         }
 
-        this.props.createCard(newCard)
+        createCard(newCard, table.cardIds)
         this.setState(this.initialState)
     }
 
@@ -61,12 +62,18 @@ class Table extends Component {
     }
 
     getCards = () => {
-        const cards = this.props.table.cardIds.map((cardId) => this.props.cardsState[cardId])
-        return cards.length ? (
-            cards.map((item, index) => <Card key={item.id} card={item} index={index} />)
-        ) : (
-            <Typography>No cards yet...</Typography>
-        )
+        const { table, cardsState } = this.props
+
+        if (cardsState.length) {
+            const cards = table.cardIds.map((cardId) =>
+                cardsState.find((item) => item.id === cardId)
+            )
+            return cards.length ? (
+                cards.map((item, index) => <Card key={item.id} card={item} index={index} />)
+            ) : (
+                <Typography>No cards yet...</Typography>
+            )
+        }
     }
 
     render() {
@@ -118,12 +125,12 @@ Table.propTypes = {
         title: PropTypes.string.isRequired,
         cardIds: PropTypes.arrayOf(PropTypes.string).isRequired,
     }).isRequired,
-    cardsState: PropTypes.objectOf(PropTypes.object).isRequired,
+    cardsState: PropTypes.arrayOf(PropTypes.object).isRequired,
     classes: PropTypes.objectOf(PropTypes.string).isRequired,
     createCard: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = ({ cardsState }) => ({
+const mapStateToProps = ({ cardsState, tablesState }) => ({
     cardsState,
 })
 
