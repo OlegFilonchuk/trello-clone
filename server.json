@@ -8,13 +8,41 @@
     {
       "id": "table2",
       "title": "In progress",
-      "cardIds": []
+      "cardIds": [
+        "55xusvpvi3f",
+        "vlw786vfj3"
+      ]
     },
     {
       "id": "table3",
       "title": "Done",
-      "cardIds": []
+      "cardIds": [
+        "eqw1h0h74iq"
+      ]
     }
   ],
-  "cards": []
+  "cards": [
+    {
+      "id": "eqw1h0h74iq",
+      "text": "dwdadwwa",
+      "tableId": "table3"
+    },
+    {
+      "id": "55xusvpvi3f",
+      "text": "dawdaw",
+      "tableId": "table2"
+    },
+    {
+      "id": "vlw786vfj3",
+      "text": "dasd",
+      "tableId": "table2"
+    }
+  ],
+  "order": {
+    "order": [
+      "table3",
+      "table2",
+      "table1"
+    ]
+  }
 }

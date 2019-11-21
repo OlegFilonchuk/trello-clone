@@ -1,4 +1,5 @@
 import produce from 'immer'
+// eslint-disable-next-line import/no-cycle
 import { CREATE_CARD, REMOVE_CARD } from './cardsReducer'
 
 export const FETCH_TABLES = 'FETCH_TABLES'
@@ -29,7 +30,7 @@ export const localDragEndAction = (tableId, newCardIds) => (dispatch) => {
     })
 }
 
-export const globalDragEndAction = (start, finish) => (dispatch) => {
+export const globalDragEndAction = (start, finish, cardId) => (dispatch) => {
     fetch(`http://localhost:3001/tables/${start.id}`, {
         method: 'PATCH',
         headers: {
@@ -44,10 +45,18 @@ export const globalDragEndAction = (start, finish) => (dispatch) => {
         },
         body: JSON.stringify({ cardIds: finish.cardIds }),
     })
+    fetch(`http://localhost:3001/cards/${cardId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify({ tableId: finish.id }),
+    })
     dispatch({
         type: GLOBAL_DRAG_END,
         start,
         finish,
+        cardId,
     })
 }
 

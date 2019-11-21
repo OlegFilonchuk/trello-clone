@@ -1,4 +1,6 @@
 import produce from 'immer'
+// eslint-disable-next-line import/no-cycle
+import { GLOBAL_DRAG_END } from './tablesReducer'
 
 export const FETCH_CARDS = 'FETCH_CARDS'
 export const CREATE_CARD = 'CREATE_CARD'
@@ -56,7 +58,7 @@ export const removeCardAction = (card, newCardIds) => (dispatch) => {
 }
 
 export const cardsReducer = produce((draft = [], action) => {
-    const { type, newCard, cards, card } = action
+    const { type, newCard, cards, card, cardId, finish } = action
 
     switch (type) {
         case FETCH_CARDS:
@@ -70,6 +72,9 @@ export const cardsReducer = produce((draft = [], action) => {
         case REMOVE_CARD:
             return draft.filter((item) => item.id !== card.id)
 
+        case GLOBAL_DRAG_END:
+            draft.find((item) => item.id === cardId).tableId = finish.id
+            break
         default:
             return draft
     }

@@ -2,10 +2,12 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { cardsReducer } from './reducers/cardsReducer'
 import { tablesReducer } from './reducers/tablesReducer'
+import { orderReducer } from './reducers/orderReducer'
 
 const rootReducer = combineReducers({
     cardsState: cardsReducer,
     tablesState: tablesReducer,
+    orderState: orderReducer,
 })
 
 const composeEnhancers =

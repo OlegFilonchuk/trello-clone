@@ -25,6 +25,7 @@
         "react/state-in-constructor": "off",
         "consistent-return": "off",
         "no-param-reassign": "off",
-        "default-case": "off"
+        "default-case": "off",
+        "no-shadow": "off"
     }
 }

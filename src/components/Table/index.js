@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Droppable } from 'react-beautiful-dnd'
-import { Typography, withStyles, TextField, Button, List } from '@material-ui/core'
+import { Droppable, Draggable } from 'react-beautiful-dnd'
+import { Typography, withStyles, TextField, Button, List, Container } from '@material-ui/core'
 import { createCardAction } from '../../redux/reducers/cardsReducer'
 import Card from '../Card'
 
@@ -81,40 +81,52 @@ class Table extends Component {
         const { creatingCard } = this.state
 
         return (
-            <div className={classes.table}>
-                <Typography variant="h4">{table.title}</Typography>
+            <Draggable draggableId={table.id} index={this.props.index}>
+                {(provided) => (
+                    <Container
+                        className={classes.table}
+                        innerRef={provided.innerRef}
+                        {...provided.draggableProps}
+                    >
+                        <Typography variant="h4" {...provided.dragHandleProps}>
+                            {table.title}
+                        </Typography>
 
-                <Droppable droppableId={this.props.table.id}>
-                    {(provided) => (
-                        <List
-                            className={classes.list}
-                            innerRef={provided.innerRef}
-                            {...provided.droppableProps}
-                        >
-                            {this.getCards()}
-                            {provided.placeholder}
-                        </List>
-                    )}
-                </Droppable>
+                        <Droppable droppableId={this.props.table.id} type="card">
+                            {(provided) => (
+                                <List
+                                    className={classes.list}
+                                    innerRef={provided.innerRef}
+                                    {...provided.droppableProps}
+                                >
+                                    {this.getCards()}
+                                    {provided.placeholder}
+                                </List>
+                            )}
+                        </Droppable>
 
-                {!creatingCard && <Button onClick={this.handleAddButton}>create new card</Button>}
+                        {!creatingCard && (
+                            <Button onClick={this.handleAddButton}>create new card</Button>
+                        )}
 
-                {creatingCard && (
-                    <div>
-                        <TextField
-                            label="enter a title for this card..."
-                            onChange={this.handleTextFieldChange}
-                            autoFocus
-                        />
-                        <Button variant="contained" onClick={this.handleCreateButton}>
-                            Create
-                        </Button>
-                        <Button variant="contained" onClick={this.handleCancelButton}>
-                            Cancel
-                        </Button>
-                    </div>
+                        {creatingCard && (
+                            <div>
+                                <TextField
+                                    label="enter a title for this card..."
+                                    onChange={this.handleTextFieldChange}
+                                    autoFocus
+                                />
+                                <Button variant="contained" onClick={this.handleCreateButton}>
+                                    Create
+                                </Button>
+                                <Button variant="contained" onClick={this.handleCancelButton}>
+                                    Cancel
+                                </Button>
+                            </div>
+                        )}
+                    </Container>
                 )}
-            </div>
+            </Draggable>
         )
     }
 }
@@ -128,9 +140,10 @@ Table.propTypes = {
     cardsState: PropTypes.arrayOf(PropTypes.object).isRequired,
     classes: PropTypes.objectOf(PropTypes.string).isRequired,
     createCard: PropTypes.func.isRequired,
+    index: PropTypes.number.isRequired,
 }
 
-const mapStateToProps = ({ cardsState, tablesState }) => ({
+const mapStateToProps = ({ cardsState }) => ({
     cardsState,
 })
 
