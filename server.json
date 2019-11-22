@@ -3,14 +3,15 @@
     {
       "id": "table1",
       "title": "To do",
-      "cardIds": [
-        "s3esqqsh1k"
-      ]
+      "cardIds": []
     },
     {
       "id": "table2",
       "title": "In progress",
-      "cardIds": []
+      "cardIds": [
+        "tl0w0ughbih",
+        "hfxhsx1g4vh"
+      ]
     },
     {
       "id": "table3",
@@ -20,9 +21,14 @@
   ],
   "cards": [
     {
-      "id": "s3esqqsh1k",
-      "text": "new card",
-      "tableId": "table1"
+      "id": "tl0w0ughbih",
+      "text": "ddawdawd",
+      "tableId": "table2"
+    },
+    {
+      "id": "hfxhsx1g4vh",
+      "text": "dwadaw",
+      "tableId": "table2"
     }
   ],
   "order": {

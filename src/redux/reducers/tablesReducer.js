@@ -5,6 +5,7 @@ import { CREATE_CARD, REMOVE_CARD } from './cardsReducer'
 export const FETCH_TABLES = 'FETCH_TABLES'
 export const LOCAL_DRAG_END = 'LOCAL_DRAG_END'
 export const GLOBAL_DRAG_END = 'GLOBAL_DRAG_END'
+export const CHANGE_TITLE = 'CHANGE_TITLE'
 
 export const fetchTablesAction = () => async (dispatch) => {
     const rawData = await fetch('http://localhost:3001/tables')
@@ -60,8 +61,23 @@ export const globalDragEndAction = (start, finish, cardId) => (dispatch) => {
     })
 }
 
+export const changeTitleAction = (title, tableId) => (dispatch) => {
+    fetch(`http://localhost:3001/tables/${tableId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify({ title }),
+    })
+    dispatch({
+        type: CHANGE_TITLE,
+        title,
+        tableId,
+    })
+}
+
 export const tablesReducer = produce((draft = [], action) => {
-    const { type, newCard, tableId, newCardIds, start, finish, tables, card } = action
+    const { type, newCard, tableId, newCardIds, start, finish, tables, card, title } = action
 
     switch (type) {
         case FETCH_TABLES:
@@ -83,6 +99,10 @@ export const tablesReducer = produce((draft = [], action) => {
         case GLOBAL_DRAG_END:
             draft.find((item) => item.id === start.id).cardIds = start.cardIds
             draft.find((item) => item.id === finish.id).cardIds = finish.cardIds
+            break
+
+        case CHANGE_TITLE:
+            draft.find((item) => item.id === tableId).title = title
             break
 
         default:

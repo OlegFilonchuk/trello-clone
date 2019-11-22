@@ -13,6 +13,9 @@ import {
     IconButton,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
+import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined'
+import { changeTitleAction } from '../../redux/reducers/tablesReducer'
 import { createCardAction } from '../../redux/reducers/cardsReducer'
 import Card from '../Card'
 
@@ -36,15 +39,27 @@ const styles = {
         alignSelf: 'flex-start',
         marginLeft: 10,
     },
+    title: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    titleText: {
+        flex: 1,
+    },
+    editTitle: {
+        transition: 'opacity .2s ease-in-out',
+    },
+    titleInput: {},
 }
 
 class Table extends Component {
-    initialState = {
+    state = {
         isCreatingCard: false,
         newCardText: '',
+        isMouseOverTitle: false,
+        isEditingTitle: false,
+        titleInputValue: this.props.table.title,
     }
-
-    state = { ...this.initialState }
 
     handleAddButton = () => {
         this.setState({
@@ -72,11 +87,40 @@ class Table extends Component {
         }
 
         createCard(newCard, table.cardIds)
-        this.setState(this.initialState)
+        this.setState({
+            newCardText: '',
+            isCreatingCard: false,
+        })
     }
 
     handleCancelButton = () => {
-        this.setState(this.initialState)
+        this.setState({
+            newCardText: '',
+            isCreatingCard: false,
+        })
+    }
+
+    handleEditTitleButton = () => {
+        this.setState({ isEditingTitle: true })
+    }
+
+    handleMouseOverTitle = () => {
+        this.setState({ isMouseOverTitle: true })
+    }
+
+    handleMouseOutTitle = () => {
+        this.setState({ isMouseOverTitle: false })
+    }
+
+    handleConfirmTitle = () => {
+        this.props.changeTitle(this.state.titleInputValue, this.props.table.id)
+        this.setState({ isEditingTitle: false })
+    }
+
+    handeTitleInputChange = (ev) => {
+        this.setState({
+            titleInputValue: ev.target.value,
+        })
     }
 
     getCards = () => {
@@ -94,7 +138,7 @@ class Table extends Component {
 
     render() {
         const { classes, table, index } = this.props
-        const { isCreatingCard } = this.state
+        const { isCreatingCard, isMouseOverTitle, isEditingTitle } = this.state
 
         return (
             <Draggable draggableId={table.id} index={index}>
@@ -103,16 +147,50 @@ class Table extends Component {
                         className={classes.table}
                         innerRef={provided.innerRef}
                         {...provided.draggableProps}
+                        {...provided.dragHandleProps}
                     >
-                        <Typography variant="h4" {...provided.dragHandleProps}>
-                            {table.title}
-                        </Typography>
+                        <Container
+                            className={classes.title}
+                            onMouseOver={this.handleMouseOverTitle}
+                            onMouseOut={this.handleMouseOutTitle}
+                        >
+                            {!isEditingTitle && (
+                                <>
+                                    <Typography variant="h4" className={classes.titleText}>
+                                        {table.title}
+                                    </Typography>
 
-                        <InputBase
-                            className={classes.margin}
-                            defaultValue="Naked input"
-                            inputProps={{ 'aria-label': 'naked' }}
-                        />
+                                    <IconButton
+                                        style={{ opacity: +isMouseOverTitle }}
+                                        title="Edit title"
+                                        size="small"
+                                        onClick={this.handleEditTitleButton}
+                                        className={classes.editTitle}
+                                    >
+                                        <EditOutlinedIcon fontSize="small" />
+                                    </IconButton>
+                                </>
+                            )}
+
+                            {isEditingTitle && (
+                                <>
+                                    <InputBase
+                                        autoFocus
+                                        className={classes.titleInput}
+                                        onChange={this.handeTitleInputChange}
+                                        value={this.state.titleInputValue}
+                                        inputProps={{ 'aria-label': 'naked' }}
+                                    />
+                                    <IconButton
+                                        size="small"
+                                        title="Confirm"
+                                        onClick={this.handleConfirmTitle}
+                                    >
+                                        <CheckOutlinedIcon fontSize="small" />
+                                    </IconButton>
+                                </>
+                            )}
+                        </Container>
 
                         <Droppable droppableId={this.props.table.id} type="card">
                             {(provided) => (
@@ -141,7 +219,7 @@ class Table extends Component {
                             <form className={classes.newCard} onSubmit={this.handleCreateButton}>
                                 <TextField
                                     className={classes.textField}
-                                    label="enter a title for this card..."
+                                    label="title of the card"
                                     onChange={this.handleTextFieldChange}
                                     autoFocus
                                 />
@@ -169,6 +247,7 @@ Table.propTypes = {
     cardsState: PropTypes.arrayOf(PropTypes.object).isRequired,
     classes: PropTypes.objectOf(PropTypes.string).isRequired,
     createCard: PropTypes.func.isRequired,
+    changeTitle: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
 }
 
@@ -178,6 +257,7 @@ const mapStateToProps = ({ cardsState }) => ({
 
 const mapDispatchToProps = {
     createCard: createCardAction,
+    changeTitle: changeTitleAction,
 }
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Table))

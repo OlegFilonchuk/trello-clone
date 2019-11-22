@@ -86,6 +86,8 @@ class Card extends Component {
             classes,
         } = this.props
 
+        const { isMouseOverCard } = this.state
+
         return (
             <Draggable draggableId={id} index={index}>
                 {(provided) => (
@@ -104,7 +106,7 @@ class Card extends Component {
                         <CardActions>
                             <IconButton
                                 className={classes.remove}
-                                style={{ opacity: +this.state.isMouseOverCard }}
+                                style={{ opacity: +isMouseOverCard }}
                                 onClick={this.handleRemoveButton}
                                 size="small"
                                 title="Remove card"
