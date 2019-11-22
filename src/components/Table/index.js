@@ -2,7 +2,17 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
-import { Typography, withStyles, TextField, Button, List, Container } from '@material-ui/core'
+import {
+    Typography,
+    withStyles,
+    TextField,
+    Button,
+    List,
+    Container,
+    InputBase,
+    IconButton,
+} from '@material-ui/core'
+import AddIcon from '@material-ui/icons/Add'
 import { createCardAction } from '../../redux/reducers/cardsReducer'
 import Card from '../Card'
 
@@ -22,37 +32,42 @@ const styles = {
     newCard: {
         display: 'flex',
     },
+    createButton: {
+        alignSelf: 'flex-start',
+        marginLeft: 10,
+    },
 }
 
 class Table extends Component {
     initialState = {
-        creatingCard: false,
-        textFieldValue: '',
+        isCreatingCard: false,
+        newCardText: '',
     }
 
     state = { ...this.initialState }
 
     handleAddButton = () => {
         this.setState({
-            creatingCard: true,
+            isCreatingCard: true,
         })
     }
 
     handleTextFieldChange = (ev) => {
         this.setState({
-            textFieldValue: ev.target.value,
+            newCardText: ev.target.value,
         })
     }
 
-    handleCreateButton = () => {
+    handleCreateButton = (ev) => {
+        ev.preventDefault()
         const { createCard, table } = this.props
-        if (!this.state.textFieldValue) return
+        if (!this.state.newCardText) return
 
         const newCard = {
             id: Math.random()
                 .toString(36)
                 .substring(2, 15),
-            text: this.state.textFieldValue,
+            text: this.state.newCardText,
             tableId: table.id,
         }
 
@@ -71,17 +86,15 @@ class Table extends Component {
             const cards = table.cardIds.map((cardId) =>
                 cardsState.find((item) => item.id === cardId)
             )
-            return cards.length ? (
-                cards.map((item, index) => <Card key={item.id} card={item} index={index} />)
-            ) : (
-                <Typography>No cards yet...</Typography>
-            )
+            if (cards.length)
+                return cards.map((item, index) => <Card key={item.id} card={item} index={index} />)
         }
+        return <Typography>No cards yet...</Typography>
     }
 
     render() {
         const { classes, table, index } = this.props
-        const { creatingCard } = this.state
+        const { isCreatingCard } = this.state
 
         return (
             <Draggable draggableId={table.id} index={index}>
@@ -94,6 +107,12 @@ class Table extends Component {
                         <Typography variant="h4" {...provided.dragHandleProps}>
                             {table.title}
                         </Typography>
+
+                        <InputBase
+                            className={classes.margin}
+                            defaultValue="Naked input"
+                            inputProps={{ 'aria-label': 'naked' }}
+                        />
 
                         <Droppable droppableId={this.props.table.id} type="card">
                             {(provided) => (
@@ -108,12 +127,18 @@ class Table extends Component {
                             )}
                         </Droppable>
 
-                        {!creatingCard && (
-                            <Button onClick={this.handleAddButton}>create new card</Button>
+                        {!isCreatingCard && (
+                            <IconButton
+                                onClick={this.handleAddButton}
+                                className={classes.createButton}
+                                title="Create new card"
+                            >
+                                <AddIcon />
+                            </IconButton>
                         )}
 
-                        {creatingCard && (
-                            <div className={classes.newCard}>
+                        {isCreatingCard && (
+                            <form className={classes.newCard} onSubmit={this.handleCreateButton}>
                                 <TextField
                                     className={classes.textField}
                                     label="enter a title for this card..."
@@ -126,7 +151,7 @@ class Table extends Component {
                                 <Button variant="contained" onClick={this.handleCancelButton}>
                                     Cancel
                                 </Button>
-                            </div>
+                            </form>
                         )}
                     </Container>
                 )}

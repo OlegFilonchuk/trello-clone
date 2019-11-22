@@ -4,7 +4,7 @@
       "id": "table1",
       "title": "To do",
       "cardIds": [
-        "n8jqc25ras"
+        "s3esqqsh1k"
       ]
     },
     {
@@ -20,8 +20,8 @@
   ],
   "cards": [
     {
-      "id": "n8jqc25ras",
-      "text": "dawdaw",
+      "id": "s3esqqsh1k",
+      "text": "new card",
       "tableId": "table1"
     }
   ],

@@ -7,14 +7,16 @@ import {
     withStyles,
     CardActions,
     Modal,
+    Paper,
+    IconButton,
 } from '@material-ui/core'
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 import { connect } from 'react-redux'
 import { Draggable } from 'react-beautiful-dnd'
 import { removeCardAction } from '../../redux/reducers/cardsReducer'
-import './Card.css'
 import OpenCard from '../OpenCard'
 
-const styles = {
+const styles = (state) => ({
     card: {
         cursor: 'pointer !important',
         width: 300,
@@ -29,16 +31,31 @@ const styles = {
     content: {
         flex: 1,
     },
-}
+    paper: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        boxShadow: '1px 1px 1px 1px lightgrey',
+        borderRadius: 4,
+        outline: 0,
+        padding: 10,
+        backgroundColor: '#fff',
+    },
+    remove: {
+        transition: 'opacity .2s ease-in-out',
+    },
+})
 
 class Card extends Component {
     state = {
-        // eslint-disable-next-line react/no-unused-state
         isOpen: false,
+        isMouseOverCard: false,
     }
 
-    handleCardClick = async () => {
-        await this.setState((prevState) => ({
+    handleCardClick = () => {
+        this.setState((prevState) => ({
             isOpen: !prevState.isOpen,
         }))
     }
@@ -48,6 +65,18 @@ class Card extends Component {
         const table = tablesState.find((item) => item.id === card.tableId)
         const newCardIds = table.cardIds.filter((item) => item !== card.id)
         removeCard(card, newCardIds)
+    }
+
+    handleMouseOver = () => {
+        this.setState({
+            isMouseOverCard: true,
+        })
+    }
+
+    handleMouseOut = () => {
+        this.setState({
+            isMouseOverCard: false,
+        })
     }
 
     render() {
@@ -62,6 +91,8 @@ class Card extends Component {
                 {(provided) => (
                     <MaterialCard
                         onClick={this.handleCardClick}
+                        onMouseOver={this.handleMouseOver}
+                        onMouseOut={this.handleMouseOut}
                         className={classes.card}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
@@ -70,17 +101,26 @@ class Card extends Component {
                         <CardContent className={classes.content}>
                             <Typography>{text}</Typography>
                         </CardContent>
-                        <CardActions className={classes.remove}>
-                            <button
-                                type="button"
+                        <CardActions>
+                            <IconButton
+                                className={classes.remove}
+                                style={{ opacity: +this.state.isMouseOverCard }}
                                 onClick={this.handleRemoveButton}
-                                className="trial"
+                                size="small"
+                                title="Remove card"
                             >
-                                x
-                            </button>
+                                <DeleteOutlinedIcon fontSize="small" />
+                            </IconButton>
                         </CardActions>
-                        <Modal open={this.state.isOpen} onClose={this.handleClose}>
-                            <OpenCard />
+                        <Modal
+                            open={this.state.isOpen}
+                            onClose={this.handleClose}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+                        >
+                            <Paper className={classes.paper}>
+                                <OpenCard card={this.props.card} />
+                            </Paper>
                         </Modal>
                     </MaterialCard>
                 )}
@@ -104,6 +144,7 @@ Card.propTypes = {
 const mapStateToProps = ({ tablesState }) => ({
     tablesState,
 })
+
 const mapDispathToProps = {
     removeCard: removeCardAction,
 }
