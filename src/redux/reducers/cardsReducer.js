@@ -7,6 +7,7 @@ export const FETCH_CARDS = 'FETCH_CARDS';
 export const CREATE_CARD = 'CREATE_CARD';
 export const REMOVE_CARD = 'REMOVE_CARD';
 export const CHANGE_DESC = 'CHANGE_DESC';
+export const CHANGE_TEXT = 'CHANGE_TEXT';
 const api = process.env.REACT_APP_API_URI;
 
 export const fetchCardsAction = () => async (dispatch) => {
@@ -91,7 +92,7 @@ export const removeCardAction = (card) => async (dispatch, getState) => {
     });
 };
 
-export const changeDescAction = (desc, cardId) => async (dispatch, getState) => {
+export const changeDescAction = (desc, cardId) => async (dispatch) => {
     const raw = await fetch(`${api}/cards/${cardId}`, {
         method: 'PATCH',
         headers: {
@@ -105,12 +106,45 @@ export const changeDescAction = (desc, cardId) => async (dispatch, getState) => 
     if (!raw.ok) return;
 
     dispatch({
-        type: 'CHANGE_DESC',
+        type: CHANGE_DESC,
         payload: {
             desc,
             cardId,
         },
     });
+};
+
+export const changeTextAction = (text, cardId) => async (dispatch, getState) => {
+    // visual bug happens while fetching
+    const oldText = getState().cardsState.find((item) => item.id === cardId).text;
+
+    dispatch({
+        type: CHANGE_TEXT,
+        payload: {
+            text,
+            cardId,
+        },
+    });
+
+    const raw = await fetch(`${api}/cards/${cardId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+            text,
+        }),
+    });
+    // dispatching back in case of error
+    if (!raw.ok) {
+        dispatch({
+            type: CHANGE_TEXT,
+            payload: {
+                text: oldText,
+                cardId,
+            },
+        });
+    }
 };
 
 export const cardsReducer = produce((draft = [], action) => {
@@ -133,7 +167,11 @@ export const cardsReducer = produce((draft = [], action) => {
             break;
 
         case CHANGE_DESC:
-            draft.filter((item) => item.id === payload.cardId).desc = payload.desc;
+            draft.find((item) => item.id === payload.cardId).desc = payload.desc;
+            break;
+
+        case CHANGE_TEXT:
+            draft.find((item) => item.id === payload.cardId).text = payload.text;
             break;
 
         default:

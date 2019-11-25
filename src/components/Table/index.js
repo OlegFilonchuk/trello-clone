@@ -171,7 +171,7 @@ class Table extends Component {
                         {...provided.dragHandleProps}
                     >
                         <Container className={classes.title}>
-                            {!isEditingTitle && (
+                            {!isEditingTitle ? (
                                 <Typography
                                     variant="h5"
                                     className={classes.titleText}
@@ -179,9 +179,7 @@ class Table extends Component {
                                 >
                                     {table.title}
                                 </Typography>
-                            )}
-
-                            {isEditingTitle && (
+                            ) : (
                                 <form
                                     onSubmit={this.handleConfirmTitle}
                                     className={classes.editTitle}
