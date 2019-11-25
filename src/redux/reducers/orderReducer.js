@@ -26,6 +26,7 @@ export const changeOrderAction = (newOrder) => (dispatch) => {
             order: newOrder,
         }),
     });
+
     dispatch({
         type: CHANGE_ORDER,
         payload: {

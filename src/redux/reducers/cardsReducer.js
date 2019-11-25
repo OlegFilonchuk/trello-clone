@@ -18,7 +18,7 @@ export const fetchCardsAction = () => async (dispatch) => {
     });
 };
 
-export const createCardAction = (newCard, cardIds) => (dispatch) => {
+export const createCardAction = (newCard) => (dispatch, getState) => {
     fetch(`${api}/cards`, {
         method: 'POST',
         headers: {
@@ -26,12 +26,16 @@ export const createCardAction = (newCard, cardIds) => (dispatch) => {
         },
         body: JSON.stringify(newCard),
     });
+
+    const newCardIds = getState()
+        .tablesState.find((item) => item.id === newCard.tableId)
+        .cardIds.concat(newCard.id);
     fetch(`${api}/tables/${newCard.tableId}`, {
         method: 'PATCH',
         headers: {
             'Content-type': 'application/json',
         },
-        body: JSON.stringify({ cardIds: cardIds.concat(newCard.id) }),
+        body: JSON.stringify({ cardIds: newCardIds }),
     });
     dispatch({
         type: CREATE_CARD,

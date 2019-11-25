@@ -30,6 +30,7 @@ export const localDragEndAction = (tableId, newCardIds) => (dispatch) => {
         },
         body: JSON.stringify({ cardIds: newCardIds }),
     });
+
     dispatch({
         type: LOCAL_DRAG_END,
         payload: {
@@ -47,6 +48,7 @@ export const globalDragEndAction = (start, finish, cardId) => (dispatch) => {
         },
         body: JSON.stringify({ cardIds: start.cardIds }),
     });
+
     fetch(`${api}/tables/${finish.id}`, {
         method: 'PATCH',
         headers: {
@@ -54,6 +56,7 @@ export const globalDragEndAction = (start, finish, cardId) => (dispatch) => {
         },
         body: JSON.stringify({ cardIds: finish.cardIds }),
     });
+
     fetch(`${api}/cards/${cardId}`, {
         method: 'PATCH',
         headers: {
@@ -61,6 +64,7 @@ export const globalDragEndAction = (start, finish, cardId) => (dispatch) => {
         },
         body: JSON.stringify({ tableId: finish.id }),
     });
+
     dispatch({
         type: GLOBAL_DRAG_END,
         payload: {
@@ -79,6 +83,7 @@ export const changeTitleAction = (title, tableId) => (dispatch) => {
         },
         body: JSON.stringify({ title }),
     });
+
     dispatch({
         type: CHANGE_TITLE,
         payload: {
@@ -98,13 +103,17 @@ export const createTableAction = (newTable) => (dispatch, getState) => {
             ...newTable,
         }),
     });
+
+    const newOrder = getState().orderState.concat(newTable.id);
+
     fetch(`${api}/order`, {
         method: 'PATCH',
         headers: {
             'Content-type': 'application/json',
         },
-        body: JSON.stringify({ order: getState().orderState.concat(newTable.id) }),
+        body: JSON.stringify({ order: newOrder }),
     });
+
     dispatch({
         type: CREATE_TABLE,
         payload: {
@@ -120,6 +129,7 @@ export const removeTableAction = (tableId) => (dispatch, getState) => {
             'Content-type': 'application/json',
         },
     });
+
     const newOrder = getState().orderState.filter((item) => item !== tableId);
 
     fetch(`${api}/order`, {
@@ -129,6 +139,7 @@ export const removeTableAction = (tableId) => (dispatch, getState) => {
         },
         body: JSON.stringify({ order: newOrder }),
     });
+
     dispatch({
         type: REMOVE_TABLE,
         payload: {

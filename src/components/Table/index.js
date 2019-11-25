@@ -107,7 +107,7 @@ class Table extends Component {
             tableId: table.id,
         };
 
-        createCard(newCard, table.cardIds);
+        createCard(newCard);
         this.setState({
             newCardText: '',
             isCreatingCard: false,
