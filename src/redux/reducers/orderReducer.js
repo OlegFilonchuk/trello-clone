@@ -6,8 +6,11 @@ const CHANGE_ORDER = 'CHANGE_ORDER';
 const api = process.env.REACT_APP_API_URI;
 
 export const fetchOrderAction = () => async (dispatch) => {
-    const rawData = await fetch(`${api}/order`);
-    const order = await rawData.json();
+    const rawRes = await fetch(`${api}/order`);
+
+    if (!rawRes.ok) return;
+
+    const order = await rawRes.json();
     dispatch({
         type: FETCH_ORDER,
         payload: {
@@ -16,8 +19,18 @@ export const fetchOrderAction = () => async (dispatch) => {
     });
 };
 
-export const changeOrderAction = (newOrder) => (dispatch) => {
-    fetch(`${api}/order`, {
+export const changeOrderAction = (newOrder) => async (dispatch, getState) => {
+    // dispatch comes first because of visual bug happening while fetch is awaiting
+    const oldOrder = getState().orderState;
+
+    dispatch({
+        type: CHANGE_ORDER,
+        payload: {
+            newOrder,
+        },
+    });
+
+    const rawRes = await fetch(`${api}/order`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
@@ -27,12 +40,14 @@ export const changeOrderAction = (newOrder) => (dispatch) => {
         }),
     });
 
-    dispatch({
-        type: CHANGE_ORDER,
-        payload: {
-            newOrder,
-        },
-    });
+    // if server error happened dispatch client tables order back
+    !rawRes.ok &&
+        dispatch({
+            type: CHANGE_ORDER,
+            payload: {
+                newOrder: oldOrder,
+            },
+        });
 };
 
 export const orderReducer = produce((draft = [], action) => {

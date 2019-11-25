@@ -5,7 +5,17 @@ import { makeStyles, Container, Typography, Button } from '@material-ui/core';
 import { removeCardAction } from '../../redux/reducers/cardsReducer';
 
 const useStyles = makeStyles({
-    openCard: {},
+    openCard: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    removeCardButton: {
+        alignSelf: 'flex-end',
+    },
+    body: {
+        paddingTop: 30,
+        paddingBottom: 30,
+    },
 });
 
 const OpenCard = (props) => {
@@ -28,12 +38,20 @@ const OpenCard = (props) => {
             <Typography variant="h2" component="h2">
                 {text}
             </Typography>
+            <Typography variant="body1" className={classes.body}>
+                Here the card body comes
+            </Typography>
             <Typography variant="body2">
                 This card belongs to
                 <b>{` "${tablesState.find((item) => item.id === tableId).title}" `}</b>
                 table
             </Typography>
-            <Button type="button" size="small" onClick={handleRemoveButtonClick}>
+            <Button
+                type="button"
+                size="small"
+                onClick={handleRemoveButtonClick}
+                className={classes.removeCardButton}
+            >
                 remove it
             </Button>
         </Container>

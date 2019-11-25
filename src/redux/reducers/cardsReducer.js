@@ -8,8 +8,12 @@ export const REMOVE_CARD = 'REMOVE_CARD';
 const api = process.env.REACT_APP_API_URI;
 
 export const fetchCardsAction = () => async (dispatch) => {
-    const rawData = await fetch(`${api}/cards`);
-    const cards = await rawData.json();
+    const rawRes = await fetch(`${api}/cards`);
+
+    if (!rawRes.ok) return;
+
+    const cards = await rawRes.json();
+
     dispatch({
         type: FETCH_CARDS,
         payload: {
@@ -18,8 +22,8 @@ export const fetchCardsAction = () => async (dispatch) => {
     });
 };
 
-export const createCardAction = (newCard) => (dispatch, getState) => {
-    fetch(`${api}/cards`, {
+export const createCardAction = (newCard) => async (dispatch, getState) => {
+    const rawRes1 = await fetch(`${api}/cards`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
@@ -27,16 +31,22 @@ export const createCardAction = (newCard) => (dispatch, getState) => {
         body: JSON.stringify(newCard),
     });
 
+    if (!rawRes1.ok) return;
+
     const newCardIds = getState()
         .tablesState.find((item) => item.id === newCard.tableId)
         .cardIds.concat(newCard.id);
-    fetch(`${api}/tables/${newCard.tableId}`, {
+
+    const rawRes2 = await fetch(`${api}/tables/${newCard.tableId}`, {
         method: 'PATCH',
         headers: {
             'Content-type': 'application/json',
         },
         body: JSON.stringify({ cardIds: newCardIds }),
     });
+
+    if (!rawRes2.ok) return;
+
     dispatch({
         type: CREATE_CARD,
         payload: {
@@ -45,23 +55,29 @@ export const createCardAction = (newCard) => (dispatch, getState) => {
     });
 };
 
-export const removeCardAction = (card) => (dispatch, getState) => {
-    const table = getState().tablesState.find((item) => item.id === card.tableId);
-    const newCardIds = table.cardIds.filter((item) => item !== card.id);
-
-    fetch(`${api}/cards/${card.id}`, {
+export const removeCardAction = (card) => async (dispatch, getState) => {
+    const rawRes1 = await fetch(`${api}/cards/${card.id}`, {
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',
         },
     });
-    fetch(`${api}/tables/${card.tableId}`, {
+
+    if (!rawRes1.ok) return;
+
+    const table = getState().tablesState.find((item) => item.id === card.tableId);
+    const newCardIds = table.cardIds.filter((item) => item !== card.id);
+
+    const rawRes2 = await fetch(`${api}/tables/${card.tableId}`, {
         method: 'PATCH',
         headers: {
             'Content-type': 'application/json',
         },
         body: JSON.stringify({ cardIds: newCardIds }),
     });
+
+    if (!rawRes2.ok) return;
+
     dispatch({
         type: REMOVE_CARD,
         payload: {

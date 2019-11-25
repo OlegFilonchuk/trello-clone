@@ -1,41 +1,15 @@
 {
   "tables": [
     {
-      "id": "z39dn39pelm",
-      "title": "fafll;fkjeaskfk;",
-      "cardIds": [
-        "oub3kce1v3o",
-        "oanenrj1mkl"
-      ]
-    },
-    {
-      "id": "39392ohretp",
-      "title": "New table",
-      "cardIds": []
-    },
-    {
-      "id": "ht8zlyndmw",
-      "title": "New table",
+      "id": "purrm3skn9",
+      "title": "table1",
       "cardIds": []
     }
   ],
-  "cards": [
-    {
-      "id": "oub3kce1v3o",
-      "text": "dwadaw",
-      "tableId": "z39dn39pelm"
-    },
-    {
-      "id": "oanenrj1mkl",
-      "text": "dwadaw",
-      "tableId": "z39dn39pelm"
-    }
-  ],
+  "cards": [],
   "order": {
     "order": [
-      "39392ohretp",
-      "z39dn39pelm",
-      "ht8zlyndmw"
+      "purrm3skn9"
     ]
   }
 }

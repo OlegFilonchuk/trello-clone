@@ -59,7 +59,8 @@ class Card extends Component {
         }));
     };
 
-    handleRemoveCardButton = () => {
+    handleRemoveCardButton = (ev) => {
+        ev.stopPropagation();
         const { card, removeCard } = this.props;
         removeCard(card);
     };
