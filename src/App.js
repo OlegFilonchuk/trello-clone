@@ -1,13 +1,14 @@
-import React from 'react'
-import Container from './components/Container'
-import './App.css'
+import React from 'react';
+import { CssBaseline } from '@material-ui/core';
+import Board from './components/Board';
 
 const App = () => {
     return (
         <div className="app">
-            <Container />
+            <CssBaseline />
+            <Board />
         </div>
-    )
-}
+    );
+};
 
-export default App
+export default App;

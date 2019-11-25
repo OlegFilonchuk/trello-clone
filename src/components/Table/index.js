@@ -1,39 +1,41 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { Droppable, Draggable } from 'react-beautiful-dnd'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import {
     Typography,
     withStyles,
     TextField,
-    Button,
     List,
     Container,
     InputBase,
     IconButton,
-} from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
-import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined'
-import { changeTitleAction } from '../../redux/reducers/tablesReducer'
-import { createCardAction } from '../../redux/reducers/cardsReducer'
-import Card from '../Card'
+    Paper,
+} from '@material-ui/core';
+import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
+import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
+import ClearOutlinedIcon from '@material-ui/icons/CancelOutlined';
+import { changeTitleAction } from '../../redux/reducers/tablesReducer';
+import { createCardAction } from '../../redux/reducers/cardsReducer';
+import Card from '../Card';
 
 const styles = {
     table: {
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: '#ddd',
+        backgroundColor: '#ededed',
+        padding: 20,
         margin: 10,
-        width: 390,
+        width: 380,
     },
     list: {
         flexGrow: 1,
-        minHeight: 100,
         padding: 10,
     },
     newCard: {
         display: 'flex',
+        alignItems: 'center',
+        padding: 10,
     },
     createButton: {
         alignSelf: 'flex-start',
@@ -45,38 +47,51 @@ const styles = {
     },
     titleText: {
         flex: 1,
+        cursor: 'pointer',
+        paddingTop: 7,
+        paddingBottom: 7,
     },
     editTitle: {
-        transition: 'opacity .2s ease-in-out',
+        display: 'flex',
+        flexFlow: 'row nowrap',
+        alignItems: 'center',
     },
-    titleInput: {},
-}
+    titleInput: {
+        flex: 1,
+        fontSize: '2.125rem',
+        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+        fontWeight: 400,
+        lineHeight: 1.17,
+    },
+    textField: {
+        flex: 1,
+    },
+};
 
 class Table extends Component {
     state = {
         isCreatingCard: false,
         newCardText: '',
-        isMouseOverTitle: false,
         isEditingTitle: false,
         titleInputValue: this.props.table.title,
-    }
+    };
 
     handleAddButton = () => {
         this.setState({
             isCreatingCard: true,
-        })
-    }
+        });
+    };
 
     handleTextFieldChange = (ev) => {
         this.setState({
             newCardText: ev.target.value,
-        })
-    }
+        });
+    };
 
     handleCreateButton = (ev) => {
-        ev.preventDefault()
-        const { createCard, table } = this.props
-        if (!this.state.newCardText) return
+        ev.preventDefault();
+        const { createCard, table } = this.props;
+        if (!this.state.newCardText) return;
 
         const newCard = {
             id: Math.random()
@@ -84,96 +99,80 @@ class Table extends Component {
                 .substring(2, 15),
             text: this.state.newCardText,
             tableId: table.id,
-        }
+        };
 
-        createCard(newCard, table.cardIds)
+        createCard(newCard, table.cardIds);
         this.setState({
             newCardText: '',
             isCreatingCard: false,
-        })
-    }
+        });
+    };
 
     handleCancelButton = () => {
         this.setState({
             newCardText: '',
             isCreatingCard: false,
-        })
-    }
+        });
+    };
 
     handleEditTitleButton = () => {
-        this.setState({ isEditingTitle: true })
-    }
+        this.setState({ isEditingTitle: true });
+    };
 
-    handleMouseOverTitle = () => {
-        this.setState({ isMouseOverTitle: true })
-    }
-
-    handleMouseOutTitle = () => {
-        this.setState({ isMouseOverTitle: false })
-    }
-
-    handleConfirmTitle = () => {
-        this.props.changeTitle(this.state.titleInputValue, this.props.table.id)
-        this.setState({ isEditingTitle: false })
-    }
+    handleConfirmTitle = (ev) => {
+        ev.preventDefault();
+        this.props.changeTitle(this.state.titleInputValue, this.props.table.id);
+        this.setState({ isEditingTitle: false });
+    };
 
     handeTitleInputChange = (ev) => {
         this.setState({
             titleInputValue: ev.target.value,
-        })
-    }
+        });
+    };
 
     getCards = () => {
-        const { table, cardsState } = this.props
+        const { table, cardsState } = this.props;
 
         if (cardsState.length) {
             const cards = table.cardIds.map((cardId) =>
                 cardsState.find((item) => item.id === cardId)
-            )
+            );
             if (cards.length)
-                return cards.map((item, index) => <Card key={item.id} card={item} index={index} />)
+                return cards.map((item, index) => <Card key={item.id} card={item} index={index} />);
         }
-        return <Typography>No cards yet...</Typography>
-    }
+        return <Typography>No cards yet...</Typography>;
+    };
 
     render() {
-        const { classes, table, index } = this.props
-        const { isCreatingCard, isMouseOverTitle, isEditingTitle } = this.state
+        const { classes, table, index } = this.props;
+        const { isCreatingCard, isEditingTitle } = this.state;
 
         return (
             <Draggable draggableId={table.id} index={index}>
                 {(provided) => (
-                    <Container
+                    <Paper
                         className={classes.table}
                         innerRef={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                     >
-                        <Container
-                            className={classes.title}
-                            onMouseOver={this.handleMouseOverTitle}
-                            onMouseOut={this.handleMouseOutTitle}
-                        >
+                        <Container className={classes.title}>
                             {!isEditingTitle && (
-                                <>
-                                    <Typography variant="h4" className={classes.titleText}>
-                                        {table.title}
-                                    </Typography>
-
-                                    <IconButton
-                                        style={{ opacity: +isMouseOverTitle }}
-                                        title="Edit title"
-                                        size="small"
-                                        onClick={this.handleEditTitleButton}
-                                        className={classes.editTitle}
-                                    >
-                                        <EditOutlinedIcon fontSize="small" />
-                                    </IconButton>
-                                </>
+                                <Typography
+                                    variant="h4"
+                                    className={classes.titleText}
+                                    onClick={this.handleEditTitleButton}
+                                >
+                                    {table.title}
+                                </Typography>
                             )}
 
                             {isEditingTitle && (
-                                <>
+                                <form
+                                    onSubmit={this.handleConfirmTitle}
+                                    className={classes.editTitle}
+                                >
                                     <InputBase
                                         autoFocus
                                         className={classes.titleInput}
@@ -181,14 +180,10 @@ class Table extends Component {
                                         value={this.state.titleInputValue}
                                         inputProps={{ 'aria-label': 'naked' }}
                                     />
-                                    <IconButton
-                                        size="small"
-                                        title="Confirm"
-                                        onClick={this.handleConfirmTitle}
-                                    >
-                                        <CheckOutlinedIcon fontSize="small" />
+                                    <IconButton title="Confirm" onClick={this.handleConfirmTitle}>
+                                        <CheckOutlinedIcon />
                                     </IconButton>
-                                </>
+                                </form>
                             )}
                         </Container>
 
@@ -211,7 +206,7 @@ class Table extends Component {
                                 className={classes.createButton}
                                 title="Create new card"
                             >
-                                <AddIcon />
+                                <AddOutlinedIcon />
                             </IconButton>
                         )}
 
@@ -219,22 +214,24 @@ class Table extends Component {
                             <form className={classes.newCard} onSubmit={this.handleCreateButton}>
                                 <TextField
                                     className={classes.textField}
-                                    label="title of the card"
+                                    label="Title of the card"
                                     onChange={this.handleTextFieldChange}
                                     autoFocus
                                 />
-                                <Button variant="contained" onClick={this.handleCreateButton}>
-                                    Create
-                                </Button>
-                                <Button variant="contained" onClick={this.handleCancelButton}>
-                                    Cancel
-                                </Button>
+
+                                <IconButton onClick={this.handleCreateButton} title="Confirm">
+                                    <AddOutlinedIcon />
+                                </IconButton>
+
+                                <IconButton onClick={this.handleCancelButton} title="Cancel">
+                                    <ClearOutlinedIcon />
+                                </IconButton>
                             </form>
                         )}
-                    </Container>
+                    </Paper>
                 )}
             </Draggable>
-        )
+        );
     }
 }
 
@@ -249,15 +246,15 @@ Table.propTypes = {
     createCard: PropTypes.func.isRequired,
     changeTitle: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
-}
+};
 
 const mapStateToProps = ({ cardsState }) => ({
     cardsState,
-})
+});
 
 const mapDispatchToProps = {
     createCard: createCardAction,
     changeTitle: changeTitleAction,
-}
+};
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Table))
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Table));

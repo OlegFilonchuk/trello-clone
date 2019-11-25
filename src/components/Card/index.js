@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
     Card as MaterialCard,
     CardContent,
@@ -9,19 +9,18 @@ import {
     Modal,
     Paper,
     IconButton,
-} from '@material-ui/core'
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
-import { connect } from 'react-redux'
-import { Draggable } from 'react-beautiful-dnd'
-import { removeCardAction } from '../../redux/reducers/cardsReducer'
-import OpenCard from '../OpenCard'
+} from '@material-ui/core';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import { connect } from 'react-redux';
+import { Draggable } from 'react-beautiful-dnd';
+import { removeCardAction } from '../../redux/reducers/cardsReducer';
+import OpenCard from '../OpenCard';
 
-const styles = (state) => ({
+const styles = {
     card: {
         cursor: 'pointer !important',
-        width: 300,
         marginBottom: 10,
-        backgroundColor: '#eee',
+        backgroundColor: '#fffffe',
         display: 'flex',
         flexDirection: 'row',
         '&:hover .trial': {
@@ -46,47 +45,47 @@ const styles = (state) => ({
     remove: {
         transition: 'opacity .2s ease-in-out',
     },
-})
+};
 
 class Card extends Component {
     state = {
         isOpen: false,
         isMouseOverCard: false,
-    }
+    };
 
     handleCardClick = () => {
         this.setState((prevState) => ({
             isOpen: !prevState.isOpen,
-        }))
-    }
+        }));
+    };
 
     handleRemoveButton = () => {
-        const { tablesState, card, removeCard } = this.props
-        const table = tablesState.find((item) => item.id === card.tableId)
-        const newCardIds = table.cardIds.filter((item) => item !== card.id)
-        removeCard(card, newCardIds)
-    }
+        const { tablesState, card, removeCard } = this.props;
+        const table = tablesState.find((item) => item.id === card.tableId);
+        const newCardIds = table.cardIds.filter((item) => item !== card.id);
+        removeCard(card, newCardIds);
+    };
 
     handleMouseOver = () => {
         this.setState({
             isMouseOverCard: true,
-        })
-    }
+        });
+    };
 
     handleMouseOut = () => {
         this.setState({
             isMouseOverCard: false,
-        })
-    }
+        });
+    };
 
     render() {
         const {
             index,
             card: { id, text },
             classes,
-        } = this.props
+        } = this.props;
 
-        const { isMouseOverCard } = this.state
+        const { isMouseOverCard } = this.state;
 
         return (
             <Draggable draggableId={id} index={index}>
@@ -127,7 +126,7 @@ class Card extends Component {
                     </MaterialCard>
                 )}
             </Draggable>
-        )
+        );
     }
 }
 
@@ -141,14 +140,14 @@ Card.propTypes = {
     removeCard: PropTypes.func.isRequired,
     tablesState: PropTypes.arrayOf(PropTypes.object).isRequired,
     classes: PropTypes.objectOf(PropTypes.string).isRequired,
-}
+};
 
 const mapStateToProps = ({ tablesState }) => ({
     tablesState,
-})
+});
 
 const mapDispathToProps = {
     removeCard: removeCardAction,
-}
+};
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispathToProps)(Card))
+export default withStyles(styles)(connect(mapStateToProps, mapDispathToProps)(Card));

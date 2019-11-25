@@ -1,27 +1,27 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { makeStyles, Container, Typography, Button } from '@material-ui/core'
-import { removeCardAction } from '../../redux/reducers/cardsReducer'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { makeStyles, Container, Typography, Button } from '@material-ui/core';
+import { removeCardAction } from '../../redux/reducers/cardsReducer';
 
 const useStyles = makeStyles({
     openCard: {},
-})
+});
 
 const OpenCard = (props) => {
     const {
         card: { id, text, tableId },
         tablesState,
         removeCard,
-    } = props
+    } = props;
 
-    const classes = useStyles(props)
+    const classes = useStyles(props);
 
     const handleRemoveButtonClick = () => {
-        const table = tablesState.find((item) => item.id === tableId)
-        const newCardIds = table.cardIds.filter((item) => item !== id)
-        removeCard(props.card, newCardIds)
-    }
+        const table = tablesState.find((item) => item.id === tableId);
+        const newCardIds = table.cardIds.filter((item) => item !== id);
+        removeCard(props.card, newCardIds);
+    };
 
     return (
         <Container className={classes.openCard}>
@@ -37,8 +37,8 @@ const OpenCard = (props) => {
                 remove it
             </Button>
         </Container>
-    )
-}
+    );
+};
 
 OpenCard.propTypes = {
     card: PropTypes.shape({
@@ -48,14 +48,14 @@ OpenCard.propTypes = {
     }).isRequired,
     tablesState: PropTypes.arrayOf(PropTypes.object).isRequired,
     removeCard: PropTypes.func.isRequired,
-}
+};
 
 const mapStateToProps = ({ tablesState }) => ({
     tablesState,
-})
+});
 
 const mapDispatchToProps = {
     removeCard: removeCardAction,
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(OpenCard)
+export default connect(mapStateToProps, mapDispatchToProps)(OpenCard);

@@ -1,13 +1,12 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { Provider, ReactReduxContext } from 'react-redux'
-import store from './redux/store'
-import App from './App'
-import './index.css'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import App from './App';
 
 ReactDOM.render(
-    <Provider store={store} context={ReactReduxContext}>
+    <Provider store={store}>
         <App />
     </Provider>,
     document.getElementById('root')
-)
+);
