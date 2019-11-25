@@ -12,7 +12,9 @@ export const fetchCardsAction = () => async (dispatch) => {
     const cards = await rawData.json();
     dispatch({
         type: FETCH_CARDS,
-        cards,
+        payload: {
+            cards,
+        },
     });
 };
 
@@ -33,11 +35,16 @@ export const createCardAction = (newCard, cardIds) => (dispatch) => {
     });
     dispatch({
         type: CREATE_CARD,
-        newCard,
+        payload: {
+            newCard,
+        },
     });
 };
 
-export const removeCardAction = (card, newCardIds) => (dispatch) => {
+export const removeCardAction = (card) => (dispatch, getState) => {
+    const table = getState().tablesState.find((item) => item.id === card.tableId);
+    const newCardIds = table.cardIds.filter((item) => item !== card.id);
+
     fetch(`${api}/cards/${card.id}`, {
         method: 'DELETE',
         headers: {
@@ -53,29 +60,32 @@ export const removeCardAction = (card, newCardIds) => (dispatch) => {
     });
     dispatch({
         type: REMOVE_CARD,
-        card,
-        newCardIds,
+        payload: {
+            card,
+            newCardIds,
+        },
     });
 };
 
 export const cardsReducer = produce((draft = [], action) => {
-    const { type, newCard, cards, card, cardId, finish } = action;
+    const { type, payload } = action;
 
     switch (type) {
         case FETCH_CARDS:
-            cards.forEach((item) => draft.push(item));
+            payload.cards.forEach((item) => draft.push(item));
             break;
 
         case CREATE_CARD:
-            draft.push(newCard);
+            draft.push(payload.newCard);
             break;
 
         case REMOVE_CARD:
-            return draft.filter((item) => item.id !== card.id);
+            return draft.filter((item) => item.id !== payload.card.id);
 
         case GLOBAL_DRAG_END:
-            draft.find((item) => item.id === cardId).tableId = finish.id;
+            draft.find((item) => item.id === payload.cardId).tableId = payload.finish.id;
             break;
+
         default:
             return draft;
     }

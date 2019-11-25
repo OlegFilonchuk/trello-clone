@@ -15,7 +15,8 @@ import {
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import ClearOutlinedIcon from '@material-ui/icons/CancelOutlined';
-import { changeTitleAction } from '../../redux/reducers/tablesReducer';
+import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
+import { changeTitleAction, removeTableAction } from '../../redux/reducers/tablesReducer';
 import { createCardAction } from '../../redux/reducers/cardsReducer';
 import Card from '../Card';
 
@@ -39,7 +40,6 @@ const styles = {
     },
     createButton: {
         alignSelf: 'flex-start',
-        marginLeft: 10,
     },
     title: {
         display: 'flex',
@@ -65,6 +65,12 @@ const styles = {
     },
     textField: {
         flex: 1,
+    },
+    noCards: {
+        marginLeft: 15,
+    },
+    removeTableButton: {
+        alignSelf: 'flex-end',
     },
 };
 
@@ -131,6 +137,10 @@ class Table extends Component {
         });
     };
 
+    handleRemoveTableButton = () => {
+        this.props.removeTable(this.props.table.id);
+    };
+
     getCards = () => {
         const { table, cardsState } = this.props;
 
@@ -141,7 +151,7 @@ class Table extends Component {
             if (cards.length)
                 return cards.map((item, index) => <Card key={item.id} card={item} index={index} />);
         }
-        return <Typography>No cards yet...</Typography>;
+        return <Typography className={this.props.classes.noCards}>No cards yet...</Typography>;
     };
 
     render() {
@@ -196,19 +206,19 @@ class Table extends Component {
                                 >
                                     {this.getCards()}
                                     {provided.placeholder}
+
+                                    {!isCreatingCard && (
+                                        <IconButton
+                                            onClick={this.handleAddButton}
+                                            className={classes.createButton}
+                                            title="Create new card"
+                                        >
+                                            <AddOutlinedIcon />
+                                        </IconButton>
+                                    )}
                                 </List>
                             )}
                         </Droppable>
-
-                        {!isCreatingCard && (
-                            <IconButton
-                                onClick={this.handleAddButton}
-                                className={classes.createButton}
-                                title="Create new card"
-                            >
-                                <AddOutlinedIcon />
-                            </IconButton>
-                        )}
 
                         {isCreatingCard && (
                             <form className={classes.newCard} onSubmit={this.handleCreateButton}>
@@ -228,6 +238,14 @@ class Table extends Component {
                                 </IconButton>
                             </form>
                         )}
+
+                        <IconButton
+                            className={classes.removeTableButton}
+                            onClick={this.handleRemoveTableButton}
+                            title="Remove this table"
+                        >
+                            <DeleteForeverOutlinedIcon />
+                        </IconButton>
                     </Paper>
                 )}
             </Draggable>
@@ -245,6 +263,7 @@ Table.propTypes = {
     classes: PropTypes.objectOf(PropTypes.string).isRequired,
     createCard: PropTypes.func.isRequired,
     changeTitle: PropTypes.func.isRequired,
+    removeTable: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
 };
 
@@ -255,6 +274,7 @@ const mapStateToProps = ({ cardsState }) => ({
 const mapDispatchToProps = {
     createCard: createCardAction,
     changeTitle: changeTitleAction,
+    removeTable: removeTableAction,
 };
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Table));

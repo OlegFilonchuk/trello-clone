@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { CREATE_TABLE } from './tablesReducer';
+import { CREATE_TABLE, REMOVE_TABLE } from './tablesReducer';
 
 const FETCH_ORDER = 'FETCH_ORDER';
 const CHANGE_ORDER = 'CHANGE_ORDER';
@@ -10,7 +10,9 @@ export const fetchOrderAction = () => async (dispatch) => {
     const order = await rawData.json();
     dispatch({
         type: FETCH_ORDER,
-        order: order.order,
+        payload: {
+            order: order.order,
+        },
     });
 };
 
@@ -26,24 +28,30 @@ export const changeOrderAction = (newOrder) => (dispatch) => {
     });
     dispatch({
         type: CHANGE_ORDER,
-        newOrder,
+        payload: {
+            newOrder,
+        },
     });
 };
 
 export const orderReducer = produce((draft = [], action) => {
-    const { type, payload, order, newOrder } = action;
+    const { type, payload } = action;
 
     switch (type) {
         case FETCH_ORDER:
-            order.forEach((item) => draft.push(item));
+            payload.order.forEach((item) => draft.push(item));
             break;
 
         case CHANGE_ORDER:
-            return [...newOrder];
+            return [...payload.newOrder];
 
         case CREATE_TABLE:
             draft.push(payload.newTable.id);
             break;
+
+        case REMOVE_TABLE:
+            return draft.filter((item) => item !== payload.tableId);
+
         default:
             return draft;
     }

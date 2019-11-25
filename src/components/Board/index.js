@@ -21,6 +21,7 @@ const useStyles = makeStyles({
     },
     createTableButton: {
         alignSelf: 'flex-start',
+        margin: 10,
     },
 });
 

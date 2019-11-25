@@ -1,74 +1,27 @@
 {
   "tables": [
     {
-      "id": "111111",
-      "title": "To do",
+      "id": "z39dn39pelm",
+      "title": "fafll;fkjeaskfk;",
       "cardIds": []
     },
     {
-      "id": "222222",
-      "title": "In progress",
-      "cardIds": [
-        "pv1okg0ilo"
-      ]
-    },
-    {
-      "id": "333333",
-      "title": "Done",
-      "cardIds": [
-        "14kh4r0mqpb"
-      ]
-    },
-    {
-      "id": "diidididi",
-      "title": "table 4",
-      "cardIds": [
-        "5cb6qlacwz3",
-        "z9ncwg3d1v"
-      ]
-    },
-    {
-      "id": "tjf2it5d5w8",
+      "id": "39392ohretp",
       "title": "New table",
-      "cardIds": [
-        "w8ga0yrr5n"
-      ]
+      "cardIds": []
+    },
+    {
+      "id": "2486dzcshx1",
+      "title": "New table",
+      "cardIds": []
     }
   ],
-  "cards": [
-    {
-      "id": "5cb6qlacwz3",
-      "text": "dawdw",
-      "tableId": "diidididi"
-    },
-    {
-      "id": "w8ga0yrr5n",
-      "text": "dwada",
-      "tableId": "tjf2it5d5w8"
-    },
-    {
-      "id": "pv1okg0ilo",
-      "text": "dadawd",
-      "tableId": "222222"
-    },
-    {
-      "id": "14kh4r0mqpb",
-      "text": "dwadaw",
-      "tableId": "333333"
-    },
-    {
-      "id": "z9ncwg3d1v",
-      "text": "dwadawd",
-      "tableId": "diidididi"
-    }
-  ],
+  "cards": [],
   "order": {
     "order": [
-      "tjf2it5d5w8",
-      "diidididi",
-      "333333",
-      "111111",
-      "222222"
+      "39392ohretp",
+      "2486dzcshx1",
+      "z39dn39pelm"
     ]
   }
 }

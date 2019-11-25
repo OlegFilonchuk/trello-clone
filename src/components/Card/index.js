@@ -59,11 +59,9 @@ class Card extends Component {
         }));
     };
 
-    handleRemoveButton = () => {
-        const { tablesState, card, removeCard } = this.props;
-        const table = tablesState.find((item) => item.id === card.tableId);
-        const newCardIds = table.cardIds.filter((item) => item !== card.id);
-        removeCard(card, newCardIds);
+    handleRemoveCardButton = () => {
+        const { card, removeCard } = this.props;
+        removeCard(card);
     };
 
     handleMouseOver = () => {
@@ -106,7 +104,7 @@ class Card extends Component {
                             <IconButton
                                 className={classes.remove}
                                 style={{ opacity: +isMouseOverCard }}
-                                onClick={this.handleRemoveButton}
+                                onClick={this.handleRemoveCardButton}
                                 size="small"
                                 title="Remove card"
                             >
