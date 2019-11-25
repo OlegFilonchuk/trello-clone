@@ -2,9 +2,9 @@
   "tables": [
     {
       "id": "7fb5a530-0f81-11ea-a81e-a908a8640844",
-      "title": "New table",
+      "title": "dawdawdwaddawda",
       "cardIds": [
-        "855e2980-0f81-11ea-a81e-a908a8640844"
+        "ad5f25f0-0f91-11ea-8f29-6d8f04926b33"
       ]
     },
     {
@@ -15,8 +15,9 @@
   ],
   "cards": [
     {
-      "id": "855e2980-0f81-11ea-a81e-a908a8640844",
-      "text": "dawdawd",
+      "desc": "description\n",
+      "id": "ad5f25f0-0f91-11ea-8f29-6d8f04926b33",
+      "text": "dfawdawdaw",
       "tableId": "7fb5a530-0f81-11ea-a81e-a908a8640844"
     }
   ],

@@ -6,6 +6,7 @@ import { GLOBAL_DRAG_END } from './tablesReducer';
 export const FETCH_CARDS = 'FETCH_CARDS';
 export const CREATE_CARD = 'CREATE_CARD';
 export const REMOVE_CARD = 'REMOVE_CARD';
+export const CHANGE_DESC = 'CHANGE_DESC';
 const api = process.env.REACT_APP_API_URI;
 
 export const fetchCardsAction = () => async (dispatch) => {
@@ -90,6 +91,28 @@ export const removeCardAction = (card) => async (dispatch, getState) => {
     });
 };
 
+export const changeDescAction = (desc, cardId) => async (dispatch, getState) => {
+    const raw = await fetch(`${api}/cards/${cardId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+            desc,
+        }),
+    });
+
+    if (!raw.ok) return;
+
+    dispatch({
+        type: 'CHANGE_DESC',
+        payload: {
+            desc,
+            cardId,
+        },
+    });
+};
+
 export const cardsReducer = produce((draft = [], action) => {
     const { type, payload } = action;
 
@@ -107,6 +130,10 @@ export const cardsReducer = produce((draft = [], action) => {
 
         case GLOBAL_DRAG_END:
             draft.find((item) => item.id === payload.cardId).tableId = payload.finish.id;
+            break;
+
+        case CHANGE_DESC:
+            draft.filter((item) => item.id === payload.cardId).desc = payload.desc;
             break;
 
         default:

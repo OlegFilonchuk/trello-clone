@@ -48,8 +48,8 @@ const styles = {
     titleText: {
         flex: 1,
         cursor: 'pointer',
-        paddingTop: 7,
-        paddingBottom: 7,
+        paddingTop: 9,
+        paddingBottom: 8,
     },
     editTitle: {
         display: 'flex',
@@ -58,10 +58,14 @@ const styles = {
     },
     titleInput: {
         flex: 1,
-        fontSize: '2.125rem',
+        fontSize: 24,
         fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
         fontWeight: 400,
         lineHeight: 1.17,
+        border: '1px solid grey',
+        borderRadius: 4,
+        backgroundColor: '#efefef',
+        marginLeft: -1,
     },
     textField: {
         flex: 1,
@@ -100,6 +104,7 @@ class Table extends Component {
         if (!this.state.newCardText) return;
 
         const newCard = {
+            desc: '',
             id: '',
             text: this.state.newCardText,
             tableId: table.id,
@@ -168,7 +173,7 @@ class Table extends Component {
                         <Container className={classes.title}>
                             {!isEditingTitle && (
                                 <Typography
-                                    variant="h4"
+                                    variant="h5"
                                     className={classes.titleText}
                                     onClick={this.handleEditTitleButton}
                                 >

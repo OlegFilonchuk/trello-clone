@@ -135,6 +135,7 @@ Card.propTypes = {
         id: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired,
         tableId: PropTypes.string.isRequired,
+        desc: PropTypes.string.isRequired,
     }).isRequired,
     removeCard: PropTypes.func.isRequired,
     tablesState: PropTypes.arrayOf(PropTypes.object).isRequired,
