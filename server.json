@@ -1,15 +1,29 @@
 {
   "tables": [
     {
-      "id": "purrm3skn9",
-      "title": "table1",
+      "id": "7fb5a530-0f81-11ea-a81e-a908a8640844",
+      "title": "New table",
+      "cardIds": [
+        "855e2980-0f81-11ea-a81e-a908a8640844"
+      ]
+    },
+    {
+      "id": "8f76d930-0f81-11ea-a81e-a908a8640844",
+      "title": "Table 1",
       "cardIds": []
     }
   ],
-  "cards": [],
+  "cards": [
+    {
+      "id": "855e2980-0f81-11ea-a81e-a908a8640844",
+      "text": "dawdawd",
+      "tableId": "7fb5a530-0f81-11ea-a81e-a908a8640844"
+    }
+  ],
   "order": {
     "order": [
-      "purrm3skn9"
+      "7fb5a530-0f81-11ea-a81e-a908a8640844",
+      "8f76d930-0f81-11ea-a81e-a908a8640844"
     ]
   }
 }

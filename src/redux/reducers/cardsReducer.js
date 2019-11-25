@@ -1,4 +1,5 @@
 import produce from 'immer';
+import uuidv1 from 'uuid/v1';
 // eslint-disable-next-line import/no-cycle
 import { GLOBAL_DRAG_END } from './tablesReducer';
 
@@ -23,6 +24,8 @@ export const fetchCardsAction = () => async (dispatch) => {
 };
 
 export const createCardAction = (newCard) => async (dispatch, getState) => {
+    newCard.id = uuidv1();
+
     const rawRes1 = await fetch(`${api}/cards`, {
         method: 'POST',
         headers: {

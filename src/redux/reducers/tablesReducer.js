@@ -1,4 +1,5 @@
 import produce from 'immer';
+import uuidv1 from 'uuid/v1';
 // eslint-disable-next-line import/no-cycle
 import { CREATE_CARD, REMOVE_CARD } from './cardsReducer';
 
@@ -149,6 +150,8 @@ export const changeTitleAction = (title, tableId) => async (dispatch, getState) 
 };
 
 export const createTableAction = (newTable) => async (dispatch, getState) => {
+    newTable.id = uuidv1();
+
     const raw1 = await fetch(`${api}/tables`, {
         method: 'POST',
         headers: {

@@ -97,9 +97,7 @@ const Board = (props) => {
 
     const handleCreateTableButton = () => {
         const newTable = {
-            id: Math.random()
-                .toString(36)
-                .substring(2, 15),
+            id: '',
             title: 'New table',
             cardIds: [],
         };

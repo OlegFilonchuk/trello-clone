@@ -100,9 +100,7 @@ class Table extends Component {
         if (!this.state.newCardText) return;
 
         const newCard = {
-            id: Math.random()
-                .toString(36)
-                .substring(2, 15),
+            id: '',
             text: this.state.newCardText,
             tableId: table.id,
         };
