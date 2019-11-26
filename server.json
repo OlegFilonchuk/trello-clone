@@ -3,28 +3,15 @@
         {
             "id": "8f76d930-0f81-11ea-a81e-a908a8640844",
             "title": "Table 1",
-            "cardIds": ["2d8124f0-105e-11ea-b016-77a86307ab9f"]
+            "cardIds": []
         },
         {
             "id": "2a492b70-105e-11ea-b016-77a86307ab9f",
             "title": "New table",
-            "cardIds": ["2f81fe00-105e-11ea-b016-77a86307ab9f"]
+            "cardIds": []
         }
     ],
-    "cards": [
-        {
-            "desc": "",
-            "id": "2d8124f0-105e-11ea-b016-77a86307ab9f",
-            "text": "card 1",
-            "tableId": "8f76d930-0f81-11ea-a81e-a908a8640844"
-        },
-        {
-            "desc": "",
-            "id": "2f81fe00-105e-11ea-b016-77a86307ab9f",
-            "text": "card 2",
-            "tableId": "2a492b70-105e-11ea-b016-77a86307ab9f"
-        }
-    ],
+    "cards": [],
     "order": {
         "order": ["8f76d930-0f81-11ea-a81e-a908a8640844", "2a492b70-105e-11ea-b016-77a86307ab9f"]
     }

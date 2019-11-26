@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
-    withStyles,
+    makeStyles,
     Container,
     Typography,
     Button,
@@ -18,7 +18,7 @@ import {
 } from '../../redux/reducers/cardsReducer';
 import { selectTableById } from '../../selectors';
 
-const styles = {
+const useStyles = makeStyles({
     openCard: {
         display: 'flex',
         flexDirection: 'column',
@@ -49,171 +49,134 @@ const styles = {
         fontWeight: 400,
         lineHeight: 1.17,
     },
-};
+});
 
-class OpenCard extends Component {
-    state = {
-        isChangingDesc: false,
-        descValue: this.props.card.desc,
-        isChangingText: false,
-        textValue: this.props.card.text,
+const OpenCard = (props) => {
+    const classes = useStyles();
+
+    const [isChangingDesc, toggleIsChangingDesc] = useState(false);
+    const [descValue, changeDescValue] = useState(props.card.desc);
+    const [isChangingText, toggleIsChangingText] = useState(false);
+    const [textValue, changeTextValue] = useState(props.card.text);
+
+    const table = useSelector((state) => selectTableById(state, props.card.tableId));
+    const dispatch = useDispatch();
+
+    const handleRemoveButtonClick = () => {
+        dispatch(removeCardAction(props.card));
     };
 
-    handleRemoveButtonClick = () => {
-        const { removeCard, card } = this.props;
-        removeCard(card);
+    const handleDescClick = () => {
+        toggleIsChangingDesc(true);
     };
 
-    handleDescClick = () => {
-        this.setState({
-            isChangingDesc: true,
-        });
+    const onDescInputChange = (ev) => {
+        changeDescValue(ev.target.value);
     };
 
-    onDescInputChange = (ev) => {
-        this.setState({
-            descValue: ev.target.value,
-        });
-    };
-
-    handleConfirmDescClick = (ev) => {
+    const handleConfirmDescClick = (ev) => {
         ev.preventDefault();
-        const {
-            changeDesc,
-            card: { id },
-        } = this.props;
-        changeDesc(this.state.descValue, id);
-        this.setState({
-            isChangingDesc: false,
-        });
+
+        dispatch(changeDescAction(descValue, props.card.id));
+
+        toggleIsChangingDesc(false);
     };
 
-    handleCancelDescClick = () => {
-        this.setState({
-            isChangingDesc: false,
-            descValue: this.props.card.desc,
-        });
+    const handleCancelDescClick = () => {
+        toggleIsChangingDesc(false);
+        changeDescValue(props.card.desc);
     };
 
-    handleTextClick = () => {
-        this.setState({
-            isChangingText: true,
-        });
+    const handleTextClick = () => {
+        toggleIsChangingText(true);
     };
 
-    onTextInputChange = (ev) => {
-        this.setState({
-            textValue: ev.target.value,
-        });
+    const onTextInputChange = (ev) => {
+        changeTextValue(ev.target.value);
     };
 
-    handleConfirmTextClick = (ev) => {
-        const {
-            changeText,
-            card: { id },
-        } = this.props;
+    const handleConfirmTextClick = (ev) => {
         ev.preventDefault();
-        changeText(this.state.textValue, id);
-        this.setState({
-            isChangingText: false,
-        });
+
+        dispatch(changeTextAction(textValue, props.card.id));
+        toggleIsChangingText(false);
     };
 
-    handleCancelTextClick = () => {
-        this.setState({
-            isChangingText: false,
-            textValue: this.props.card.text,
-        });
-    };
+    const {
+        card: { text },
+    } = props;
 
-    render() {
-        const {
-            classes,
-            card: { text },
-            table,
-        } = this.props;
-        const { descValue, isChangingDesc, isChangingText, textValue } = this.state;
-
-        return (
-            <Container className={classes.openCard} onClick={(ev) => ev.stopPropagation()}>
-                <Container className={classes.text}>
-                    {!isChangingText ? (
-                        <Typography variant="h4" component="h2" onClick={this.handleTextClick}>
-                            {text}
-                        </Typography>
-                    ) : (
-                        <form onSubmit={this.handleConfirmTextClick}>
-                            <InputBase
-                                autoFocus
-                                className={classes.textInput}
-                                onChange={this.onTextInputChange}
-                                value={textValue}
-                                inputProps={{ 'aria-label': 'naked' }}
-                            />
-                            <IconButton title="Confirm" onClick={this.handleConfirmTextClick}>
-                                <CheckOutlinedIcon />
-                            </IconButton>
-                        </form>
-                    )}
-                </Container>
-
-                {!isChangingDesc ? (
-                    <Typography
-                        variant="body1"
-                        className={classes.description}
-                        onClick={this.handleDescClick}
-                        title="Click here to change"
-                    >
-                        {descValue || 'Add a description here...'}
+    return (
+        <Container className={classes.openCard} onClick={(ev) => ev.stopPropagation()}>
+            <Container className={classes.text}>
+                {!isChangingText ? (
+                    <Typography variant="h4" component="h2" onClick={handleTextClick}>
+                        {text}
                     </Typography>
                 ) : (
-                    <form className={classes.descForm}>
-                        <TextField
+                    <form onSubmit={handleConfirmTextClick}>
+                        <InputBase
                             autoFocus
-                            onChange={this.onDescInputChange}
-                            value={descValue}
-                            multiline
-                            fullWidth
-                            rows={3}
-                            variant="outlined"
-                            placeholder="Write a description"
+                            className={classes.textInput}
+                            onChange={onTextInputChange}
+                            value={textValue}
+                            inputProps={{ 'aria-label': 'naked' }}
                         />
-                        <div className={classes.descButtonsCont}>
-                            <Button
-                                type="submit"
-                                onClick={this.handleConfirmDescClick}
-                                color="primary"
-                            >
-                                Confirm
-                            </Button>
-                            <Button
-                                type="button"
-                                onClick={this.handleCancelDescClick}
-                                color="secondary"
-                            >
-                                Cancel
-                            </Button>
-                        </div>
+                        <IconButton title="Confirm" onClick={handleConfirmTextClick}>
+                            <CheckOutlinedIcon />
+                        </IconButton>
                     </form>
                 )}
-
-                <Typography variant="body2">
-                    This card belongs to
-                    <b>{` "${table.title}" `}</b>
-                    table
-                </Typography>
-                <Button
-                    type="button"
-                    size="small"
-                    onClick={this.handleRemoveButtonClick}
-                    className={classes.removeCardButton}
-                >
-                    remove it
-                </Button>
             </Container>
-        );
-    }
-}
+
+            {!isChangingDesc ? (
+                <Typography
+                    variant="body1"
+                    className={classes.description}
+                    onClick={handleDescClick}
+                    title="Click here to change"
+                >
+                    {descValue || 'Add a description here...'}
+                </Typography>
+            ) : (
+                <form className={classes.descForm}>
+                    <TextField
+                        autoFocus
+                        onChange={onDescInputChange}
+                        value={descValue}
+                        multiline
+                        fullWidth
+                        rows={3}
+                        variant="outlined"
+                        placeholder="Write a description"
+                    />
+                    <div className={classes.descButtonsCont}>
+                        <Button type="submit" onClick={handleConfirmDescClick} color="primary">
+                            Confirm
+                        </Button>
+                        <Button type="button" onClick={handleCancelDescClick} color="secondary">
+                            Cancel
+                        </Button>
+                    </div>
+                </form>
+            )}
+
+            <Typography variant="body2">
+                This card belongs to
+                <b>{` "${table.title}" `}</b>
+                table
+            </Typography>
+            <Button
+                type="button"
+                size="small"
+                onClick={handleRemoveButtonClick}
+                className={classes.removeCardButton}
+            >
+                remove it
+            </Button>
+        </Container>
+    );
+};
 
 OpenCard.propTypes = {
     card: PropTypes.shape({
@@ -222,25 +185,6 @@ OpenCard.propTypes = {
         tableId: PropTypes.string.isRequired,
         desc: PropTypes.string.isRequired,
     }).isRequired,
-    table: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired,
-        cardIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-    }).isRequired,
-    removeCard: PropTypes.func.isRequired,
-    changeDesc: PropTypes.func.isRequired,
-    changeText: PropTypes.func.isRequired,
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => ({
-    table: selectTableById(state, ownProps.card.tableId),
-});
-
-const mapDispatchToProps = {
-    removeCard: removeCardAction,
-    changeDesc: changeDescAction,
-    changeText: changeTextAction,
-};
-
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(OpenCard));
+export default OpenCard;
