@@ -31,6 +31,6 @@
 <!-- -   добавить возможность изменять название карточки - ~40мин => 60min-->
 <!-- -   использовать axios 60 min => 180 min -->
 
--   jsdoc 90min
 -   селекторы mapStateToProps, mapDispatchToProps; upd: hooks
+-   jsdoc 90min
 -   исправить стили всех форм приложения

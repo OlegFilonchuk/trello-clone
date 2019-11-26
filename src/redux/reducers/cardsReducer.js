@@ -88,7 +88,7 @@ export const changeDescAction = (desc, cardId) => async (dispatch) => {
 
 export const changeTextAction = (text, cardId) => async (dispatch, getState) => {
     // visual bug happens while fetching
-    const oldText = getState().cardsState.find((item) => item.id === cardId).text;
+    const oldText = getState().cards.find((item) => item.id === cardId).text;
 
     dispatch({
         type: CHANGE_TEXT,

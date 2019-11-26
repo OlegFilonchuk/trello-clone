@@ -5,9 +5,9 @@ import { tablesReducer } from './reducers/tablesReducer';
 import { orderReducer } from './reducers/orderReducer';
 
 const rootReducer = combineReducers({
-    cardsState: cardsReducer,
-    tablesState: tablesReducer,
-    orderState: orderReducer,
+    cards: cardsReducer,
+    tables: tablesReducer,
+    order: orderReducer,
 });
 
 const composeEnhancers =

@@ -18,6 +18,7 @@ import ClearOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import { changeTitleAction, removeTableAction } from '../../redux/reducers/tablesReducer';
 import { createCardAction } from '../../redux/reducers/cardsReducer';
+import { selectCards } from '../../selectors';
 import Card from '../Card';
 
 const styles = {
@@ -145,14 +146,16 @@ class Table extends Component {
     };
 
     getCards = () => {
-        const { table, cardsState } = this.props;
+        const { table, cards } = this.props;
 
-        if (cardsState.length) {
-            const cards = table.cardIds.map((cardId) =>
-                cardsState.find((item) => item.id === cardId)
+        if (cards.length) {
+            const cardsList = table.cardIds.map((cardId) =>
+                cards.find((item) => item.id === cardId)
             );
-            if (cards.length)
-                return cards.map((item, index) => <Card key={item.id} card={item} index={index} />);
+            if (cardsList.length)
+                return cardsList.map((item, index) => (
+                    <Card key={item.id} card={item} index={index} />
+                ));
         }
         return <Typography className={this.props.classes.noCards}>No cards yet...</Typography>;
     };
@@ -260,7 +263,7 @@ Table.propTypes = {
         title: PropTypes.string.isRequired,
         cardIds: PropTypes.arrayOf(PropTypes.string).isRequired,
     }).isRequired,
-    cardsState: PropTypes.arrayOf(PropTypes.object).isRequired,
+    cards: PropTypes.arrayOf(PropTypes.object).isRequired,
     classes: PropTypes.objectOf(PropTypes.string).isRequired,
     createCard: PropTypes.func.isRequired,
     changeTitle: PropTypes.func.isRequired,
@@ -268,9 +271,7 @@ Table.propTypes = {
     index: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({ cardsState }) => ({
-    cardsState,
-});
+const mapStateToProps = (state) => ({ cards: selectCards(state) });
 
 const mapDispatchToProps = {
     createCard: createCardAction,

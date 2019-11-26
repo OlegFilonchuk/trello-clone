@@ -37,8 +37,8 @@ const Board = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const tables = useSelector((state) => state.tablesState);
-    const order = useSelector((state) => state.orderState);
+    const tables = useSelector((state) => state.tables);
+    const order = useSelector((state) => state.order);
     const dispatch = useDispatch();
 
     const classes = useStyles(props);

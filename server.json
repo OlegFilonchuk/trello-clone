@@ -2,8 +2,11 @@
     "tables": [
         {
             "id": "8f76d930-0f81-11ea-a81e-a908a8640844",
-            "title": "Table 1dawdawdwadwa",
-            "cardIds": ["c5603440-103c-11ea-a4c5-d5b36fef761e"]
+            "title": "Table 1",
+            "cardIds": [
+                "c5603440-103c-11ea-a4c5-d5b36fef761e",
+                "953b4c10-1054-11ea-af9c-2bc46a2eeacf"
+            ]
         },
         {
             "id": "b3f5b280-103b-11ea-88a6-d90dc6846ea5",
@@ -16,6 +19,12 @@
             "desc": "",
             "id": "c5603440-103c-11ea-a4c5-d5b36fef761e",
             "text": "dawdawa",
+            "tableId": "8f76d930-0f81-11ea-a81e-a908a8640844"
+        },
+        {
+            "desc": "",
+            "id": "953b4c10-1054-11ea-af9c-2bc46a2eeacf",
+            "text": "вцф",
             "tableId": "8f76d930-0f81-11ea-a81e-a908a8640844"
         }
     ],
