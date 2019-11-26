@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { makeStyles, Container, List, Button } from '@material-ui/core';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Table from '../Table';
 import {
@@ -25,29 +24,35 @@ const useStyles = makeStyles({
     },
 });
 
+/**
+ * Renders a Board
+ * @param props
+ * @constructor
+ */
 const Board = (props) => {
     useEffect(() => {
-        props.fetchOrder();
-        props.fetchTables();
-        props.fetchCards();
+        dispatch(fetchOrderAction());
+        dispatch(fetchTablesAction());
+        dispatch(fetchCardsAction());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const tables = useSelector((state) => state.tablesState);
+    const order = useSelector((state) => state.orderState);
+    const dispatch = useDispatch();
 
     const classes = useStyles(props);
 
     const getTables = () => {
-        const { tablesState, orderState } = props;
-
-        if (tablesState.length) {
-            const tables = orderState.map((tableId) =>
-                tablesState.find((item) => item.id === tableId)
-            );
-            return tables.map((item, index) => <Table key={item.id} table={item} index={index} />);
+        if (tables.length) {
+            const tablesList = order.map((tableId) => tables.find((item) => item.id === tableId));
+            return tablesList.map((item, index) => (
+                <Table key={item.id} table={item} index={index} />
+            ));
         }
     };
 
     const onDragEnd = (result) => {
-        const { tablesState, orderState, globalDragEnd, localDragEnd, changeOrder } = props;
         const { destination, source, draggableId, type } = result;
 
         if (!destination) return;
@@ -56,23 +61,23 @@ const Board = (props) => {
             return;
 
         if (type === 'table') {
-            const newTableOrder = [...orderState];
+            const newTableOrder = [...order];
             newTableOrder.splice(source.index, 1);
             newTableOrder.splice(destination.index, 0, draggableId);
 
-            changeOrder(newTableOrder);
+            dispatch(changeOrderAction(newTableOrder));
             return;
         }
 
-        const start = tablesState.find((item) => item.id === source.droppableId);
-        const finish = tablesState.find((item) => item.id === destination.droppableId);
+        const start = tables.find((item) => item.id === source.droppableId);
+        const finish = tables.find((item) => item.id === destination.droppableId);
 
         if (start === finish) {
             const newCardIds = [...start.cardIds];
             newCardIds.splice(source.index, 1);
             newCardIds.splice(destination.index, 0, draggableId);
 
-            localDragEnd(source.droppableId, newCardIds);
+            dispatch(localDragEndAction(source.droppableId, newCardIds));
             return;
         }
 
@@ -92,7 +97,7 @@ const Board = (props) => {
             cardIds: finishCardIds,
         };
 
-        globalDragEnd(newStart, newFinish, draggableId);
+        dispatch(globalDragEndAction(newStart, newFinish, draggableId));
     };
 
     const handleCreateTableButton = () => {
@@ -102,18 +107,14 @@ const Board = (props) => {
             cardIds: [],
         };
 
-        props.createTable(newTable);
+        dispatch(createTableAction(newTable));
     };
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="all-tables" direction="horizontal" type="table">
                 {(provided) => (
-                    <Container
-                        className={classes.board}
-                        {...provided.droppableProps}
-                        innerRef={provided.innerRef}
-                    >
+                    <Container {...provided.droppableProps} innerRef={provided.innerRef}>
                         <List className={classes.tableList}>
                             {getTables()}
                             {provided.placeholder}
@@ -132,31 +133,4 @@ const Board = (props) => {
     );
 };
 
-Board.propTypes = {
-    tablesState: PropTypes.arrayOf(PropTypes.object).isRequired,
-    orderState: PropTypes.arrayOf(PropTypes.string).isRequired,
-    localDragEnd: PropTypes.func.isRequired,
-    globalDragEnd: PropTypes.func.isRequired,
-    fetchCards: PropTypes.func.isRequired,
-    fetchTables: PropTypes.func.isRequired,
-    fetchOrder: PropTypes.func.isRequired,
-    changeOrder: PropTypes.func.isRequired,
-    createTable: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = ({ tablesState, orderState }) => ({
-    tablesState,
-    orderState,
-});
-
-const mapDispatchToProps = {
-    fetchTables: fetchTablesAction,
-    localDragEnd: localDragEndAction,
-    globalDragEnd: globalDragEndAction,
-    fetchCards: fetchCardsAction,
-    fetchOrder: fetchOrderAction,
-    changeOrder: changeOrderAction,
-    createTable: createTableAction,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Board);
+export default Board;

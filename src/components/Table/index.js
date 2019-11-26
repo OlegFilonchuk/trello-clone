@@ -134,7 +134,7 @@ class Table extends Component {
         this.setState({ isEditingTitle: false });
     };
 
-    handeTitleInputChange = (ev) => {
+    handleTitleInputChange = (ev) => {
         this.setState({
             titleInputValue: ev.target.value,
         });
@@ -187,7 +187,7 @@ class Table extends Component {
                                     <InputBase
                                         autoFocus
                                         className={classes.titleInput}
-                                        onChange={this.handeTitleInputChange}
+                                        onChange={this.handleTitleInputChange}
                                         value={this.state.titleInputValue}
                                         inputProps={{ 'aria-label': 'naked' }}
                                     />

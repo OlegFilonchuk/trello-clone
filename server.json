@@ -2,11 +2,8 @@
     "tables": [
         {
             "id": "8f76d930-0f81-11ea-a81e-a908a8640844",
-            "title": "Table 1dawdaw",
-            "cardIds": [
-                "c6a696f0-103c-11ea-a4c5-d5b36fef761e",
-                "c5603440-103c-11ea-a4c5-d5b36fef761e"
-            ]
+            "title": "Table 1dawdawdwadwa",
+            "cardIds": ["c5603440-103c-11ea-a4c5-d5b36fef761e"]
         },
         {
             "id": "b3f5b280-103b-11ea-88a6-d90dc6846ea5",
@@ -20,15 +17,9 @@
             "id": "c5603440-103c-11ea-a4c5-d5b36fef761e",
             "text": "dawdawa",
             "tableId": "8f76d930-0f81-11ea-a81e-a908a8640844"
-        },
-        {
-            "desc": "",
-            "id": "c6a696f0-103c-11ea-a4c5-d5b36fef761e",
-            "text": "dawdawa",
-            "tableId": "8f76d930-0f81-11ea-a81e-a908a8640844"
         }
     ],
     "order": {
-        "order": ["b3f5b280-103b-11ea-88a6-d90dc6846ea5", "8f76d930-0f81-11ea-a81e-a908a8640844"]
+        "order": ["8f76d930-0f81-11ea-a81e-a908a8640844", "b3f5b280-103b-11ea-88a6-d90dc6846ea5"]
     }
 }
