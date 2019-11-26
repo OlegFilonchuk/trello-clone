@@ -12,6 +12,7 @@ import {
 } from '../../redux/reducers/tablesReducer';
 import { fetchCardsAction } from '../../redux/reducers/cardsReducer';
 import { fetchOrderAction, changeOrderAction } from '../../redux/reducers/orderReducer';
+import { selectAllTables, selectOrder } from '../../selectors';
 
 const useStyles = makeStyles({
     tableList: {
@@ -37,8 +38,8 @@ const Board = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const tables = useSelector((state) => state.tables);
-    const order = useSelector((state) => state.order);
+    const tables = useSelector(selectAllTables);
+    const order = useSelector(selectOrder);
     const dispatch = useDispatch();
 
     const classes = useStyles(props);

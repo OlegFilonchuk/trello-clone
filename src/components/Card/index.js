@@ -15,7 +15,6 @@ import { connect } from 'react-redux';
 import { Draggable } from 'react-beautiful-dnd';
 import { removeCardAction } from '../../redux/reducers/cardsReducer';
 import OpenCard from '../OpenCard';
-import { selectTables } from '../../selectors';
 
 const styles = {
     card: {
@@ -139,16 +138,11 @@ Card.propTypes = {
         desc: PropTypes.string.isRequired,
     }).isRequired,
     removeCard: PropTypes.func.isRequired,
-    tables: PropTypes.arrayOf(PropTypes.object).isRequired,
     classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
-
-const mapStateToProps = (state) => ({
-    tables: selectTables(state),
-});
 
 const mapDispatchToProps = {
     removeCard: removeCardAction,
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Card));
+export default withStyles(styles)(connect(null, mapDispatchToProps)(Card));

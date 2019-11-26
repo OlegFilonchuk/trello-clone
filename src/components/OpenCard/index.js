@@ -16,7 +16,7 @@ import {
     changeDescAction,
     changeTextAction,
 } from '../../redux/reducers/cardsReducer';
-import { selectTables } from '../../selectors';
+import { selectTableById } from '../../selectors';
 
 const styles = {
     openCard: {
@@ -60,10 +60,8 @@ class OpenCard extends Component {
     };
 
     handleRemoveButtonClick = () => {
-        const { tables, removeCard, card } = this.props;
-        const table = tables.find((item) => item.id === card.tableId);
-        const newCardIds = table.cardIds.filter((item) => item !== card.id);
-        removeCard(card, newCardIds);
+        const { removeCard, card } = this.props;
+        removeCard(card);
     };
 
     handleDescClick = () => {
@@ -131,8 +129,8 @@ class OpenCard extends Component {
     render() {
         const {
             classes,
-            card: { text, tableId },
-            tables,
+            card: { text },
+            table,
         } = this.props;
         const { descValue, isChangingDesc, isChangingText, textValue } = this.state;
 
@@ -201,7 +199,7 @@ class OpenCard extends Component {
 
                 <Typography variant="body2">
                     This card belongs to
-                    <b>{` "${tables.find((item) => item.id === tableId).title}" `}</b>
+                    <b>{` "${table.title}" `}</b>
                     table
                 </Typography>
                 <Button
@@ -224,15 +222,19 @@ OpenCard.propTypes = {
         tableId: PropTypes.string.isRequired,
         desc: PropTypes.string.isRequired,
     }).isRequired,
-    tables: PropTypes.arrayOf(PropTypes.object).isRequired,
+    table: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        cardIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+    }).isRequired,
     removeCard: PropTypes.func.isRequired,
     changeDesc: PropTypes.func.isRequired,
     changeText: PropTypes.func.isRequired,
     classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-const mapStateToProps = (state) => ({
-    tables: selectTables(state),
+const mapStateToProps = (state, ownProps) => ({
+    table: selectTableById(state, ownProps.card.tableId),
 });
 
 const mapDispatchToProps = {

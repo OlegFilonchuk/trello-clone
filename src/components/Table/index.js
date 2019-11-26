@@ -18,7 +18,7 @@ import ClearOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import { changeTitleAction, removeTableAction } from '../../redux/reducers/tablesReducer';
 import { createCardAction } from '../../redux/reducers/cardsReducer';
-import { selectCards } from '../../selectors';
+import { selectCardsForTable } from '../../selectors';
 import Card from '../Card';
 
 const styles = {
@@ -146,18 +146,13 @@ class Table extends Component {
     };
 
     getCards = () => {
-        const { table, cards } = this.props;
+        const { cards } = this.props;
 
-        if (cards.length) {
-            const cardsList = table.cardIds.map((cardId) =>
-                cards.find((item) => item.id === cardId)
-            );
-            if (cardsList.length)
-                return cardsList.map((item, index) => (
-                    <Card key={item.id} card={item} index={index} />
-                ));
-        }
-        return <Typography className={this.props.classes.noCards}>No cards yet...</Typography>;
+        return cards.length ? (
+            cards.map((item, index) => <Card key={item.id} card={item} index={index} />)
+        ) : (
+            <Typography className={this.props.classes.noCards}>No cards yet...</Typography>
+        );
     };
 
     render() {
@@ -271,7 +266,9 @@ Table.propTypes = {
     index: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state) => ({ cards: selectCards(state) });
+const mapStateToProps = (state, ownProps) => ({
+    cards: selectCardsForTable(state, ownProps.table.cardIds),
+});
 
 const mapDispatchToProps = {
     createCard: createCardAction,

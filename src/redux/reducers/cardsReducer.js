@@ -33,7 +33,7 @@ export const createCardAction = (newCard) => async (dispatch, getState) => {
         await postCard(newCard);
 
         const newCardIds = getState()
-            .tablesState.find((item) => item.id === newCard.tableId)
+            .tables.find((item) => item.id === newCard.tableId)
             .cardIds.concat(newCard.id);
 
         await updateCardIds(newCard.tableId, newCardIds);
@@ -53,7 +53,7 @@ export const removeCardAction = (card) => async (dispatch, getState) => {
     try {
         await deleteCard(card.id);
 
-        const table = getState().tablesState.find((item) => item.id === card.tableId);
+        const table = getState().tables.find((item) => item.id === card.tableId);
         const newCardIds = table.cardIds.filter((item) => item !== card.id);
 
         await updateCardIds(card.tableId, newCardIds);

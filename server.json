@@ -3,32 +3,29 @@
         {
             "id": "8f76d930-0f81-11ea-a81e-a908a8640844",
             "title": "Table 1",
-            "cardIds": [
-                "c5603440-103c-11ea-a4c5-d5b36fef761e",
-                "953b4c10-1054-11ea-af9c-2bc46a2eeacf"
-            ]
+            "cardIds": ["2d8124f0-105e-11ea-b016-77a86307ab9f"]
         },
         {
-            "id": "b3f5b280-103b-11ea-88a6-d90dc6846ea5",
+            "id": "2a492b70-105e-11ea-b016-77a86307ab9f",
             "title": "New table",
-            "cardIds": []
+            "cardIds": ["2f81fe00-105e-11ea-b016-77a86307ab9f"]
         }
     ],
     "cards": [
         {
             "desc": "",
-            "id": "c5603440-103c-11ea-a4c5-d5b36fef761e",
-            "text": "dawdawa",
+            "id": "2d8124f0-105e-11ea-b016-77a86307ab9f",
+            "text": "card 1",
             "tableId": "8f76d930-0f81-11ea-a81e-a908a8640844"
         },
         {
             "desc": "",
-            "id": "953b4c10-1054-11ea-af9c-2bc46a2eeacf",
-            "text": "вцф",
-            "tableId": "8f76d930-0f81-11ea-a81e-a908a8640844"
+            "id": "2f81fe00-105e-11ea-b016-77a86307ab9f",
+            "text": "card 2",
+            "tableId": "2a492b70-105e-11ea-b016-77a86307ab9f"
         }
     ],
     "order": {
-        "order": ["8f76d930-0f81-11ea-a81e-a908a8640844", "b3f5b280-103b-11ea-88a6-d90dc6846ea5"]
+        "order": ["8f76d930-0f81-11ea-a81e-a908a8640844", "2a492b70-105e-11ea-b016-77a86307ab9f"]
     }
 }

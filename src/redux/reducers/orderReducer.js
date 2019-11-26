@@ -22,7 +22,7 @@ export const fetchOrderAction = () => async (dispatch) => {
 
 export const changeOrderAction = (newOrder) => async (dispatch, getState) => {
     // dispatch comes first because of visual bug happening while fetch is awaiting
-    const oldOrder = getState().orderState;
+    const oldOrder = getState().order;
 
     dispatch({
         type: CHANGE_ORDER,

@@ -36,7 +36,7 @@ export const fetchTablesAction = () => async (dispatch) => {
 
 export const localDragEndAction = (tableId, newCardIds) => async (dispatch, getState) => {
     // dispatch comes first because of visual bug happening while fetch is awaiting
-    const oldCardIds = getState().tablesState.find((item) => item.id === tableId);
+    const oldCardIds = getState().tables.find((item) => item.id === tableId);
 
     dispatch({
         type: LOCAL_DRAG_END,
@@ -62,8 +62,8 @@ export const localDragEndAction = (tableId, newCardIds) => async (dispatch, getS
 
 export const globalDragEndAction = (start, finish, cardId) => async (dispatch, getState) => {
     // dispatch comes first because of visual bug happening while fetch is awaiting
-    const oldStart = getState().tablesState.find((item) => item.id === start.id);
-    const oldFinish = getState().tablesState.find((item) => item.id === finish.id);
+    const oldStart = getState().tables.find((item) => item.id === start.id);
+    const oldFinish = getState().tables.find((item) => item.id === finish.id);
 
     dispatch({
         type: GLOBAL_DRAG_END,
@@ -93,7 +93,7 @@ export const globalDragEndAction = (start, finish, cardId) => async (dispatch, g
 
 export const changeTitleAction = (title, tableId) => async (dispatch, getState) => {
     // dispatch comes first because of visual bug happening while fetch is awaiting
-    const oldTitle = getState().tablesState.find((item) => item.id === tableId).title;
+    const oldTitle = getState().tables.find((item) => item.id === tableId).title;
 
     dispatch({
         type: CHANGE_TITLE,
@@ -122,7 +122,7 @@ export const createTableAction = (newTable) => async (dispatch, getState) => {
 
     await createTable(newTable);
 
-    const newOrder = getState().orderState.concat(newTable.id);
+    const newOrder = getState().order.concat(newTable.id);
 
     await updateOrder(newOrder);
 
@@ -137,7 +137,7 @@ export const createTableAction = (newTable) => async (dispatch, getState) => {
 export const removeTableAction = (tableId) => async (dispatch, getState) => {
     await deleteTable(tableId);
 
-    const newOrder = getState().orderState.filter((item) => item !== tableId);
+    const newOrder = getState().order.filter((item) => item !== tableId);
 
     await updateOrder(newOrder);
 
