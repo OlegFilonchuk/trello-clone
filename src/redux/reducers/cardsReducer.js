@@ -1,5 +1,6 @@
 import produce from 'immer';
 import uuidv1 from 'uuid/v1';
+import { getCards, postCard, updateCardIds, deleteCard, updateCard } from '../../restApiController';
 // eslint-disable-next-line import/no-cycle
 import { GLOBAL_DRAG_END } from './tablesReducer';
 
@@ -8,110 +9,81 @@ export const CREATE_CARD = 'CREATE_CARD';
 export const REMOVE_CARD = 'REMOVE_CARD';
 export const CHANGE_DESC = 'CHANGE_DESC';
 export const CHANGE_TEXT = 'CHANGE_TEXT';
-const api = process.env.REACT_APP_API_URI;
 
 export const fetchCardsAction = () => async (dispatch) => {
-    const rawRes = await fetch(`${api}/cards`);
+    // const rawRes = await fetch(`${api}/cards`);
+    try {
+        const { data } = await getCards();
 
-    if (!rawRes.ok) return;
-
-    const cards = await rawRes.json();
-
-    dispatch({
-        type: FETCH_CARDS,
-        payload: {
-            cards,
-        },
-    });
+        dispatch({
+            type: FETCH_CARDS,
+            payload: {
+                cards: data,
+            },
+        });
+    } catch (e) {
+        // console.error(e);
+    }
 };
 
 export const createCardAction = (newCard) => async (dispatch, getState) => {
     newCard.id = uuidv1();
 
-    const rawRes1 = await fetch(`${api}/cards`, {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify(newCard),
-    });
+    try {
+        await postCard(newCard);
 
-    if (!rawRes1.ok) return;
+        const newCardIds = getState()
+            .tablesState.find((item) => item.id === newCard.tableId)
+            .cardIds.concat(newCard.id);
 
-    const newCardIds = getState()
-        .tablesState.find((item) => item.id === newCard.tableId)
-        .cardIds.concat(newCard.id);
+        await updateCardIds(newCard.tableId, newCardIds);
 
-    const rawRes2 = await fetch(`${api}/tables/${newCard.tableId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({ cardIds: newCardIds }),
-    });
-
-    if (!rawRes2.ok) return;
-
-    dispatch({
-        type: CREATE_CARD,
-        payload: {
-            newCard,
-        },
-    });
+        dispatch({
+            type: CREATE_CARD,
+            payload: {
+                newCard,
+            },
+        });
+    } catch (e) {
+        // console.error(e)
+    }
 };
 
 export const removeCardAction = (card) => async (dispatch, getState) => {
-    const rawRes1 = await fetch(`${api}/cards/${card.id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-type': 'application/json',
-        },
-    });
+    try {
+        await deleteCard(card.id);
 
-    if (!rawRes1.ok) return;
+        const table = getState().tablesState.find((item) => item.id === card.tableId);
+        const newCardIds = table.cardIds.filter((item) => item !== card.id);
 
-    const table = getState().tablesState.find((item) => item.id === card.tableId);
-    const newCardIds = table.cardIds.filter((item) => item !== card.id);
+        await updateCardIds(card.tableId, newCardIds);
 
-    const rawRes2 = await fetch(`${api}/tables/${card.tableId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({ cardIds: newCardIds }),
-    });
-
-    if (!rawRes2.ok) return;
-
-    dispatch({
-        type: REMOVE_CARD,
-        payload: {
-            card,
-            newCardIds,
-        },
-    });
+        dispatch({
+            type: REMOVE_CARD,
+            payload: {
+                card,
+                newCardIds,
+            },
+        });
+    } catch (e) {
+        // console.error(e)
+    }
 };
 
 export const changeDescAction = (desc, cardId) => async (dispatch) => {
-    const raw = await fetch(`${api}/cards/${cardId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-            desc,
-        }),
-    });
+    try {
+        await updateCard(cardId, 'desc', desc);
 
-    if (!raw.ok) return;
-
-    dispatch({
-        type: CHANGE_DESC,
-        payload: {
-            desc,
-            cardId,
-        },
-    });
+        dispatch({
+            type: CHANGE_DESC,
+            payload: {
+                desc,
+                cardId,
+            },
+        });
+    } catch (e) {
+        // console.error(e)
+    }
 };
 
 export const changeTextAction = (text, cardId) => async (dispatch, getState) => {
@@ -126,17 +98,10 @@ export const changeTextAction = (text, cardId) => async (dispatch, getState) => 
         },
     });
 
-    const raw = await fetch(`${api}/cards/${cardId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-            text,
-        }),
-    });
-    // dispatching back in case of error
-    if (!raw.ok) {
+    try {
+        await updateCard(cardId, 'text', text);
+    } catch (e) {
+        // dispatching back in case of error
         dispatch({
             type: CHANGE_TEXT,
             payload: {

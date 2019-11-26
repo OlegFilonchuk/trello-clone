@@ -1,22 +1,23 @@
 import produce from 'immer';
 import { CREATE_TABLE, REMOVE_TABLE } from './tablesReducer';
+import { getOrder, updateOrder } from '../../restApiController';
 
 const FETCH_ORDER = 'FETCH_ORDER';
 const CHANGE_ORDER = 'CHANGE_ORDER';
-const api = process.env.REACT_APP_API_URI;
 
 export const fetchOrderAction = () => async (dispatch) => {
-    const rawRes = await fetch(`${api}/order`);
+    try {
+        const { data } = await getOrder();
 
-    if (!rawRes.ok) return;
-
-    const order = await rawRes.json();
-    dispatch({
-        type: FETCH_ORDER,
-        payload: {
-            order: order.order,
-        },
-    });
+        dispatch({
+            type: FETCH_ORDER,
+            payload: {
+                order: data.order,
+            },
+        });
+    } catch (e) {
+        // console.error(e);
+    }
 };
 
 export const changeOrderAction = (newOrder) => async (dispatch, getState) => {
@@ -30,24 +31,16 @@ export const changeOrderAction = (newOrder) => async (dispatch, getState) => {
         },
     });
 
-    const rawRes = await fetch(`${api}/order`, {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-            order: newOrder,
-        }),
-    });
-
-    // if server error happened dispatch client tables order back
-    !rawRes.ok &&
+    try {
+        await updateOrder(newOrder);
+    } catch (e) {
         dispatch({
             type: CHANGE_ORDER,
             payload: {
                 newOrder: oldOrder,
             },
         });
+    }
 };
 
 export const orderReducer = produce((draft = [], action) => {

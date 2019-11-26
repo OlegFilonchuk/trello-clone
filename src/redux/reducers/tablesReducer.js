@@ -2,6 +2,15 @@ import produce from 'immer';
 import uuidv1 from 'uuid/v1';
 // eslint-disable-next-line import/no-cycle
 import { CREATE_CARD, REMOVE_CARD } from './cardsReducer';
+import {
+    updateOrder,
+    createTable,
+    getTables,
+    updateCard,
+    updateCardIds,
+    updateTable,
+    deleteTable,
+} from '../../restApiController';
 
 export const FETCH_TABLES = 'FETCH_TABLES';
 export const LOCAL_DRAG_END = 'LOCAL_DRAG_END';
@@ -10,18 +19,19 @@ export const CHANGE_TITLE = 'CHANGE_TITLE';
 export const CREATE_TABLE = 'CREATE_TABLE';
 export const REMOVE_TABLE = 'REMOVE_TABLE';
 
-const api = process.env.REACT_APP_API_URI;
-
 export const fetchTablesAction = () => async (dispatch) => {
-    const rawRes = await fetch(`${api}/tables`);
-    if (!rawRes.ok) return;
-    const tables = await rawRes.json();
-    dispatch({
-        type: FETCH_TABLES,
-        payload: {
-            tables,
-        },
-    });
+    try {
+        const { data } = await getTables();
+
+        dispatch({
+            type: FETCH_TABLES,
+            payload: {
+                tables: data,
+            },
+        });
+    } catch (e) {
+        // console.error(e);
+    }
 };
 
 export const localDragEndAction = (tableId, newCardIds) => async (dispatch, getState) => {
@@ -36,16 +46,10 @@ export const localDragEndAction = (tableId, newCardIds) => async (dispatch, getS
         },
     });
 
-    const rawRes = await fetch(`${api}/tables/${tableId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({ cardIds: newCardIds }),
-    });
-
-    // if server error happened dispatch carIds of that table back
-    !rawRes.ok &&
+    try {
+        await updateCardIds(tableId, newCardIds);
+    } catch (e) {
+        // if server error happened dispatch carIds of that table back
         dispatch({
             type: LOCAL_DRAG_END,
             payload: {
@@ -53,22 +57,13 @@ export const localDragEndAction = (tableId, newCardIds) => async (dispatch, getS
                 newCardIds: oldCardIds,
             },
         });
+    }
 };
 
 export const globalDragEndAction = (start, finish, cardId) => async (dispatch, getState) => {
     // dispatch comes first because of visual bug happening while fetch is awaiting
     const oldStart = getState().tablesState.find((item) => item.id === start.id);
     const oldFinish = getState().tablesState.find((item) => item.id === finish.id);
-    const oldCard = getState().cardsState.find((item) => item.id === cardId);
-    const dispatchBack = () =>
-        dispatch({
-            type: GLOBAL_DRAG_END,
-            payload: {
-                start: oldStart,
-                finish: oldFinish,
-                cardId: oldCard.id,
-            },
-        });
 
     dispatch({
         type: GLOBAL_DRAG_END,
@@ -79,42 +74,20 @@ export const globalDragEndAction = (start, finish, cardId) => async (dispatch, g
         },
     });
 
-    const raw1 = await fetch(`${api}/tables/${start.id}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({ cardIds: start.cardIds }),
-    });
-
-    if (!raw1.ok) {
-        dispatchBack();
-        return;
-    }
-
-    const raw2 = await fetch(`${api}/tables/${finish.id}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({ cardIds: finish.cardIds }),
-    });
-
-    if (!raw2.ok) {
-        dispatchBack();
-        return;
-    }
-
-    const raw3 = await fetch(`${api}/cards/${cardId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({ tableId: finish.id }),
-    });
-
-    if (!raw3.ok) {
-        dispatchBack();
+    try {
+        // if one of these functions fails we need to rollback
+        await updateCardIds(start.id, start.cardIds);
+        await updateCardIds(finish.id, finish.cardIds);
+        await updateCard(cardId, 'tableId', finish.id);
+    } catch (e) {
+        dispatch({
+            type: GLOBAL_DRAG_END,
+            payload: {
+                start: oldStart,
+                finish: oldFinish,
+                cardId,
+            },
+        });
     }
 };
 
@@ -130,16 +103,10 @@ export const changeTitleAction = (title, tableId) => async (dispatch, getState) 
         },
     });
 
-    const rawRes = await fetch(`${api}/tables/${tableId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({ title }),
-    });
-
-    // dispatching back in case of server error
-    !rawRes.ok &&
+    try {
+        await updateTable(tableId, title);
+    } catch (e) {
+        // dispatching back in case of server error
         dispatch({
             type: CHANGE_TITLE,
             payload: {
@@ -147,34 +114,17 @@ export const changeTitleAction = (title, tableId) => async (dispatch, getState) 
                 tableId,
             },
         });
+    }
 };
 
 export const createTableAction = (newTable) => async (dispatch, getState) => {
     newTable.id = uuidv1();
 
-    const raw1 = await fetch(`${api}/tables`, {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-            ...newTable,
-        }),
-    });
-
-    if (!raw1.ok) return;
+    await createTable(newTable);
 
     const newOrder = getState().orderState.concat(newTable.id);
 
-    const raw2 = await fetch(`${api}/order`, {
-        method: 'PATCH',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({ order: newOrder }),
-    });
-
-    if (!raw2.ok) return;
+    await updateOrder(newOrder);
 
     dispatch({
         type: CREATE_TABLE,
@@ -185,26 +135,11 @@ export const createTableAction = (newTable) => async (dispatch, getState) => {
 };
 
 export const removeTableAction = (tableId) => async (dispatch, getState) => {
-    const raw1 = await fetch(`${api}/tables/${tableId}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-type': 'application/json',
-        },
-    });
-
-    if (!raw1.ok) return;
+    await deleteTable(tableId);
 
     const newOrder = getState().orderState.filter((item) => item !== tableId);
 
-    const raw2 = await fetch(`${api}/order`, {
-        method: 'PATCH',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({ order: newOrder }),
-    });
-
-    if (!raw2.ok) return;
+    await updateOrder(newOrder);
 
     dispatch({
         type: REMOVE_TABLE,
