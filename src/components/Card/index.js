@@ -47,6 +47,9 @@ const styles = {
     },
 };
 
+/**
+ * representing a card
+ */
 class Card extends Component {
     state = {
         isOpen: false,

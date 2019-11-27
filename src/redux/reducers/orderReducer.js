@@ -5,6 +5,10 @@ import { getOrder, updateOrder } from '../../restApiController';
 const FETCH_ORDER = 'FETCH_ORDER';
 const CHANGE_ORDER = 'CHANGE_ORDER';
 
+/**
+ * fetches order from server
+ * @returns {Function}
+ */
 export const fetchOrderAction = () => async (dispatch) => {
     try {
         const { data } = await getOrder();
@@ -20,6 +24,11 @@ export const fetchOrderAction = () => async (dispatch) => {
     }
 };
 
+/**
+ * updates order on server and client
+ * @param {Array<string>} newOrder
+ * @returns {Function}
+ */
 export const changeOrderAction = (newOrder) => async (dispatch, getState) => {
     // dispatch comes first because of visual bug happening while fetch is awaiting
     const oldOrder = getState().order;

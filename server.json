@@ -8,10 +8,17 @@
         {
             "id": "2a492b70-105e-11ea-b016-77a86307ab9f",
             "title": "New table",
-            "cardIds": []
+            "cardIds": ["0139fb70-10df-11ea-ab65-f1cad6d3f5b8"]
         }
     ],
-    "cards": [],
+    "cards": [
+        {
+            "desc": "",
+            "id": "0139fb70-10df-11ea-ab65-f1cad6d3f5b8",
+            "text": "dadwd",
+            "tableId": "2a492b70-105e-11ea-b016-77a86307ab9f"
+        }
+    ],
     "order": {
         "order": ["8f76d930-0f81-11ea-a81e-a908a8640844", "2a492b70-105e-11ea-b016-77a86307ab9f"]
     }

@@ -19,6 +19,10 @@ export const CHANGE_TITLE = 'CHANGE_TITLE';
 export const CREATE_TABLE = 'CREATE_TABLE';
 export const REMOVE_TABLE = 'REMOVE_TABLE';
 
+/**
+ * fetches tables from server
+ * @returns {Function}
+ */
 export const fetchTablesAction = () => async (dispatch) => {
     try {
         const { data } = await getTables();
@@ -34,6 +38,12 @@ export const fetchTablesAction = () => async (dispatch) => {
     }
 };
 
+/**
+ * handles a drag inside one table
+ * @param {string} tableId
+ * @param {Array<string>} newCardIds
+ * @returns {Function}
+ */
 export const localDragEndAction = (tableId, newCardIds) => async (dispatch, getState) => {
     // dispatch comes first because of visual bug happening while fetch is awaiting
     const oldCardIds = getState().tables.find((item) => item.id === tableId);
@@ -60,6 +70,13 @@ export const localDragEndAction = (tableId, newCardIds) => async (dispatch, getS
     }
 };
 
+/**
+ * handles drag between different tables
+ * @param {Object} start
+ * @param {Object} finish
+ * @param {string} cardId
+ * @returns {Function}
+ */
 export const globalDragEndAction = (start, finish, cardId) => async (dispatch, getState) => {
     // dispatch comes first because of visual bug happening while fetch is awaiting
     const oldStart = getState().tables.find((item) => item.id === start.id);
@@ -91,6 +108,12 @@ export const globalDragEndAction = (start, finish, cardId) => async (dispatch, g
     }
 };
 
+/**
+ * changes table's title
+ * @param {string} title
+ * @param {string} tableId
+ * @returns {Function}
+ */
 export const changeTitleAction = (title, tableId) => async (dispatch, getState) => {
     // dispatch comes first because of visual bug happening while fetch is awaiting
     const oldTitle = getState().tables.find((item) => item.id === tableId).title;
@@ -117,6 +140,11 @@ export const changeTitleAction = (title, tableId) => async (dispatch, getState) 
     }
 };
 
+/**
+ * creates a new table on server and client
+ * @param {Object} newTable
+ * @returns {Function}
+ */
 export const createTableAction = (newTable) => async (dispatch, getState) => {
     newTable.id = uuidv1();
 
@@ -134,6 +162,11 @@ export const createTableAction = (newTable) => async (dispatch, getState) => {
     });
 };
 
+/**
+ * removes table from server and client
+ * @param {string} tableId
+ * @returns {Function}
+ */
 export const removeTableAction = (tableId) => async (dispatch, getState) => {
     await deleteTable(tableId);
 

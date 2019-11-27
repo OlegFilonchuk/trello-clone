@@ -51,9 +51,13 @@ const useStyles = makeStyles({
     },
 });
 
-const OpenCard = (props) => {
-    const classes = useStyles();
+/**
+ * representing an openCard
+ * @param props
+ * @constructor
+ */
 
+const OpenCard = (props) => {
     const [isChangingDesc, toggleIsChangingDesc] = useState(false);
     const [descValue, changeDescValue] = useState(props.card.desc);
     const [isChangingText, toggleIsChangingText] = useState(false);
@@ -61,6 +65,8 @@ const OpenCard = (props) => {
 
     const table = useSelector((state) => selectTableById(state, props.card.tableId));
     const dispatch = useDispatch();
+
+    const classes = useStyles();
 
     const handleRemoveButtonClick = () => {
         dispatch(removeCardAction(props.card));

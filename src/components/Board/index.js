@@ -26,7 +26,7 @@ const useStyles = makeStyles({
 });
 
 /**
- * Renders a Board
+ * Representing a board
  * @param props
  * @constructor
  */
@@ -44,6 +44,10 @@ const Board = (props) => {
 
     const classes = useStyles(props);
 
+    /**
+     * gets a list of tables
+     * @returns {Array.<Table>}
+     */
     const getTables = () => {
         if (tables.length) {
             const tablesList = order.map((tableId) => tables.find((item) => item.id === tableId));
@@ -53,6 +57,17 @@ const Board = (props) => {
         }
     };
 
+    /**
+     * handles drag end
+     * @param {Object} result
+     * @param {Object} result.destination
+     * @param {string} result.destination.droppableId
+     * @param {number} result.destination.index
+     * @param {Object} result.source
+     * @param {string} result.source.droppableId
+     * @param {number} result.source.index
+     * @param {string} result.type
+     */
     const onDragEnd = (result) => {
         const { destination, source, draggableId, type } = result;
 
@@ -101,6 +116,9 @@ const Board = (props) => {
         dispatch(globalDragEndAction(newStart, newFinish, draggableId));
     };
 
+    /**
+     * handles table creating
+     */
     const handleCreateTableButton = () => {
         const newTable = {
             id: '',

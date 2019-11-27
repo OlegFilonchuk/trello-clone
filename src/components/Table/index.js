@@ -79,6 +79,9 @@ const styles = {
     },
 };
 
+/**
+ * Representing a table
+ */
 class Table extends Component {
     state = {
         isCreatingCard: false,
@@ -102,6 +105,7 @@ class Table extends Component {
     handleCreateButton = (ev) => {
         ev.preventDefault();
         const { createCard, table } = this.props;
+
         if (!this.state.newCardText) return;
 
         const newCard = {
@@ -112,6 +116,7 @@ class Table extends Component {
         };
 
         createCard(newCard);
+
         this.setState({
             newCardText: '',
             isCreatingCard: false,
@@ -145,6 +150,10 @@ class Table extends Component {
         this.props.removeTable(this.props.table.id);
     };
 
+    /**
+     * gets a list of cards
+     * @returns {(Array.<Card>|HTMLElement)}
+     */
     getCards = () => {
         const { cards } = this.props;
 

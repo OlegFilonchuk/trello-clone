@@ -10,6 +10,10 @@ export const REMOVE_CARD = 'REMOVE_CARD';
 export const CHANGE_DESC = 'CHANGE_DESC';
 export const CHANGE_TEXT = 'CHANGE_TEXT';
 
+/**
+ * fetches cards from server
+ * @returns {Function}
+ */
 export const fetchCardsAction = () => async (dispatch) => {
     // const rawRes = await fetch(`${api}/cards`);
     try {
@@ -26,6 +30,11 @@ export const fetchCardsAction = () => async (dispatch) => {
     }
 };
 
+/**
+ * adds a new card to server and client
+ * @param {Object} newCard
+ * @returns {Function}
+ */
 export const createCardAction = (newCard) => async (dispatch, getState) => {
     newCard.id = uuidv1();
 
@@ -49,6 +58,11 @@ export const createCardAction = (newCard) => async (dispatch, getState) => {
     }
 };
 
+/**
+ * removes a card from server and client
+ * @param {Object} card
+ * @returns {Function}
+ */
 export const removeCardAction = (card) => async (dispatch, getState) => {
     try {
         await deleteCard(card.id);
@@ -70,6 +84,12 @@ export const removeCardAction = (card) => async (dispatch, getState) => {
     }
 };
 
+/**
+ * changes card's description on server and client
+ * @param {string} desc
+ * @param {string} cardId
+ * @returns {Function}
+ */
 export const changeDescAction = (desc, cardId) => async (dispatch) => {
     try {
         await updateCard(cardId, 'desc', desc);
@@ -86,6 +106,12 @@ export const changeDescAction = (desc, cardId) => async (dispatch) => {
     }
 };
 
+/**
+ * changes card's text on server and client
+ * @param {string} text
+ * @param {string} cardId
+ * @returns {Function}
+ */
 export const changeTextAction = (text, cardId) => async (dispatch, getState) => {
     // visual bug happens while fetching
     const oldText = getState().cards.find((item) => item.id === cardId).text;
