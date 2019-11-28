@@ -43,3 +43,5 @@ export const selectAllTables = (state) => state.tables;
  * @returns {Array<string>}
  */
 export const selectOrder = (state) => state.order;
+
+export const selectAllExecutors = (state) => state.executors;

@@ -7,10 +7,14 @@ import {
     removeCardAction,
     changeDescAction,
     changeTextAction,
+    changeExecutorAction,
+    changeDoneAction,
 } from '../../redux/reducers/cardsReducer';
-import { selectTableById } from '../../selectors';
+import { selectAllExecutors, selectTableById } from '../../selectors';
 import OpenCardTitleForm from './OpenCardTitleForm';
 import OpenCardDescriptionForm from './OpenCardDescriptionForm';
+import OpenCardExecutorForm from './OpenCardExecutorForm';
+import ReduxOpenCardDoneForm from './OpenCardDoneForm';
 
 const useStyles = makeStyles({
     openCard: {
@@ -32,6 +36,10 @@ const useStyles = makeStyles({
     title: {
         paddingBottom: 30,
     },
+    executor: {
+        cursor: 'pointer',
+        paddingBottom: 30,
+    },
 });
 
 /**
@@ -41,31 +49,32 @@ const useStyles = makeStyles({
  */
 const OpenCard = (props) => {
     const { card } = props;
+
     const [isChangingDesc, toggleIsChangingDesc] = useState(false);
     const [descValue, changeDescValue] = useState(card.desc);
+
     const [isChangingText, toggleIsChangingText] = useState(false);
     const [textValue, changeTextValue] = useState(card.text);
 
+    const [isChangingExecutor, toggleIsChangingExecutor] = useState(false);
+    const [executorValue, changeExecutorValue] = useState();
+
+    const [isCardDone, toggleIsCardDone] = useState(card.done);
+
     const table = useSelector((state) => selectTableById(state, { tableId: card.tableId }));
+    const executors = useSelector(selectAllExecutors);
     const dispatch = useDispatch();
 
     const classes = useStyles();
 
-    const handleRemoveButtonClick = () => {
-        dispatch(removeCardAction(card));
-    };
+    const handleRemoveButtonClick = () => dispatch(removeCardAction(card));
 
-    const handleDescClick = () => {
-        toggleIsChangingDesc(true);
-    };
+    const handleDescClick = () => toggleIsChangingDesc(true);
 
-    const onDescInputChange = (ev) => {
-        changeDescValue(ev.target.value);
-    };
+    const onDescInputChange = (ev) => changeDescValue(ev.target.value);
 
     const handleConfirmDesc = () => {
         dispatch(changeDescAction(descValue, card.id));
-
         toggleIsChangingDesc(false);
     };
 
@@ -74,17 +83,27 @@ const OpenCard = (props) => {
         changeDescValue(card.desc);
     };
 
-    const handleTextClick = () => {
-        toggleIsChangingText(true);
-    };
+    const handleTextClick = () => toggleIsChangingText(true);
 
-    const onTextInputChange = (ev) => {
-        changeTextValue(ev.target.value);
-    };
+    const onTextInputChange = (ev) => changeTextValue(ev.target.value);
 
     const handleConfirmText = () => {
         dispatch(changeTextAction(textValue, card.id));
         toggleIsChangingText(false);
+    };
+
+    const handleExecutorClick = () => toggleIsChangingExecutor(true);
+
+    const onExecutorChange = (ev) => changeExecutorValue(ev.target.value);
+
+    const handleExecutorSubmit = () => {
+        dispatch(changeExecutorAction(executorValue, card.id));
+        toggleIsChangingExecutor(false);
+    };
+
+    const handleCardDoneChange = async (ev) => {
+        await toggleIsCardDone(ev.target.checked);
+        await dispatch(changeDoneAction(ev.target.checked, card.id));
     };
 
     return (
@@ -113,7 +132,6 @@ const OpenCard = (props) => {
             </div>
 
             <Typography variant="caption">Description</Typography>
-
             <div className={classes.description}>
                 {!isChangingDesc ? (
                     <Typography
@@ -134,6 +152,33 @@ const OpenCard = (props) => {
                     />
                 )}
             </div>
+
+            <Typography variant="caption">Executor</Typography>
+            <div className={classes.executor}>
+                {!isChangingExecutor ? (
+                    <Typography
+                        variant="subtitle1"
+                        onClick={handleExecutorClick}
+                        title="Click here to change"
+                    >
+                        {executorValue
+                            ? executors.find((item) => item.id === executorValue).name
+                            : 'Nobody yet...'}
+                    </Typography>
+                ) : (
+                    <OpenCardExecutorForm
+                        executors={executors}
+                        onSubmit={handleExecutorSubmit}
+                        onExecutorChange={onExecutorChange}
+                        handleExecutorSubmit={handleExecutorSubmit}
+                    />
+                )}
+            </div>
+
+            <ReduxOpenCardDoneForm
+                checked={isCardDone}
+                handleCardDoneChange={handleCardDoneChange}
+            />
 
             <Typography variant="body2">
                 This card belongs to

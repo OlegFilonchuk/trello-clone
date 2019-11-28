@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { SubmissionError } from 'redux-form';
-import { order, tables, cards } from './constants';
+import { order, tables, cards, executors } from './constants';
 
 const myAxios = axios.create({
     baseURL: process.env.REACT_APP_API_URI,
@@ -54,7 +54,7 @@ export const deleteCard = (cardId) => myAxios.delete(`${cards}/${cardId}`);
 /**
  * updates card's field
  * @param {string} cardId
- * @param {("text"|"desc"|"tableId")} field
+ * @param {("text"|"desc"|"tableId"|"executor"|"done")} field
  * @param {string} value
  * @returns {Promise<AxiosResponse<T>>}
  */
@@ -89,12 +89,23 @@ export const createTable = (newTable) => myAxios.post(tables, newTable);
  */
 export const deleteTable = (tableId) => myAxios.delete(`${tables}/${tableId}`);
 
+export const getExecutors = () => myAxios.get(executors);
+
 export const validateCardTitle = async (values) => {
     const { data } = await getCards();
     const titles = data.map((card) => card.text.toLowerCase());
     if (titles.includes(values.cardTitle.toLowerCase())) {
         throw new SubmissionError({
             cardTitle: 'A card with this title already exists!',
+        });
+    }
+};
+
+export const validateExecutor = async (values) => {
+    if (values.executor === '00') {
+        throw new SubmissionError({
+            executor: 'Do not pick him!',
+            _error: 'Wrong executor!',
         });
     }
 };

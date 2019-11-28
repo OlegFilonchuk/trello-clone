@@ -80,6 +80,8 @@ class Table extends Component {
         if (!this.state.newCardText) return;
 
         const newCard = {
+            done: false,
+            executor: '',
             desc: '',
             id: '',
             text: this.state.newCardText,
@@ -177,7 +179,7 @@ class Table extends Component {
                                     {this.getCards()}
                                     {provided.placeholder}
 
-                                    {!isCreatingCard && (
+                                    {!isCreatingCard ? (
                                         <IconButton
                                             onClick={this.handleAddButton}
                                             className={classes.createButton}
@@ -185,19 +187,17 @@ class Table extends Component {
                                         >
                                             <AddOutlinedIcon />
                                         </IconButton>
+                                    ) : (
+                                        <NewCardForm
+                                            onSubmit={this.handleConfirmNewCard}
+                                            handleConfirmNewCard={this.handleConfirmNewCard}
+                                            handleCardTitleChange={this.handleTextFieldChange}
+                                            handleCancelButton={this.handleCancelButton}
+                                        />
                                     )}
                                 </List>
                             )}
                         </Droppable>
-
-                        {isCreatingCard && (
-                            <NewCardForm
-                                onSubmit={this.handleConfirmNewCard}
-                                handleConfirmNewCard={this.handleConfirmNewCard}
-                                handleCardTitleChange={this.handleTextFieldChange}
-                                handleCancelButton={this.handleCancelButton}
-                            />
-                        )}
 
                         <IconButton
                             className={classes.removeTableButton}

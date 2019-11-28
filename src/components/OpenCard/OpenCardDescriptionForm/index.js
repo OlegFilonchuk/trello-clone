@@ -18,7 +18,6 @@ const useStyles = makeStyles({
     },
 });
 
-// eslint-disable-next-line react/prop-types
 const renderField = ({ input, type, className }) => {
     return (
         <TextField

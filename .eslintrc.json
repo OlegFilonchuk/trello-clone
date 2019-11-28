@@ -27,6 +27,7 @@
         "no-param-reassign": "off",
         "default-case": "off",
         "no-shadow": "off",
-        "jsx-a11y/mouse-events-have-key-events": "off"
+        "jsx-a11y/mouse-events-have-key-events": "off",
+        "react/prop-types": "off"
     }
 }

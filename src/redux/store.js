@@ -4,11 +4,13 @@ import { reducer as formReducer } from 'redux-form';
 import { cardsReducer } from './reducers/cardsReducer';
 import { tablesReducer } from './reducers/tablesReducer';
 import { orderReducer } from './reducers/orderReducer';
+import { executorsReducer } from './reducers/executorsReducer';
 
 const rootReducer = combineReducers({
     cards: cardsReducer,
     tables: tablesReducer,
     order: orderReducer,
+    executors: executorsReducer,
     form: formReducer,
 });
 

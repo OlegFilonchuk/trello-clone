@@ -9,6 +9,8 @@ export const CREATE_CARD = 'CREATE_CARD';
 export const REMOVE_CARD = 'REMOVE_CARD';
 export const CHANGE_DESC = 'CHANGE_DESC';
 export const CHANGE_TEXT = 'CHANGE_TEXT';
+export const CHANGE_EXECUTOR = 'CHANGE_EXECUTOR';
+export const CHANGE_DONE = 'CHANGE_DONE';
 
 /**
  * fetches cards from server
@@ -106,6 +108,37 @@ export const changeDescAction = (desc, cardId) => async (dispatch) => {
     }
 };
 
+export const changeExecutorAction = (executorId, cardId) => async (dispatch) => {
+    try {
+        await updateCard(cardId, 'executor', executorId);
+
+        dispatch({
+            type: CHANGE_EXECUTOR,
+            payload: {
+                executorId,
+                cardId,
+            },
+        });
+    } catch (e) {
+        // console.log(e);
+    }
+};
+
+export const changeDoneAction = (done, cardId) => async (dispatch) => {
+    try {
+        await updateCard(cardId, 'done', done);
+        dispatch({
+            type: CHANGE_DONE,
+            payload: {
+                done,
+                cardId,
+            },
+        });
+    } catch (e) {
+        // console.log(e);
+    }
+};
+
 /**
  * changes card's text on server and client
  * @param {string} text
@@ -163,6 +196,14 @@ export const cardsReducer = produce((draft = [], action) => {
 
         case CHANGE_TEXT:
             draft.find((item) => item.id === payload.cardId).text = payload.text;
+            break;
+
+        case CHANGE_EXECUTOR:
+            draft.find((item) => item.id === payload.cardId).executor = payload.executorId;
+            break;
+
+        case CHANGE_DONE:
+            draft.find((item) => item.id === payload.cardId).done = payload.done;
             break;
 
         default:

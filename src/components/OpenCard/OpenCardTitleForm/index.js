@@ -27,7 +27,6 @@ const validate = (values) => {
     return errors;
 };
 
-// eslint-disable-next-line react/prop-types
 const renderField = ({ input, type, className, meta: { error } }) => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>

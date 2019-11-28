@@ -13,6 +13,7 @@ import {
 import { fetchCardsAction } from '../../redux/reducers/cardsReducer';
 import { fetchOrderAction, changeOrderAction } from '../../redux/reducers/orderReducer';
 import { selectAllTables, selectOrder } from '../../selectors';
+import { fetchExecutorsAction } from '../../redux/reducers/executorsReducer';
 
 const useStyles = makeStyles({
     tableList: {
@@ -34,6 +35,7 @@ const Board = () => {
         dispatch(fetchOrderAction());
         dispatch(fetchTablesAction());
         dispatch(fetchCardsAction());
+        dispatch(fetchExecutorsAction());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

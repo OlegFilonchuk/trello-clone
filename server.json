@@ -3,62 +3,27 @@
         {
             "id": "8f76d930-0f81-11ea-a81e-a908a8640844",
             "title": "dwadaswad",
-            "cardIds": [
-                "a7ab6790-11c1-11ea-bbeb-c3d995d693cd",
-                "aa951a00-11c1-11ea-bbeb-c3d995d693cd",
-                "ae277970-11ca-11ea-b209-cd02c6454008"
-            ]
+            "cardIds": ["897c9b20-11e1-11ea-832b-2f338aea652b"]
         },
         {
             "id": "2a492b70-105e-11ea-b016-77a86307ab9f",
             "title": "dwd",
-            "cardIds": [
-                "0139fb70-10df-11ea-ab65-f1cad6d3f5b8",
-                "fe122750-11ca-11ea-81ac-95c0278a25a3"
-            ]
+            "cardIds": []
         },
         {
             "id": "00d58d10-11cb-11ea-81ac-95c0278a25a3",
             "title": "New table",
-            "cardIds": ["05105090-11cb-11ea-81ac-95c0278a25a3"]
+            "cardIds": []
         }
     ],
     "cards": [
         {
-            "desc": "dwdawdawddescription",
-            "id": "0139fb70-10df-11ea-ab65-f1cad6d3f5b8",
-            "text": "one more carddw",
-            "tableId": "2a492b70-105e-11ea-b016-77a86307ab9f"
-        },
-        {
+            "done": false,
+            "executor": "",
             "desc": "",
-            "id": "a7ab6790-11c1-11ea-bbeb-c3d995d693cd",
-            "text": "new Carddawdasddwadasdawdawd",
+            "id": "897c9b20-11e1-11ea-832b-2f338aea652b",
+            "text": "dwad",
             "tableId": "8f76d930-0f81-11ea-a81e-a908a8640844"
-        },
-        {
-            "desc": "",
-            "id": "aa951a00-11c1-11ea-bbeb-c3d995d693cd",
-            "text": "one more card",
-            "tableId": "8f76d930-0f81-11ea-a81e-a908a8640844"
-        },
-        {
-            "desc": "",
-            "id": "ae277970-11ca-11ea-b209-cd02c6454008",
-            "text": "dwa",
-            "tableId": "8f76d930-0f81-11ea-a81e-a908a8640844"
-        },
-        {
-            "desc": "",
-            "id": "fe122750-11ca-11ea-81ac-95c0278a25a3",
-            "text": "jfea;jfal;",
-            "tableId": "2a492b70-105e-11ea-b016-77a86307ab9f"
-        },
-        {
-            "desc": "",
-            "id": "05105090-11cb-11ea-81ac-95c0278a25a3",
-            "text": "awdsawds",
-            "tableId": "00d58d10-11cb-11ea-81ac-95c0278a25a3"
         }
     ],
     "order": {
@@ -67,5 +32,27 @@
             "2a492b70-105e-11ea-b016-77a86307ab9f",
             "00d58d10-11cb-11ea-81ac-95c0278a25a3"
         ]
-    }
+    },
+    "executors": [
+        {
+            "id": "00",
+            "name": "John Doe"
+        },
+        {
+            "id": "01",
+            "name": "Benedict Cumberbatch"
+        },
+        {
+            "id": "02",
+            "name": "Benedryl Cabbagepatch"
+        },
+        {
+            "id": "03",
+            "name": "Bendycat Hairysnatch"
+        },
+        {
+            "id": "04",
+            "name": "Bandicoot Bandersnatch"
+        }
+    ]
 }

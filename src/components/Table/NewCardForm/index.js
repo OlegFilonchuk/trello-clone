@@ -22,7 +22,6 @@ const validate = (values) => {
     return errors;
 };
 
-// eslint-disable-next-line react/prop-types
 const renderField = ({ input, label, type, className, meta: { touched, error } }) => {
     return (
         <div>
@@ -45,7 +44,7 @@ const NewCardForm = (props) => {
 
     const confirmTitle = async (values) => {
         await validateCardTitle(values);
-        await handleConfirmNewCard();
+        handleConfirmNewCard();
     };
 
     return (
