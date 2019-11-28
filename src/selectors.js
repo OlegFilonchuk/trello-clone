@@ -1,7 +1,7 @@
 /**
  * selects all cards from state
  * @param state
- * @returns {(<Base extends Immutable<Params[0]>>(base: Base, ...rest: Tail<Parameters<Recipe>>) => Produced<Base, ReturnType<*>>) | []}
+ * @returns {Array<Object>}
  */
 export const selectAllCards = (state) => state.cards;
 
@@ -23,15 +23,17 @@ export const selectCardsForTable = (state, tableCardIds) => {
  * selects a table from state by id
  * @param {Object} state
  * @param {Array} state.tables
- * @param {string} tableId
- * @returns {*|NodePath|number|bigint|T|T}
+ * @param {Object} ownProps
+ * @param {string} ownProps.tableId
+ * @returns {*|NodePath|number|T|T}
  */
-export const selectTableById = (state, tableId) => state.tables.find((item) => item.id === tableId);
+export const selectTableById = (state, ownProps) =>
+    state.tables.find((item) => item.id === ownProps.tableId);
 
 /**
  * selects all tables from state
  * @param {Object} state
- * @returns {(<Base extends Immutable<Params[0]>>(base: Base, ...rest: Tail<Parameters<Recipe>>) => Produced<Base, ReturnType<*>>) | Array}
+ * @returns {Array<Object>}
  */
 export const selectAllTables = (state) => state.tables;
 

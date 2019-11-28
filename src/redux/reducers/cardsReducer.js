@@ -33,7 +33,7 @@ export const fetchCardsAction = () => async (dispatch) => {
 /**
  * adds a new card to server and client
  * @param {Object} newCard
- * @returns {Function}
+ * @returns {Promise<Object>}
  */
 export const createCardAction = (newCard) => async (dispatch, getState) => {
     newCard.id = uuidv1();

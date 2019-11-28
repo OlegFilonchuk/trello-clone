@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import {
     Card as MaterialCard,
     CardContent,
@@ -35,7 +35,7 @@ const styles = {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 400,
+        minWidth: 533,
         boxShadow: '1px 1px 1px 1px lightgrey',
         borderRadius: 4,
         outline: 0,

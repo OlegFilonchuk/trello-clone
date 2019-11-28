@@ -27,10 +27,9 @@ const useStyles = makeStyles({
 
 /**
  * Representing a board
- * @param props
  * @constructor
  */
-const Board = (props) => {
+const Board = () => {
     useEffect(() => {
         dispatch(fetchOrderAction());
         dispatch(fetchTablesAction());
@@ -42,7 +41,7 @@ const Board = (props) => {
     const order = useSelector(selectOrder);
     const dispatch = useDispatch();
 
-    const classes = useStyles(props);
+    const classes = useStyles();
 
     /**
      * gets a list of tables

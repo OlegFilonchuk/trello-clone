@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { SubmissionError } from 'redux-form';
 import { order, tables, cards } from './constants';
 
 const myAxios = axios.create({
@@ -87,3 +88,13 @@ export const createTable = (newTable) => myAxios.post(tables, newTable);
  * @returns {Promise<AxiosResponse<T>>}
  */
 export const deleteTable = (tableId) => myAxios.delete(`${tables}/${tableId}`);
+
+export const validateCardTitle = async (values) => {
+    const { data } = await getCards();
+    const titles = data.map((card) => card.text.toLowerCase());
+    if (titles.includes(values.cardTitle.toLowerCase())) {
+        throw new SubmissionError({
+            cardTitle: 'A card with this title already exists!',
+        });
+    }
+};

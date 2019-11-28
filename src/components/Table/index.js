@@ -1,25 +1,16 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import {
-    Typography,
-    withStyles,
-    TextField,
-    List,
-    Container,
-    InputBase,
-    IconButton,
-    Paper,
-} from '@material-ui/core';
+import { Typography, withStyles, List, Container, IconButton, Paper } from '@material-ui/core';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
-import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
-import ClearOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
+import ReduxTableTitleForm from './TableTitleForm';
 import { changeTitleAction, removeTableAction } from '../../redux/reducers/tablesReducer';
 import { createCardAction } from '../../redux/reducers/cardsReducer';
 import { selectCardsForTable } from '../../selectors';
 import Card from '../Card';
+import NewCardForm from './NewCardForm';
 
 const styles = {
     table: {
@@ -34,39 +25,20 @@ const styles = {
         flexGrow: 1,
         padding: 10,
     },
-    newCard: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: 10,
-    },
+
     createButton: {
         alignSelf: 'flex-start',
     },
     title: {
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'flex-start',
+        height: 70,
     },
     titleText: {
         flex: 1,
         cursor: 'pointer',
         paddingTop: 9,
         paddingBottom: 8,
-    },
-    editTitle: {
-        display: 'flex',
-        flexFlow: 'row nowrap',
-        alignItems: 'center',
-    },
-    titleInput: {
-        flex: 1,
-        fontSize: 24,
-        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-        fontWeight: 400,
-        lineHeight: 1.17,
-        border: '1px solid grey',
-        borderRadius: 4,
-        backgroundColor: '#efefef',
-        marginLeft: -1,
     },
     textField: {
         flex: 1,
@@ -102,8 +74,7 @@ class Table extends Component {
         });
     };
 
-    handleCreateButton = (ev) => {
-        ev.preventDefault();
+    handleConfirmNewCard = (ev) => {
         const { createCard, table } = this.props;
 
         if (!this.state.newCardText) return;
@@ -134,8 +105,7 @@ class Table extends Component {
         this.setState({ isEditingTitle: true });
     };
 
-    handleConfirmTitle = (ev) => {
-        ev.preventDefault();
+    handleConfirmTitle = () => {
         this.props.changeTitle(this.state.titleInputValue, this.props.table.id);
         this.setState({ isEditingTitle: false });
     };
@@ -166,7 +136,7 @@ class Table extends Component {
 
     render() {
         const { classes, table, index } = this.props;
-        const { isCreatingCard, isEditingTitle } = this.state;
+        const { isCreatingCard, isEditingTitle, titleInputValue } = this.state;
 
         return (
             <Draggable draggableId={table.id} index={index}>
@@ -187,21 +157,13 @@ class Table extends Component {
                                     {table.title}
                                 </Typography>
                             ) : (
-                                <form
+                                <ReduxTableTitleForm
                                     onSubmit={this.handleConfirmTitle}
-                                    className={classes.editTitle}
-                                >
-                                    <InputBase
-                                        autoFocus
-                                        className={classes.titleInput}
-                                        onChange={this.handleTitleInputChange}
-                                        value={this.state.titleInputValue}
-                                        inputProps={{ 'aria-label': 'naked' }}
-                                    />
-                                    <IconButton title="Confirm" onClick={this.handleConfirmTitle}>
-                                        <CheckOutlinedIcon />
-                                    </IconButton>
-                                </form>
+                                    handleTitleInputChange={this.handleTitleInputChange}
+                                    initialValues={{
+                                        tableTitle: titleInputValue,
+                                    }}
+                                />
                             )}
                         </Container>
 
@@ -229,22 +191,12 @@ class Table extends Component {
                         </Droppable>
 
                         {isCreatingCard && (
-                            <form className={classes.newCard} onSubmit={this.handleCreateButton}>
-                                <TextField
-                                    className={classes.textField}
-                                    label="Title of the card"
-                                    onChange={this.handleTextFieldChange}
-                                    autoFocus
-                                />
-
-                                <IconButton onClick={this.handleCreateButton} title="Confirm">
-                                    <AddOutlinedIcon />
-                                </IconButton>
-
-                                <IconButton onClick={this.handleCancelButton} title="Cancel">
-                                    <ClearOutlinedIcon />
-                                </IconButton>
-                            </form>
+                            <NewCardForm
+                                onSubmit={this.handleConfirmNewCard}
+                                handleConfirmNewCard={this.handleConfirmNewCard}
+                                handleCardTitleChange={this.handleTextFieldChange}
+                                handleCancelButton={this.handleCancelButton}
+                            />
                         )}
 
                         <IconButton
