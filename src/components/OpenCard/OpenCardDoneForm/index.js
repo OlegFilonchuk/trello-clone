@@ -3,13 +3,19 @@ import * as PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import { Field, reduxForm } from 'redux-form';
 
-const useStyles = makeStyles({});
+const useStyles = makeStyles({
+    doneForm: {
+        paddingBottom: 30,
+        display: 'flex',
+        alignItems: 'center',
+    },
+});
 
 const OpenCardDoneForm = (props) => {
     const { handleSubmit, handleCardDoneChange, checked } = props;
     const classes = useStyles();
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={classes.doneForm}>
             {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
             <label htmlFor="openCardDone">Done</label>
             <Field

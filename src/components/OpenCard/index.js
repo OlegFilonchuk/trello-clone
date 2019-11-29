@@ -22,9 +22,6 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         padding: 20,
     },
-    removeCardButton: {
-        alignSelf: 'flex-end',
-    },
     description: {
         cursor: 'pointer',
         paddingBottom: 30,
@@ -39,6 +36,13 @@ const useStyles = makeStyles({
     executor: {
         cursor: 'pointer',
         paddingBottom: 30,
+    },
+    footer: {
+        display: 'flex',
+        alignItems: 'flex-end',
+    },
+    footerText: {
+        flex: 1,
     },
 });
 
@@ -57,7 +61,7 @@ const OpenCard = (props) => {
     const [textValue, changeTextValue] = useState(card.text);
 
     const [isChangingExecutor, toggleIsChangingExecutor] = useState(false);
-    const [executorValue, changeExecutorValue] = useState();
+    const [executorValue, changeExecutorValue] = useState(card.executor);
 
     const [isCardDone, toggleIsCardDone] = useState(card.done);
 
@@ -171,6 +175,9 @@ const OpenCard = (props) => {
                         onSubmit={handleExecutorSubmit}
                         onExecutorChange={onExecutorChange}
                         handleExecutorSubmit={handleExecutorSubmit}
+                        initialValues={{
+                            openCardExecutor: executorValue,
+                        }}
                     />
                 )}
             </div>
@@ -180,15 +187,17 @@ const OpenCard = (props) => {
                 handleCardDoneChange={handleCardDoneChange}
             />
 
-            <Typography variant="body2">
-                This card belongs to
-                <b>{` "${table.title}" `}</b>
-                table
-            </Typography>
+            <div className={classes.footer}>
+                <Typography variant="body2" className={classes.footerText}>
+                    This card belongs to
+                    <b>{` "${table.title}" `}</b>
+                    table
+                </Typography>
 
-            <IconButton onClick={handleRemoveButtonClick} className={classes.removeCardButton}>
-                <DeleteOutlinedIcon fontSize="small" />
-            </IconButton>
+                <IconButton onClick={handleRemoveButtonClick}>
+                    <DeleteOutlinedIcon fontSize="small" />
+                </IconButton>
+            </div>
         </Container>
     );
 };

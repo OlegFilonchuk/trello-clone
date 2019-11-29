@@ -1,6 +1,6 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import { IconButton, makeStyles, TextField } from '@material-ui/core';
+import { IconButton, makeStyles } from '@material-ui/core';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import { Field, reduxForm } from 'redux-form';
 import { validateExecutor } from '../../../restApiController';

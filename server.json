@@ -19,8 +19,8 @@
     "cards": [
         {
             "done": false,
-            "executor": "",
-            "desc": "",
+            "executor": "02",
+            "desc": "some description about what i want to do",
             "id": "897c9b20-11e1-11ea-832b-2f338aea652b",
             "text": "dwad",
             "tableId": "8f76d930-0f81-11ea-a81e-a908a8640844"
