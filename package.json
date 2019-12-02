@@ -20,7 +20,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "server": "json-server server.json -p 3001",
+        "server": "json-server server.json -p 3001 --routes routes.json --middlewares ./middleware.js",
         "dev": "yarn server & yarn start",
         "build": "react-scripts build",
         "test": "react-scripts test",

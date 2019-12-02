@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { SubmissionError } from 'redux-form';
-import { order, tables, cards, executors } from './constants';
+import { ENDPOINTS } from './constants';
 
-const myAxios = axios.create({
+const { order, tables, cards, executors } = ENDPOINTS;
+
+const api = axios.create({
     baseURL: process.env.REACT_APP_API_URI,
     headers: {
         'Content-Type': 'application/json',
@@ -11,45 +13,44 @@ const myAxios = axios.create({
 
 /**
  * gets tables order
- * @returns {Promise<AxiosResponse<T>>}
+ * @returns {Promise<AxiosResponse<Object>>}
  */
-export const getOrder = () => myAxios.get(order);
+export const getOrder = () => api.get(order);
 
 /**
  * updates an order
  * @param {Array<string>} newOrder
- * @returns {Promise<AxiosResponse<T>>}
+ * @returns {Promise<AxiosResponse<Object>>}
  */
-export const updateOrder = (newOrder) => myAxios.post(order, { order: newOrder });
+export const updateOrder = (newOrder) => api.post(order, { order: newOrder });
 
 /**
  * gets cards from server
- * @returns {Promise<AxiosResponse<T>>}
+ * @returns {Promise<AxiosResponse<Object>>}
  */
-export const getCards = () => myAxios.get(cards);
+export const getCards = () => api.get(cards);
 
 /**
  * posts a card
  * @param {Object} newCard
- * @returns {Promise<AxiosResponse<T>>}
+ * @returns {Promise<AxiosResponse<Object>>}
  */
-export const postCard = (newCard) => myAxios.post(cards, newCard);
+export const postCard = (newCard) => api.post(cards, newCard);
 
 /**
  * updates certain table's cardIds
  * @param {string} tableId
  * @param {Array<string>} cardIds
- * @returns {Promise<AxiosResponse<T>>}
+ * @returns {Promise<AxiosResponse<Object>>}
  */
-export const updateCardIds = (tableId, cardIds) =>
-    myAxios.patch(`${tables}/${tableId}`, { cardIds });
+export const updateCardIds = (tableId, cardIds) => api.patch(`${tables}/${tableId}`, { cardIds });
 
 /**
  * deletes a card
  * @param {string} cardId
- * @returns {Promise<AxiosResponse<T>>}
+ * @returns {Promise<AxiosResponse<Object>>}
  */
-export const deleteCard = (cardId) => myAxios.delete(`${cards}/${cardId}`);
+export const deleteCard = (cardId) => api.delete(`${cards}/${cardId}`);
 
 /**
  * updates card's field
@@ -59,13 +60,13 @@ export const deleteCard = (cardId) => myAxios.delete(`${cards}/${cardId}`);
  * @returns {Promise<AxiosResponse<T>>}
  */
 export const updateCard = (cardId, field, value) =>
-    myAxios.patch(`${cards}/${cardId}`, { [field]: value });
+    api.patch(`${cards}/${cardId}`, { [field]: value });
 
 /**
  * gets tables
  * @returns {Promise<AxiosResponse<T>>}
  */
-export const getTables = () => myAxios.get(tables);
+export const getTables = () => api.get(tables);
 
 /**
  * updates table's title, mb later it would update other fields
@@ -73,23 +74,23 @@ export const getTables = () => myAxios.get(tables);
  * @param {string} title
  * @returns {Promise<AxiosResponse<T>>}
  */
-export const updateTable = (tableId, title) => myAxios.patch(`${tables}/${tableId}`, { title });
+export const updateTable = (tableId, title) => api.patch(`${tables}/${tableId}`, { title });
 
 /**
  * creates a table
  * @param {Object} newTable
  * @returns {Promise<AxiosResponse<T>>}
  */
-export const createTable = (newTable) => myAxios.post(tables, newTable);
+export const createTable = (newTable) => api.post(tables, newTable);
 
 /**
  * removes table
  * @param {string} tableId
  * @returns {Promise<AxiosResponse<T>>}
  */
-export const deleteTable = (tableId) => myAxios.delete(`${tables}/${tableId}`);
+export const deleteTable = (tableId) => api.delete(`${tables}/${tableId}`);
 
-export const getExecutors = () => myAxios.get(executors);
+export const getExecutors = () => api.get(executors);
 
 export const validateCardTitle = async (values) => {
     const { data } = await getCards();

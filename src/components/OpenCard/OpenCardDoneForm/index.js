@@ -16,7 +16,6 @@ const OpenCardDoneForm = (props) => {
     const classes = useStyles();
     return (
         <form onSubmit={handleSubmit} className={classes.doneForm}>
-            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
             <label htmlFor="openCardDone">Done</label>
             <Field
                 name="openCardDone"

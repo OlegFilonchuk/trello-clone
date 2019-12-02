@@ -18,7 +18,7 @@ import { fetchExecutorsAction } from '../../redux/reducers/executorsReducer';
 const useStyles = makeStyles({
     tableList: {
         display: 'flex',
-        flexFlow: 'row wrap',
+        flexFlow: 'row nowrap',
     },
     createTableButton: {
         alignSelf: 'flex-start',
@@ -28,20 +28,20 @@ const useStyles = makeStyles({
 
 /**
  * Representing a board
- * @constructor
  */
 const Board = () => {
+    const dispatch = useDispatch();
+    const table = 'table';
+
     useEffect(() => {
         dispatch(fetchOrderAction());
         dispatch(fetchTablesAction());
         dispatch(fetchCardsAction());
         dispatch(fetchExecutorsAction());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [dispatch]);
 
     const tables = useSelector(selectAllTables);
     const order = useSelector(selectOrder);
-    const dispatch = useDispatch();
 
     const classes = useStyles();
 
@@ -49,7 +49,7 @@ const Board = () => {
      * gets a list of tables
      * @returns {Array.<Table>}
      */
-    const getTables = () => {
+    const renderTables = () => {
         if (tables.length) {
             const tablesList = order.map((tableId) => tables.find((item) => item.id === tableId));
             return tablesList.map((item, index) => (
@@ -77,7 +77,7 @@ const Board = () => {
         if (destination.droppableId === source.droppableId && destination.index === source.index)
             return;
 
-        if (type === 'table') {
+        if (type === table) {
             const newTableOrder = [...order];
             newTableOrder.splice(source.index, 1);
             newTableOrder.splice(destination.index, 0, draggableId);
@@ -132,11 +132,11 @@ const Board = () => {
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="all-tables" direction="horizontal" type="table">
+            <Droppable droppableId="all-tables" direction="horizontal" type={table}>
                 {(provided) => (
                     <Container {...provided.droppableProps} innerRef={provided.innerRef}>
                         <List className={classes.tableList}>
-                            {getTables()}
+                            {renderTables()}
                             {provided.placeholder}
                             <Button
                                 onClick={handleCreateTableButton}

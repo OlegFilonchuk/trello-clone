@@ -1,4 +1,7 @@
-export const order = 'order';
-export const tables = 'tables';
-export const cards = 'cards';
-export const executors = 'executors';
+// eslint-disable-next-line import/prefer-default-export
+export const ENDPOINTS = {
+    order: 'order',
+    tables: 'tables',
+    cards: 'cards',
+    executors: 'executors',
+};

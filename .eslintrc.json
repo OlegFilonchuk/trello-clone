@@ -29,6 +29,15 @@
         "no-shadow": "off",
         "jsx-a11y/mouse-events-have-key-events": "off",
         "react/prop-types": "off",
-        "react/no-children-prop": "off"
+        "react/no-children-prop": "off",
+        "jsx-a11y/label-has-associated-control": [
+            2,
+            {
+                "labelComponents": ["CustomInputLabel"],
+                "labelAttributes": ["label"],
+                "controlComponents": ["CustomInput"],
+                "depth": 3
+            }
+        ]
     }
 }
