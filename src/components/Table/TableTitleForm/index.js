@@ -23,12 +23,6 @@ const useStyles = makeStyles({
         backgroundColor: '#efefef',
         margin: -1,
     },
-    titleText: {
-        flex: 1,
-        cursor: 'pointer',
-        paddingTop: 9,
-        paddingBottom: 8,
-    },
 });
 
 const validate = (values) => {
@@ -58,13 +52,10 @@ const renderField = ({ input, type, className, meta: { error } }) => {
 };
 
 const TableTitleForm = (props) => {
-    const { handleSubmit, table, pristine } = props;
+    const { handleSubmit, table, pristine, toggleIsEditingTitle } = props;
+
     const classes = useStyles();
     const dispatch = useDispatch();
-
-    const [isEditingTitle, toggleIsEditingTitle] = useState();
-
-    const handleEditTitleButton = () => toggleIsEditingTitle(true);
 
     const handleConfirmTitle = (values) => {
         if (!pristine) {
@@ -73,11 +64,7 @@ const TableTitleForm = (props) => {
         toggleIsEditingTitle(false);
     };
 
-    return !isEditingTitle ? (
-        <Typography variant="h5" className={classes.titleText} onClick={handleEditTitleButton}>
-            {table.title}
-        </Typography>
-    ) : (
+    return (
         <form onSubmit={handleSubmit(handleConfirmTitle)} className={classes.editTitle}>
             <Field
                 className={classes.titleInput}
@@ -100,6 +87,7 @@ TableTitleForm.propTypes = {
 };
 
 export default reduxForm({
-    form: 'tableTitleForm',
+    form: 'tableTitle',
     validate,
+    // enableReinitialize: true,
 })(TableTitleForm);

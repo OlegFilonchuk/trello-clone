@@ -91,5 +91,5 @@ OpenCardDescriptionForm.propTypes = {
 };
 
 export default reduxForm({
-    form: 'openCardDescription',
+    form: 'openCardDescriptionForm',
 })(OpenCardDescriptionForm);

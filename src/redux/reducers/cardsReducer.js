@@ -3,11 +3,11 @@ import uuidv1 from 'uuid/v1';
 import { getCards, postCard, updateCardIds, deleteCard, updateCard } from '../../restApiController';
 import { GLOBAL_DRAG_END, REMOVE_CARD, CREATE_CARD } from '../../constants';
 
-export const FETCH_CARDS = 'FETCH_CARDS';
-export const CHANGE_DESC = 'CHANGE_DESC';
-export const CHANGE_TEXT = 'CHANGE_TEXT';
-export const CHANGE_ASSIGNED = 'CHANGE_ASSIGNED';
-export const CHANGE_DONE = 'CHANGE_DONE';
+export const FETCH_CARDS = '[cards]FETCH_CARDS';
+export const CHANGE_DESC = '[cards]CHANGE_DESC';
+export const CHANGE_TEXT = '[cards]CHANGE_TEXT';
+export const CHANGE_ASSIGNED = '[cards]CHANGE_ASSIGNED';
+export const CHANGE_DONE = '[cards]CHANGE_DONE';
 
 /**
  * fetches cards from server

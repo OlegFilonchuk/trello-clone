@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as PropTypes from 'prop-types';
-import { IconButton, makeStyles, Typography } from '@material-ui/core';
+import { IconButton, makeStyles, Typography, Select } from '@material-ui/core';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import { Field, reduxForm } from 'redux-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,19 +21,12 @@ const useStyles = makeStyles({
     },
 });
 
-const renderField = ({ assigned, input, className, meta: { error } }) => {
-    const getOptions = () =>
-        assigned.map((item) => (
-            <option key={item.id} value={item.id}>
-                {item.name}
-            </option>
-        ));
-
+const renderField = ({ assigned, input, className, meta: { error }, children, ...custom }) => {
     return (
         <div className={className}>
-            <select autoComplete="off" {...input} style={{ height: 50 }}>
-                {getOptions()}
-            </select>
+            <Select native autoComplete="off" {...input} {...custom}>
+                {children}
+            </Select>
             {error && <span style={{ color: 'red' }}>{error}</span>}
         </div>
     );
@@ -57,8 +50,20 @@ const OpenCardAssignedForm = (props) => {
         toggleIsChangingAssigned(false);
     };
 
+    const renderOptions = () =>
+        assigned.map((item) => (
+            <option key={item.id} value={item.id}>
+                {item.name}
+            </option>
+        ));
+
     return !isChangingAssigned ? (
-        <Typography variant="subtitle1" onClick={handleAssignedClick} title="Click here to change">
+        <Typography
+            variant="subtitle1"
+            onClick={handleAssignedClick}
+            title="Click here to change"
+            style={{ height: 48 }}
+        >
             {card.assigned
                 ? assigned.find((item) => item.id === card.assigned).name
                 : 'Nobody yet...'}
@@ -72,7 +77,9 @@ const OpenCardAssignedForm = (props) => {
                     name="assigned"
                     component={renderField}
                     assigned={assigned}
-                />
+                >
+                    {renderOptions()}
+                </Field>
                 <IconButton title="Confirm" type="submit">
                     <CheckOutlinedIcon />
                 </IconButton>

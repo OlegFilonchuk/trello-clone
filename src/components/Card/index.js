@@ -23,8 +23,8 @@ const styles = {
         backgroundColor: '#fffffe',
         display: 'flex',
         flexDirection: 'row',
-        '&:hover': {
-            color: 'red',
+        '&:hover $remove': {
+            opacity: 1,
         },
     },
     content: {
@@ -43,6 +43,7 @@ const styles = {
         backgroundColor: '#fff',
     },
     remove: {
+        opacity: 0,
         transition: 'opacity .2s ease-in-out',
     },
 };
@@ -53,7 +54,6 @@ const styles = {
 class Card extends Component {
     state = {
         isOpen: false,
-        isMouseOverCard: false,
     };
 
     handleCardClick = () => {
@@ -68,18 +68,6 @@ class Card extends Component {
         removeCard(card);
     };
 
-    handleMouseOver = () => {
-        this.setState({
-            isMouseOverCard: true,
-        });
-    };
-
-    handleMouseOut = () => {
-        this.setState({
-            isMouseOverCard: false,
-        });
-    };
-
     render() {
         const {
             index,
@@ -87,15 +75,11 @@ class Card extends Component {
             classes,
         } = this.props;
 
-        const { isMouseOverCard } = this.state;
-
         return (
             <Draggable draggableId={id} index={index}>
                 {(provided) => (
                     <MaterialCard
                         onClick={this.handleCardClick}
-                        onMouseOver={this.handleMouseOver}
-                        onMouseOut={this.handleMouseOut}
                         className={classes.card}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
@@ -107,7 +91,6 @@ class Card extends Component {
                         <CardActions>
                             <IconButton
                                 className={classes.remove}
-                                style={{ opacity: +isMouseOverCard }}
                                 onClick={this.handleRemoveCard}
                                 size="small"
                                 title="Remove card"

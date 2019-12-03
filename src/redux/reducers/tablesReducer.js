@@ -11,11 +11,11 @@ import {
 } from '../../restApiController';
 import { CREATE_CARD, REMOVE_CARD, GLOBAL_DRAG_END } from '../../constants';
 
-export const FETCH_TABLES = 'FETCH_TABLES';
-export const LOCAL_DRAG_END = 'LOCAL_DRAG_END';
-export const CHANGE_TITLE = 'CHANGE_TITLE';
-export const CREATE_TABLE = 'CREATE_TABLE';
-export const REMOVE_TABLE = 'REMOVE_TABLE';
+export const FETCH_TABLES = '[tables]FETCH_TABLES';
+export const LOCAL_DRAG_END = '[tables]LOCAL_DRAG_END';
+export const CHANGE_TITLE = '[tables]CHANGE_TITLE';
+export const CREATE_TABLE = '[tables]CREATE_TABLE';
+export const REMOVE_TABLE = '[tables]REMOVE_TABLE';
 
 /**
  * fetches tables from server

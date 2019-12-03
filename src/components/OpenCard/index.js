@@ -46,9 +46,9 @@ const OpenCard = (props) => {
 
     const handleRemoveButtonClick = () => dispatch(removeCardAction(card));
 
-    const handleCardDoneChange = async (ev) => {
-        await toggleIsCardDone(ev.target.checked);
-        await dispatch(changeDoneAction(ev.target.checked, card.id));
+    const handleCardDoneChange = (ev) => {
+        dispatch(changeDoneAction(ev.target.checked, card.id));
+        toggleIsCardDone(ev.target.checked);
     };
 
     return (
@@ -86,7 +86,9 @@ const OpenCard = (props) => {
             </div>
 
             <ReduxOpenCardDoneForm
-                checked={isCardDone}
+                initialValues={{
+                    openCardDone: isCardDone,
+                }}
                 handleCardDoneChange={handleCardDoneChange}
             />
 

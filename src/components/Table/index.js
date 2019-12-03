@@ -9,6 +9,7 @@ import { removeTableAction } from '../../redux/reducers/tablesReducer';
 import { selectCardsForTable } from '../../redux/selectors';
 import Card from '../Card';
 import NewCardForm from './NewCardForm';
+import Title from './Title';
 
 const useStyles = makeStyles({
     table: {
@@ -73,12 +74,7 @@ const Table = (props) => {
                     {...provided.dragHandleProps}
                 >
                     <div className={classes.title}>
-                        <ReduxTableTitleForm
-                            table={table}
-                            initialValues={{
-                                tableTitle: table.title,
-                            }}
-                        />
+                        <Title table={table} />
                     </div>
 
                     <Droppable droppableId={props.table.id} type="card">

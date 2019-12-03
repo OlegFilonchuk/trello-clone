@@ -2,8 +2,8 @@ import produce from 'immer';
 import { CREATE_TABLE, REMOVE_TABLE } from './tablesReducer';
 import { getOrder, updateOrder } from '../../restApiController';
 
-const FETCH_ORDER = 'FETCH_ORDER';
-const CHANGE_ORDER = 'CHANGE_ORDER';
+const FETCH_ORDER = '[order]FETCH_ORDER';
+const CHANGE_ORDER = '[order]CHANGE_ORDER';
 
 /**
  * fetches order from server
