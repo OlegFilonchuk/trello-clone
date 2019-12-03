@@ -44,4 +44,4 @@ export const selectAllTables = (state) => state.tables;
  */
 export const selectOrder = (state) => state.order;
 
-export const selectAllExecutors = (state) => state.executors;
+export const selectAllAssigned = (state) => state.assigned;

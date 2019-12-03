@@ -2,7 +2,7 @@ import axios from 'axios';
 import { SubmissionError } from 'redux-form';
 import { ENDPOINTS } from './constants';
 
-const { order, tables, cards, executors } = ENDPOINTS;
+const { order, tables, cards, assigned } = ENDPOINTS;
 
 const api = axios.create({
     baseURL: process.env.REACT_APP_API_URI,
@@ -55,7 +55,7 @@ export const deleteCard = (cardId) => api.delete(`${cards}/${cardId}`);
 /**
  * updates card's field
  * @param {string} cardId
- * @param {("text"|"desc"|"tableId"|"executor"|"done")} field
+ * @param {("text"|"desc"|"tableId"|"assigned"|"done")} field
  * @param {string} value
  * @returns {Promise<AxiosResponse<T>>}
  */
@@ -90,7 +90,7 @@ export const createTable = (newTable) => api.post(tables, newTable);
  */
 export const deleteTable = (tableId) => api.delete(`${tables}/${tableId}`);
 
-export const getExecutors = () => api.get(executors);
+export const getAssigned = () => api.get(assigned);
 
 export const validateCardTitle = async (values) => {
     const { data } = await getCards();
@@ -102,11 +102,11 @@ export const validateCardTitle = async (values) => {
     }
 };
 
-export const validateExecutor = async (values) => {
-    if (values.executor === '00') {
+export const validateAssigned = async (values) => {
+    if (values.assigned === '00') {
         throw new SubmissionError({
-            executor: 'Do not pick him!',
-            _error: 'Wrong executor!',
+            assigned: 'Do not pick him!',
+            _error: 'Wrong assigned!',
         });
     }
 };

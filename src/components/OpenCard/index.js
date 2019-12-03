@@ -7,13 +7,13 @@ import {
     removeCardAction,
     changeDescAction,
     changeTextAction,
-    changeExecutorAction,
+    changeAssignedAction,
     changeDoneAction,
 } from '../../redux/reducers/cardsReducer';
-import { selectAllExecutors, selectTableById } from '../../selectors';
+import { selectAllAssigned, selectTableById } from '../../selectors';
 import OpenCardTitleForm from './OpenCardTitleForm';
 import OpenCardDescriptionForm from './OpenCardDescriptionForm';
-import OpenCardExecutorForm from './OpenCardExecutorForm';
+import OpenCardAssignedForm from './OpenCardAssignedForm';
 import ReduxOpenCardDoneForm from './OpenCardDoneForm';
 
 const useStyles = makeStyles({
@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     title: {
         paddingBottom: 30,
     },
-    executor: {
+    assigned: {
         cursor: 'pointer',
         paddingBottom: 30,
     },
@@ -60,13 +60,13 @@ const OpenCard = (props) => {
     const [isChangingText, toggleIsChangingText] = useState(false);
     const [textValue, changeTextValue] = useState(card.text);
 
-    const [isChangingExecutor, toggleIsChangingExecutor] = useState(false);
-    const [executorValue, changeExecutorValue] = useState(card.executor);
+    const [isChangingAssigned, toggleIsChangingAssigned] = useState(false);
+    const [assignedValue, changeAssignedValue] = useState(card.assigned);
 
     const [isCardDone, toggleIsCardDone] = useState(card.done);
 
     const table = useSelector((state) => selectTableById(state, { tableId: card.tableId }));
-    const executors = useSelector(selectAllExecutors);
+    const assigned = useSelector(selectAllAssigned);
     const dispatch = useDispatch();
 
     const classes = useStyles();
@@ -96,13 +96,13 @@ const OpenCard = (props) => {
         toggleIsChangingText(false);
     };
 
-    const handleExecutorClick = () => toggleIsChangingExecutor(true);
+    const handleAssignedClick = () => toggleIsChangingAssigned(true);
 
-    const onExecutorChange = (ev) => changeExecutorValue(ev.target.value);
+    const onAssignedChange = (ev) => changeAssignedValue(ev.target.value);
 
-    const handleExecutorSubmit = () => {
-        dispatch(changeExecutorAction(executorValue, card.id));
-        toggleIsChangingExecutor(false);
+    const handleAssignedSubmit = () => {
+        dispatch(changeAssignedAction(assignedValue, card.id));
+        toggleIsChangingAssigned(false);
     };
 
     const handleCardDoneChange = async (ev) => {
@@ -157,26 +157,26 @@ const OpenCard = (props) => {
                 )}
             </div>
 
-            <Typography variant="caption">Executor</Typography>
-            <div className={classes.executor}>
-                {!isChangingExecutor ? (
+            <Typography variant="caption">Assigned</Typography>
+            <div className={classes.assigned}>
+                {!isChangingAssigned ? (
                     <Typography
                         variant="subtitle1"
-                        onClick={handleExecutorClick}
+                        onClick={handleAssignedClick}
                         title="Click here to change"
                     >
-                        {executorValue
-                            ? executors.find((item) => item.id === executorValue).name
+                        {assignedValue
+                            ? assigned.find((item) => item.id === assignedValue).name
                             : 'Nobody yet...'}
                     </Typography>
                 ) : (
-                    <OpenCardExecutorForm
-                        executors={executors}
-                        onSubmit={handleExecutorSubmit}
-                        onExecutorChange={onExecutorChange}
-                        handleExecutorSubmit={handleExecutorSubmit}
+                    <OpenCardAssignedForm
+                        assigned={assigned}
+                        onSubmit={handleAssignedSubmit}
+                        onAssignedChange={onAssignedChange}
+                        handleAssignedSubmit={handleAssignedSubmit}
                         initialValues={{
-                            openCardExecutor: executorValue,
+                            openCardAssigned: assignedValue,
                         }}
                     />
                 )}

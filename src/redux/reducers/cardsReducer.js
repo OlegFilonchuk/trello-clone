@@ -9,7 +9,7 @@ export const CREATE_CARD = 'CREATE_CARD';
 export const REMOVE_CARD = 'REMOVE_CARD';
 export const CHANGE_DESC = 'CHANGE_DESC';
 export const CHANGE_TEXT = 'CHANGE_TEXT';
-export const CHANGE_EXECUTOR = 'CHANGE_EXECUTOR';
+export const CHANGE_ASSIGNED = 'CHANGE_ASSIGNED';
 export const CHANGE_DONE = 'CHANGE_DONE';
 
 /**
@@ -109,14 +109,14 @@ export const changeDescAction = (desc, cardId) => async (dispatch) => {
     }
 };
 
-export const changeExecutorAction = (executorId, cardId) => async (dispatch) => {
+export const changeAssignedAction = (assignedId, cardId) => async (dispatch) => {
     try {
-        await updateCard(cardId, 'executor', executorId);
+        await updateCard(cardId, 'assigned', assignedId);
 
         dispatch({
-            type: CHANGE_EXECUTOR,
+            type: CHANGE_ASSIGNED,
             payload: {
-                executorId,
+                assignedId,
                 cardId,
             },
         });
@@ -199,8 +199,8 @@ export const cardsReducer = produce((draft = [], action) => {
             draft.find((item) => item.id === payload.cardId).text = payload.text;
             break;
 
-        case CHANGE_EXECUTOR:
-            draft.find((item) => item.id === payload.cardId).executor = payload.executorId;
+        case CHANGE_ASSIGNED:
+            draft.find((item) => item.id === payload.cardId).assigned = payload.assignedId;
             break;
 
         case CHANGE_DONE:

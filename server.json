@@ -3,74 +3,27 @@
         {
             "id": "8f76d930-0f81-11ea-a81e-a908a8640844",
             "title": "dwadaswad",
-            "cardIds": [
-                "a8e8b490-1519-11ea-b501-eb08d6b3a5c4",
-                "897c9b20-11e1-11ea-832b-2f338aea652b",
-                "5e10b6d0-151d-11ea-84a8-69dbf3516d97"
-            ]
+            "cardIds": []
         },
         {
             "id": "2a492b70-105e-11ea-b016-77a86307ab9f",
             "title": "dwd",
-            "cardIds": ["0c4f90b0-151c-11ea-90ad-1b679a8074af"]
+            "cardIds": ["22a90a50-1597-11ea-a45e-0f2dd71a150b"]
         },
         {
             "id": "00d58d10-11cb-11ea-81ac-95c0278a25a3",
             "title": "New table",
-            "cardIds": [
-                "aa10b9d0-1519-11ea-b501-eb08d6b3a5c4",
-                "1c1f2720-151d-11ea-a40c-97f820bfacbf"
-            ]
+            "cardIds": []
         }
     ],
     "cards": [
         {
             "done": false,
-            "executor": "02",
-            "desc": "some description about what i want to do",
-            "id": "897c9b20-11e1-11ea-832b-2f338aea652b",
-            "text": "dwad",
-            "tableId": "8f76d930-0f81-11ea-a81e-a908a8640844"
-        },
-        {
-            "done": false,
-            "executor": "",
+            "assigned": "02",
             "desc": "",
-            "id": "a8e8b490-1519-11ea-b501-eb08d6b3a5c4",
-            "text": "dwadwa",
-            "tableId": "8f76d930-0f81-11ea-a81e-a908a8640844"
-        },
-        {
-            "done": false,
-            "executor": "",
-            "desc": "sdfaefesa",
-            "id": "aa10b9d0-1519-11ea-b501-eb08d6b3a5c4",
-            "text": "dwadafefsa",
-            "tableId": "00d58d10-11cb-11ea-81ac-95c0278a25a3"
-        },
-        {
-            "done": false,
-            "executor": "",
-            "desc": "",
-            "id": "0c4f90b0-151c-11ea-90ad-1b679a8074af",
-            "text": "dawdawdawd",
+            "id": "22a90a50-1597-11ea-a45e-0f2dd71a150b",
+            "text": "dawdawd",
             "tableId": "2a492b70-105e-11ea-b016-77a86307ab9f"
-        },
-        {
-            "done": false,
-            "executor": "",
-            "desc": "",
-            "id": "1c1f2720-151d-11ea-a40c-97f820bfacbf",
-            "text": "dawdawdaw",
-            "tableId": "00d58d10-11cb-11ea-81ac-95c0278a25a3"
-        },
-        {
-            "done": false,
-            "executor": "",
-            "desc": "",
-            "id": "5e10b6d0-151d-11ea-84a8-69dbf3516d97",
-            "text": "dawda",
-            "tableId": "8f76d930-0f81-11ea-a81e-a908a8640844"
         }
     ],
     "order": {
@@ -80,7 +33,7 @@
             "8f76d930-0f81-11ea-a81e-a908a8640844"
         ]
     },
-    "executors": [
+    "assigned": [
         {
             "id": "00",
             "name": "John Doe"
@@ -99,7 +52,7 @@
         },
         {
             "id": "04",
-            "name": "Bandicoot Bandersnatch"
+            "name": "Bandicoot Bandercatch"
         }
     ],
     "objects": {

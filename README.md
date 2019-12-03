@@ -15,7 +15,7 @@ You will also see any lint errors in the console.
 ### `npm run server`
 
 Runs the simple json server on port 3001.<br>
-Now it has such entities as `tables`, `cards`, `order` and `executors`.
+Now it has such entities as `tables`, `cards`, `order` and `assigned`.
 
 You have to reload page manually to see your edits.<br>
 

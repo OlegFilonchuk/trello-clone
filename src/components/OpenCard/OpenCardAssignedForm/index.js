@@ -3,10 +3,10 @@ import * as PropTypes from 'prop-types';
 import { IconButton, makeStyles } from '@material-ui/core';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import { Field, reduxForm } from 'redux-form';
-import { validateExecutor } from '../../../restApiController';
+import { validateAssigned } from '../../../restApiController';
 
 const useStyles = makeStyles({
-    executorForm: {
+    assignedForm: {
         display: 'flex',
         alignItems: 'flex-start',
         width: '100%',
@@ -18,9 +18,9 @@ const useStyles = makeStyles({
     },
 });
 
-const renderField = ({ executors, input, className, meta: { error } }) => {
+const renderField = ({ assigned, input, className, meta: { error } }) => {
     const getOptions = () =>
-        executors.map((item) => (
+        assigned.map((item) => (
             <option key={item.id} value={item.id}>
                 {item.name}
             </option>
@@ -36,25 +36,25 @@ const renderField = ({ executors, input, className, meta: { error } }) => {
     );
 };
 
-const OpenCardExecutorForm = (props) => {
-    const { error, handleSubmit, onExecutorChange, handleExecutorSubmit, executors } = props;
+const OpenCardAssignedForm = (props) => {
+    const { error, handleSubmit, onAssignedChange, handleAssignedSubmit, assigned } = props;
     const classes = useStyles();
 
-    const confirmExecutor = async (values) => {
-        await validateExecutor(values);
-        handleExecutorSubmit();
+    const confirmAssigned = async (values) => {
+        await validateAssigned(values);
+        handleAssignedSubmit();
     };
 
     return (
-        <form onSubmit={handleSubmit(confirmExecutor)}>
-            <div className={classes.executorForm}>
+        <form onSubmit={handleSubmit(confirmAssigned)}>
+            <div className={classes.assignedForm}>
                 <Field
                     type="select"
                     className={classes.select}
-                    name="executor"
+                    name="assigned"
                     component={renderField}
-                    onChange={onExecutorChange}
-                    executors={executors}
+                    onChange={onAssignedChange}
+                    assigned={assigned}
                 />
                 <IconButton title="Confirm" type="submit">
                     <CheckOutlinedIcon />
@@ -65,13 +65,13 @@ const OpenCardExecutorForm = (props) => {
     );
 };
 
-OpenCardExecutorForm.propTypes = {
+OpenCardAssignedForm.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
-    onExecutorChange: PropTypes.func.isRequired,
-    handleExecutorSubmit: PropTypes.func.isRequired,
-    executors: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onAssignedChange: PropTypes.func.isRequired,
+    handleAssignedSubmit: PropTypes.func.isRequired,
+    assigned: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default reduxForm({
-    form: 'openCardExecutor',
-})(OpenCardExecutorForm);
+    form: 'openCardAssigned',
+})(OpenCardAssignedForm);

@@ -81,7 +81,7 @@ class Table extends Component {
 
         const newCard = {
             done: false,
-            executor: '',
+            assigned: '',
             desc: '',
             id: '',
             text: this.state.newCardText,

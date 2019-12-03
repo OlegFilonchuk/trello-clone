@@ -3,5 +3,5 @@ export const ENDPOINTS = {
     order: 'order',
     tables: 'tables',
     cards: 'cards',
-    executors: 'executors',
+    assigned: 'assigned',
 };

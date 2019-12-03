@@ -13,7 +13,7 @@ import {
 import { fetchCardsAction } from '../../redux/reducers/cardsReducer';
 import { fetchOrderAction, changeOrderAction } from '../../redux/reducers/orderReducer';
 import { selectAllTables, selectOrder } from '../../selectors';
-import { fetchExecutorsAction } from '../../redux/reducers/executorsReducer';
+import { fetchAssignedAction } from '../../redux/reducers/assignedReducer';
 
 const useStyles = makeStyles({
     tableList: {
@@ -37,7 +37,7 @@ const Board = () => {
         dispatch(fetchOrderAction());
         dispatch(fetchTablesAction());
         dispatch(fetchCardsAction());
-        dispatch(fetchExecutorsAction());
+        dispatch(fetchAssignedAction());
     }, [dispatch]);
 
     const tables = useSelector(selectAllTables);
