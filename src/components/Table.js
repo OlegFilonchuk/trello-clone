@@ -4,12 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Typography, List, IconButton, Paper, makeStyles } from '@material-ui/core';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
-import ReduxTableTitleForm from './TableTitleForm';
-import { removeTableAction } from '../../redux/reducers/tablesReducer';
-import { selectCardsForTable } from '../../redux/selectors';
-import Card from '../Card';
-import NewCardForm from './NewCardForm';
-import Title from './Title';
+import { removeTableAction } from '../redux/reducers/tablesReducer';
+import { selectCardsForTable } from '../redux/selectors';
+import Card from './Card';
+import NewCardForm from './forms/NewCardForm';
+import TableTitle from './TableTitle';
 
 const useStyles = makeStyles({
     table: {
@@ -73,9 +72,7 @@ const Table = (props) => {
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                 >
-                    <div className={classes.title}>
-                        <Title table={table} />
-                    </div>
+                    <TableTitle table={table} />
 
                     <Droppable droppableId={props.table.id} type="card">
                         {(provided) => (

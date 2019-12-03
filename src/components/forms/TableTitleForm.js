@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { IconButton, InputBase, makeStyles, Typography } from '@material-ui/core';
+import React from 'react';
+import { IconButton, InputBase, makeStyles } from '@material-ui/core';
 import * as PropTypes from 'prop-types';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import { Field, reduxForm } from 'redux-form';
 import { useDispatch } from 'react-redux';
-import { changeTitleAction } from '../../../redux/reducers/tablesReducer';
+import { changeTitleAction } from '../../redux/reducers/tablesReducer';
 
 const useStyles = makeStyles({
     editTitle: {
@@ -71,6 +71,7 @@ const TableTitleForm = (props) => {
                 name="tableTitle"
                 type="text"
                 component={renderField}
+                onBlur={() => toggleIsEditingTitle(false)}
             />
             <IconButton title="Confirm" type="submit">
                 <CheckOutlinedIcon />

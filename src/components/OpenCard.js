@@ -3,12 +3,12 @@ import * as PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, Container, Typography, IconButton } from '@material-ui/core';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import { removeCardAction, changeDoneAction } from '../../redux/reducers/cardsReducer';
-import { selectTableById } from '../../redux/selectors';
-import OpenCardTextForm from './OpenCardTextForm';
-import OpenCardDescriptionForm from './OpenCardDescriptionForm';
-import OpenCardAssignedForm from './OpenCardAssignedForm';
-import ReduxOpenCardDoneForm from './OpenCardDoneForm';
+import { removeCardAction, changeDoneAction } from '../redux/reducers/cardsReducer';
+import { selectTableById } from '../redux/selectors';
+import OpenCardTextForm from './forms/OpenCardTextForm';
+import OpenCardDescriptionForm from './forms/OpenCardDescriptionForm';
+import OpenCardAssignedForm from './forms/OpenCardAssignedForm';
+import ReduxOpenCardDoneForm from './forms/OpenCardDoneForm';
 
 const useStyles = makeStyles({
     openCard: {

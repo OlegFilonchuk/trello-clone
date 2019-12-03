@@ -3,17 +3,17 @@ import { makeStyles, Container, List, Button } from '@material-ui/core';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import Table from '../Table';
+import Table from './Table';
 import {
     localDragEndAction,
     globalDragEndAction,
     fetchTablesAction,
     createTableAction,
-} from '../../redux/reducers/tablesReducer';
-import { fetchCardsAction } from '../../redux/reducers/cardsReducer';
-import { fetchOrderAction, changeOrderAction } from '../../redux/reducers/orderReducer';
-import { getTablesInOrder, selectAllTables, selectOrder } from '../../redux/selectors';
-import { fetchAssignedAction } from '../../redux/reducers/assignedReducer';
+} from '../redux/reducers/tablesReducer';
+import { fetchCardsAction } from '../redux/reducers/cardsReducer';
+import { fetchOrderAction, changeOrderAction } from '../redux/reducers/orderReducer';
+import { getTablesInOrder, selectAllTables, selectOrder } from '../redux/selectors';
+import { fetchAssignedAction } from '../redux/reducers/assignedReducer';
 
 const useStyles = makeStyles({
     tableList: {

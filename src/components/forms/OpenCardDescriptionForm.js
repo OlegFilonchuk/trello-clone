@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { Button, makeStyles, TextField, Typography } from '@material-ui/core';
 import { Field, reduxForm } from 'redux-form';
 import { useDispatch } from 'react-redux';
-import { changeDescAction } from '../../../redux/reducers/cardsReducer';
+import { changeDescAction } from '../../redux/reducers/cardsReducer';
 
 const useStyles = makeStyles({
     input: {

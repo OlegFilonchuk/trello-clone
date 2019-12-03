@@ -10,11 +10,12 @@ import {
     Paper,
     IconButton,
 } from '@material-ui/core';
+import { compose } from 'redux';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import { connect } from 'react-redux';
 import { Draggable } from 'react-beautiful-dnd';
-import { removeCardAction } from '../../redux/reducers/cardsReducer';
-import OpenCard from '../OpenCard';
+import { removeCardAction } from '../redux/reducers/cardsReducer';
+import OpenCard from './OpenCard';
 
 const styles = {
     card: {
@@ -126,4 +127,4 @@ const mapDispatchToProps = {
     removeCard: removeCardAction,
 };
 
-export default withStyles(styles)(connect(null, mapDispatchToProps)(Card));
+export default compose(withStyles(styles), connect(null, mapDispatchToProps))(Card);

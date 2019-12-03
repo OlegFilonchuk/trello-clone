@@ -5,8 +5,8 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import ClearOutlinedIcon from '@material-ui/icons/ClearOutlined';
 import { Field, reduxForm } from 'redux-form';
 import { useDispatch } from 'react-redux';
-import { validateCardText } from '../../../restApiController';
-import { createCardAction } from '../../../redux/reducers/cardsReducer';
+import { validateCardText } from '../../restApiController';
+import { createCardAction } from '../../redux/reducers/cardsReducer';
 
 const useStyles = makeStyles({
     newCard: {

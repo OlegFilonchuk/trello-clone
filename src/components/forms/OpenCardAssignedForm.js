@@ -4,9 +4,9 @@ import { IconButton, makeStyles, Typography, Select } from '@material-ui/core';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import { Field, reduxForm } from 'redux-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { validateAssigned } from '../../../restApiController';
-import { changeAssignedAction } from '../../../redux/reducers/cardsReducer';
-import { selectAllAssigned } from '../../../redux/selectors';
+import { validateAssigned } from '../../restApiController';
+import { changeAssignedAction } from '../../redux/reducers/cardsReducer';
+import { selectAllAssigned } from '../../redux/selectors';
 
 const useStyles = makeStyles({
     assignedForm: {

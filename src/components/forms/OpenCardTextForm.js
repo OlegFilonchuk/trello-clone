@@ -4,8 +4,8 @@ import { IconButton, InputBase, makeStyles, Typography } from '@material-ui/core
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import { Field, reduxForm } from 'redux-form';
 import { useDispatch } from 'react-redux';
-import { validateCardText } from '../../../restApiController';
-import { changeTextAction } from '../../../redux/reducers/cardsReducer';
+import { validateCardText } from '../../restApiController';
+import { changeTextAction } from '../../redux/reducers/cardsReducer';
 
 const useStyles = makeStyles({
     input: {
