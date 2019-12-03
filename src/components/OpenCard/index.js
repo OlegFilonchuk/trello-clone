@@ -3,13 +3,8 @@ import * as PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, Container, Typography, IconButton } from '@material-ui/core';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import {
-    removeCardAction,
-    changeDescAction,
-    changeAssignedAction,
-    changeDoneAction,
-} from '../../redux/reducers/cardsReducer';
-import { selectAllAssigned, selectTableById } from '../../redux/selectors';
+import { removeCardAction, changeDoneAction } from '../../redux/reducers/cardsReducer';
+import { selectTableById } from '../../redux/selectors';
 import OpenCardTextForm from './OpenCardTextForm';
 import OpenCardDescriptionForm from './OpenCardDescriptionForm';
 import OpenCardAssignedForm from './OpenCardAssignedForm';
@@ -21,14 +16,7 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         padding: 20,
     },
-    description: {
-        cursor: 'pointer',
-        paddingBottom: 30,
-    },
-    title: {
-        paddingBottom: 30,
-    },
-    assigned: {
+    item: {
         cursor: 'pointer',
         paddingBottom: 30,
     },
@@ -49,45 +37,14 @@ const useStyles = makeStyles({
 const OpenCard = (props) => {
     const { card } = props;
 
-    const dispatch = useDispatch();
-
     const classes = useStyles();
-
-    const [isChangingDesc, toggleIsChangingDesc] = useState(false);
-    const [descValue, changeDescValue] = useState(card.desc);
-
-    const [isChangingAssigned, toggleIsChangingAssigned] = useState(false);
-    const [assignedValue, changeAssignedValue] = useState(card.assigned);
+    const dispatch = useDispatch();
 
     const [isCardDone, toggleIsCardDone] = useState(card.done);
 
     const table = useSelector((state) => selectTableById(state, { tableId: card.tableId }));
-    const assigned = useSelector(selectAllAssigned);
 
     const handleRemoveButtonClick = () => dispatch(removeCardAction(card));
-
-    const handleDescClick = () => toggleIsChangingDesc(true);
-
-    const onDescInputChange = (ev) => changeDescValue(ev.target.value);
-
-    const handleConfirmDesc = () => {
-        dispatch(changeDescAction(descValue, card.id));
-        toggleIsChangingDesc(false);
-    };
-
-    const handleCancelDesc = () => {
-        toggleIsChangingDesc(false);
-        changeDescValue(card.desc);
-    };
-
-    const handleAssignedClick = () => toggleIsChangingAssigned(true);
-
-    const onAssignedChange = (ev) => changeAssignedValue(ev.target.value);
-
-    const handleAssignedSubmit = () => {
-        dispatch(changeAssignedAction(assignedValue, card.id));
-        toggleIsChangingAssigned(false);
-    };
 
     const handleCardDoneChange = async (ev) => {
         await toggleIsCardDone(ev.target.checked);
@@ -98,7 +55,7 @@ const OpenCard = (props) => {
         <Container className={classes.openCard} onClick={(ev) => ev.stopPropagation()}>
             <Typography variant="caption">Title</Typography>
 
-            <div className={classes.title}>
+            <div className={classes.item}>
                 <OpenCardTextForm
                     card={card}
                     initialValues={{
@@ -108,51 +65,24 @@ const OpenCard = (props) => {
             </div>
 
             <Typography variant="caption">Description</Typography>
-            <div className={classes.description}>
-                {!isChangingDesc ? (
-                    <Typography
-                        variant="body1"
-                        onClick={handleDescClick}
-                        title="Click here to change"
-                    >
-                        {descValue || 'Add a description here...'}
-                    </Typography>
-                ) : (
-                    <OpenCardDescriptionForm
-                        card={card}
-                        onSubmit={handleConfirmDesc}
-                        initialValues={{
-                            openCardDescription: descValue,
-                        }}
-                        onDescInputChange={onDescInputChange}
-                        handleCancelDesc={handleCancelDesc}
-                    />
-                )}
+
+            <div className={classes.item}>
+                <OpenCardDescriptionForm
+                    card={card}
+                    initialValues={{
+                        openCardDescription: card.desc,
+                    }}
+                />
             </div>
 
             <Typography variant="caption">Assigned</Typography>
-            <div className={classes.assigned}>
-                {!isChangingAssigned ? (
-                    <Typography
-                        variant="subtitle1"
-                        onClick={handleAssignedClick}
-                        title="Click here to change"
-                    >
-                        {assignedValue
-                            ? assigned.find((item) => item.id === assignedValue).name
-                            : 'Nobody yet...'}
-                    </Typography>
-                ) : (
-                    <OpenCardAssignedForm
-                        assigned={assigned}
-                        onSubmit={handleAssignedSubmit}
-                        onAssignedChange={onAssignedChange}
-                        handleAssignedSubmit={handleAssignedSubmit}
-                        initialValues={{
-                            openCardAssigned: assignedValue,
-                        }}
-                    />
-                )}
+            <div className={classes.item}>
+                <OpenCardAssignedForm
+                    card={card}
+                    initialValues={{
+                        assigned: card.assigned,
+                    }}
+                />
             </div>
 
             <ReduxOpenCardDoneForm

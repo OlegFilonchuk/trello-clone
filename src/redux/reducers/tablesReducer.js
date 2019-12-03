@@ -1,7 +1,5 @@
 import produce from 'immer';
 import uuidv1 from 'uuid/v1';
-// eslint-disable-next-line import/no-cycle
-import { CREATE_CARD, REMOVE_CARD } from './cardsReducer';
 import {
     updateOrder,
     createTable,
@@ -11,10 +9,10 @@ import {
     updateTable,
     deleteTable,
 } from '../../restApiController';
+import { CREATE_CARD, REMOVE_CARD, GLOBAL_DRAG_END } from '../../constants';
 
 export const FETCH_TABLES = 'FETCH_TABLES';
 export const LOCAL_DRAG_END = 'LOCAL_DRAG_END';
-export const GLOBAL_DRAG_END = 'GLOBAL_DRAG_END';
 export const CHANGE_TITLE = 'CHANGE_TITLE';
 export const CREATE_TABLE = 'CREATE_TABLE';
 export const REMOVE_TABLE = 'REMOVE_TABLE';
@@ -146,18 +144,20 @@ export const changeTitleAction = (title, tableId) => async (dispatch, getState) 
  * @returns {Function}
  */
 export const createTableAction = (newTable) => async (dispatch, getState) => {
-    newTable.id = uuidv1();
+    const table = { ...newTable };
 
-    await createTable(newTable);
+    table.id = uuidv1();
 
-    const newOrder = getState().order.concat(newTable.id);
+    await createTable(table);
+
+    const newOrder = getState().order.concat(table.id);
 
     await updateOrder(newOrder);
 
     dispatch({
         type: CREATE_TABLE,
         payload: {
-            newTable,
+            newTable: table,
         },
     });
 };

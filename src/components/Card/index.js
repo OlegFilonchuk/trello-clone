@@ -23,8 +23,8 @@ const styles = {
         backgroundColor: '#fffffe',
         display: 'flex',
         flexDirection: 'row',
-        '&:hover .trial': {
-            display: 'flex',
+        '&:hover': {
+            color: 'red',
         },
     },
     content: {
@@ -62,9 +62,9 @@ class Card extends Component {
         }));
     };
 
-    handleRemoveCardButton = (ev) => {
-        ev.stopPropagation();
+    handleRemoveCard = (ev) => {
         const { card, removeCard } = this.props;
+        ev.stopPropagation();
         removeCard(card);
     };
 
@@ -108,19 +108,14 @@ class Card extends Component {
                             <IconButton
                                 className={classes.remove}
                                 style={{ opacity: +isMouseOverCard }}
-                                onClick={this.handleRemoveCardButton}
+                                onClick={this.handleRemoveCard}
                                 size="small"
                                 title="Remove card"
                             >
                                 <DeleteOutlinedIcon fontSize="small" />
                             </IconButton>
                         </CardActions>
-                        <Modal
-                            open={this.state.isOpen}
-                            onClose={this.handleClose}
-                            aria-labelledby="simple-modal-title"
-                            aria-describedby="simple-modal-description"
-                        >
+                        <Modal open={this.state.isOpen} onClose={this.handleClose}>
                             <Paper className={classes.paper}>
                                 <OpenCard card={this.props.card} />
                             </Paper>

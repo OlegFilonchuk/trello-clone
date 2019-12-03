@@ -1,12 +1,9 @@
 import produce from 'immer';
 import uuidv1 from 'uuid/v1';
 import { getCards, postCard, updateCardIds, deleteCard, updateCard } from '../../restApiController';
-// eslint-disable-next-line import/no-cycle
-import { GLOBAL_DRAG_END } from './tablesReducer';
+import { GLOBAL_DRAG_END, REMOVE_CARD, CREATE_CARD } from '../../constants';
 
 export const FETCH_CARDS = 'FETCH_CARDS';
-export const CREATE_CARD = 'CREATE_CARD';
-export const REMOVE_CARD = 'REMOVE_CARD';
 export const CHANGE_DESC = 'CHANGE_DESC';
 export const CHANGE_TEXT = 'CHANGE_TEXT';
 export const CHANGE_ASSIGNED = 'CHANGE_ASSIGNED';

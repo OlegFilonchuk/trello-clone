@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import * as PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import { Typography, withStyles, List, Container, IconButton, Paper } from '@material-ui/core';
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
+import { Typography, List, IconButton, Paper, makeStyles } from '@material-ui/core';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import ReduxTableTitleForm from './TableTitleForm';
-import { changeTitleAction, removeTableAction } from '../../redux/reducers/tablesReducer';
-import { createCardAction } from '../../redux/reducers/cardsReducer';
+import { removeTableAction } from '../../redux/reducers/tablesReducer';
 import { selectCardsForTable } from '../../redux/selectors';
 import Card from '../Card';
 import NewCardForm from './NewCardForm';
 
-const styles = {
+const useStyles = makeStyles({
     table: {
         display: 'flex',
         flexDirection: 'column',
@@ -29,17 +27,7 @@ const styles = {
     createButton: {
         alignSelf: 'flex-start',
     },
-    title: {
-        display: 'flex',
-        alignItems: 'flex-start',
-        height: 70,
-    },
-    titleText: {
-        flex: 1,
-        cursor: 'pointer',
-        paddingTop: 9,
-        paddingBottom: 8,
-    },
+
     textField: {
         flex: 1,
     },
@@ -49,169 +37,77 @@ const styles = {
     removeTableButton: {
         alignSelf: 'flex-end',
     },
-};
+});
 
 /**
  * Representing a table
  */
-class Table extends Component {
-    state = {
-        isCreatingCard: false,
-        newCardText: '',
-        isEditingTitle: false,
-        titleInputValue: this.props.table.title,
-    };
+const Table = (props) => {
+    const { table, index } = props;
+    const classes = useStyles();
+    const dispatch = useDispatch();
 
-    handleAddTable = () => {
-        this.setState({
-            isCreatingCard: true,
-        });
-    };
+    const cards = useSelector((state) => selectCardsForTable(state, table.cardIds));
 
-    handleTextFieldChange = (ev) => {
-        this.setState({
-            newCardText: ev.target.value,
-        });
-    };
-
-    handleConfirmNewCard = () => {
-        const { createCard, table } = this.props;
-
-        if (!this.state.newCardText) return;
-
-        const newCard = {
-            done: false,
-            assigned: '',
-            desc: '',
-            id: '',
-            text: this.state.newCardText,
-            tableId: table.id,
-        };
-
-        createCard(newCard);
-
-        this.setState({
-            newCardText: '',
-            isCreatingCard: false,
-        });
-    };
-
-    handleCancel = () => {
-        this.setState({
-            newCardText: '',
-            isCreatingCard: false,
-        });
-    };
-
-    handleEditTitleButton = () => {
-        this.setState({ isEditingTitle: true });
-    };
-
-    handleConfirmTitle = () => {
-        this.props.changeTitle(this.state.titleInputValue, this.props.table.id);
-        this.setState({ isEditingTitle: false });
-    };
-
-    handleTitleInputChange = (ev) => {
-        this.setState({
-            titleInputValue: ev.target.value,
-        });
-    };
-
-    handleRemoveTable = () => {
-        this.props.removeTable(this.props.table.id);
-    };
+    const handleRemoveTable = () => dispatch(removeTableAction(table.id));
 
     /**
      * gets a list of cards
      * @returns {(Array.<Card>|HTMLElement)}
      */
-    getCards = () => {
-        const { cards } = this.props;
-
+    const renderCards = () => {
         return cards.length ? (
             cards.map((item, index) => <Card key={item.id} card={item} index={index} />)
         ) : (
-            <Typography className={this.props.classes.noCards}>No cards yet...</Typography>
+            <Typography className={classes.noCards}>No cards yet...</Typography>
         );
     };
 
-    render() {
-        const { classes, table, index } = this.props;
-        const { isCreatingCard, isEditingTitle, titleInputValue } = this.state;
+    return (
+        <Draggable draggableId={table.id} index={index}>
+            {(provided) => (
+                <Paper
+                    className={classes.table}
+                    innerRef={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                >
+                    <div className={classes.title}>
+                        <ReduxTableTitleForm
+                            table={table}
+                            initialValues={{
+                                tableTitle: table.title,
+                            }}
+                        />
+                    </div>
 
-        return (
-            <Draggable draggableId={table.id} index={index}>
-                {(provided) => (
-                    <Paper
-                        className={classes.table}
-                        innerRef={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
+                    <Droppable droppableId={props.table.id} type="card">
+                        {(provided) => (
+                            <List
+                                className={classes.list}
+                                innerRef={provided.innerRef}
+                                {...provided.droppableProps}
+                            >
+                                {renderCards()}
+                                {provided.placeholder}
+
+                                {<NewCardForm table={table} />}
+                            </List>
+                        )}
+                    </Droppable>
+
+                    <IconButton
+                        className={classes.removeTableButton}
+                        onClick={handleRemoveTable}
+                        title="Remove this table"
                     >
-                        <Container className={classes.title}>
-                            {!isEditingTitle ? (
-                                <Typography
-                                    variant="h5"
-                                    className={classes.titleText}
-                                    onClick={this.handleEditTitleButton}
-                                >
-                                    {table.title}
-                                </Typography>
-                            ) : (
-                                <ReduxTableTitleForm
-                                    onSubmit={this.handleConfirmTitle}
-                                    handleTitleInputChange={this.handleTitleInputChange}
-                                    initialValues={{
-                                        tableTitle: titleInputValue,
-                                    }}
-                                />
-                            )}
-                        </Container>
-
-                        <Droppable droppableId={this.props.table.id} type="card">
-                            {(provided) => (
-                                <List
-                                    className={classes.list}
-                                    innerRef={provided.innerRef}
-                                    {...provided.droppableProps}
-                                >
-                                    {this.getCards()}
-                                    {provided.placeholder}
-
-                                    {!isCreatingCard ? (
-                                        <IconButton
-                                            onClick={this.handleAddTable}
-                                            className={classes.createButton}
-                                            title="Create new card"
-                                        >
-                                            <AddOutlinedIcon />
-                                        </IconButton>
-                                    ) : (
-                                        <NewCardForm
-                                            onSubmit={this.handleConfirmNewCard}
-                                            handleConfirmNewCard={this.handleConfirmNewCard}
-                                            handleCardTitleChange={this.handleTextFieldChange}
-                                            handleCancelButton={this.handleCancel}
-                                        />
-                                    )}
-                                </List>
-                            )}
-                        </Droppable>
-
-                        <IconButton
-                            className={classes.removeTableButton}
-                            onClick={this.handleRemoveTable}
-                            title="Remove this table"
-                        >
-                            <DeleteForeverOutlinedIcon />
-                        </IconButton>
-                    </Paper>
-                )}
-            </Draggable>
-        );
-    }
-}
+                        <DeleteForeverOutlinedIcon />
+                    </IconButton>
+                </Paper>
+            )}
+        </Draggable>
+    );
+};
 
 Table.propTypes = {
     table: PropTypes.shape({
@@ -219,22 +115,7 @@ Table.propTypes = {
         title: PropTypes.string.isRequired,
         cardIds: PropTypes.arrayOf(PropTypes.string).isRequired,
     }).isRequired,
-    cards: PropTypes.arrayOf(PropTypes.object).isRequired,
-    classes: PropTypes.objectOf(PropTypes.string).isRequired,
-    createCard: PropTypes.func.isRequired,
-    changeTitle: PropTypes.func.isRequired,
-    removeTable: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => ({
-    cards: selectCardsForTable(state, ownProps.table.cardIds),
-});
-
-const mapDispatchToProps = {
-    createCard: createCardAction,
-    changeTitle: changeTitleAction,
-    removeTable: removeTableAction,
-};
-
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Table));
+export default Table;

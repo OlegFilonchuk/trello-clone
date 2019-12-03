@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as PropTypes from 'prop-types';
-import { IconButton, makeStyles } from '@material-ui/core';
+import { IconButton, makeStyles, Typography } from '@material-ui/core';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import { Field, reduxForm } from 'redux-form';
+import { useDispatch, useSelector } from 'react-redux';
 import { validateAssigned } from '../../../restApiController';
+import { changeAssignedAction } from '../../../redux/reducers/cardsReducer';
+import { selectAllAssigned } from '../../../redux/selectors';
 
 const useStyles = makeStyles({
     assignedForm: {
@@ -37,15 +40,30 @@ const renderField = ({ assigned, input, className, meta: { error } }) => {
 };
 
 const OpenCardAssignedForm = (props) => {
-    const { error, handleSubmit, onAssignedChange, handleAssignedSubmit, assigned } = props;
+    const { error, handleSubmit, card, pristine } = props;
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const assigned = useSelector(selectAllAssigned);
+
+    const [isChangingAssigned, toggleIsChangingAssigned] = useState(false);
+
+    const handleAssignedClick = () => toggleIsChangingAssigned(true);
 
     const confirmAssigned = async (values) => {
-        await validateAssigned(values);
-        handleAssignedSubmit();
+        if (!pristine) {
+            await validateAssigned(values);
+            dispatch(changeAssignedAction(values.assigned, card.id));
+        }
+        toggleIsChangingAssigned(false);
     };
 
-    return (
+    return !isChangingAssigned ? (
+        <Typography variant="subtitle1" onClick={handleAssignedClick} title="Click here to change">
+            {card.assigned
+                ? assigned.find((item) => item.id === card.assigned).name
+                : 'Nobody yet...'}
+        </Typography>
+    ) : (
         <form onSubmit={handleSubmit(confirmAssigned)}>
             <div className={classes.assignedForm}>
                 <Field
@@ -53,7 +71,6 @@ const OpenCardAssignedForm = (props) => {
                     className={classes.select}
                     name="assigned"
                     component={renderField}
-                    onChange={onAssignedChange}
                     assigned={assigned}
                 />
                 <IconButton title="Confirm" type="submit">
@@ -67,9 +84,6 @@ const OpenCardAssignedForm = (props) => {
 
 OpenCardAssignedForm.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
-    onAssignedChange: PropTypes.func.isRequired,
-    handleAssignedSubmit: PropTypes.func.isRequired,
-    assigned: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default reduxForm({

@@ -1,8 +1,10 @@
-import React from 'react';
-import { IconButton, InputBase, makeStyles } from '@material-ui/core';
+import React, { useState } from 'react';
+import { IconButton, InputBase, makeStyles, Typography } from '@material-ui/core';
 import * as PropTypes from 'prop-types';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import { Field, reduxForm } from 'redux-form';
+import { useDispatch } from 'react-redux';
+import { changeTitleAction } from '../../../redux/reducers/tablesReducer';
 
 const useStyles = makeStyles({
     editTitle: {
@@ -20,6 +22,12 @@ const useStyles = makeStyles({
         borderRadius: 4,
         backgroundColor: '#efefef',
         margin: -1,
+    },
+    titleText: {
+        flex: 1,
+        cursor: 'pointer',
+        paddingTop: 9,
+        paddingBottom: 8,
     },
 });
 
@@ -50,14 +58,29 @@ const renderField = ({ input, type, className, meta: { error } }) => {
 };
 
 const TableTitleForm = (props) => {
-    const { handleSubmit, handleTitleInputChange } = props;
+    const { handleSubmit, table, pristine } = props;
     const classes = useStyles();
+    const dispatch = useDispatch();
 
-    return (
-        <form onSubmit={handleSubmit} className={classes.editTitle}>
+    const [isEditingTitle, toggleIsEditingTitle] = useState();
+
+    const handleEditTitleButton = () => toggleIsEditingTitle(true);
+
+    const handleConfirmTitle = (values) => {
+        if (!pristine) {
+            dispatch(changeTitleAction(values.tableTitle, table.id));
+        }
+        toggleIsEditingTitle(false);
+    };
+
+    return !isEditingTitle ? (
+        <Typography variant="h5" className={classes.titleText} onClick={handleEditTitleButton}>
+            {table.title}
+        </Typography>
+    ) : (
+        <form onSubmit={handleSubmit(handleConfirmTitle)} className={classes.editTitle}>
             <Field
                 className={classes.titleInput}
-                onChange={handleTitleInputChange}
                 name="tableTitle"
                 type="text"
                 component={renderField}
@@ -71,14 +94,12 @@ const TableTitleForm = (props) => {
 
 TableTitleForm.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
-    handleTitleInputChange: PropTypes.func.isRequired,
     initialValues: PropTypes.shape({
         tableTitle: PropTypes.string.isRequired,
     }).isRequired,
 };
 
 export default reduxForm({
-    form: 'tableTitle',
+    form: 'tableTitleForm',
     validate,
-    destroyOnUnmount: false,
 })(TableTitleForm);

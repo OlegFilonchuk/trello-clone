@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as PropTypes from 'prop-types';
-import { Button, makeStyles, TextField } from '@material-ui/core';
+import { Button, makeStyles, TextField, Typography } from '@material-ui/core';
 import { Field, reduxForm } from 'redux-form';
+import { useDispatch } from 'react-redux';
+import { changeDescAction } from '../../../redux/reducers/cardsReducer';
 
 const useStyles = makeStyles({
     input: {
@@ -37,13 +39,34 @@ const renderField = ({ input, type, className }) => {
 };
 
 const OpenCardDescriptionForm = (props) => {
-    const { handleSubmit, onDescInputChange, handleCancelDesc } = props;
+    const { handleSubmit, card, pristine, reset } = props;
     const classes = useStyles();
-    return (
-        <form onSubmit={handleSubmit} className={classes.openCardDescForm}>
+    const dispatch = useDispatch();
+
+    const [isChangingDesc, toggleIsChangingDesc] = useState(false);
+
+    const handleDescClick = () => toggleIsChangingDesc(true);
+
+    const confirmDesc = (values) => {
+        if (!pristine) {
+            dispatch(changeDescAction(values.openCardDescription, card.id));
+        }
+        toggleIsChangingDesc(false);
+    };
+
+    const handleCancelDesc = () => {
+        reset();
+        toggleIsChangingDesc(false);
+    };
+
+    return !isChangingDesc ? (
+        <Typography variant="body1" onClick={handleDescClick} title="Click here to change">
+            {card.desc || 'Add a description here...'}
+        </Typography>
+    ) : (
+        <form onSubmit={handleSubmit(confirmDesc)} className={classes.openCardDescForm}>
             <Field
                 className={classes.input}
-                onChange={onDescInputChange}
                 name="openCardDescription"
                 type="text"
                 component={renderField}
@@ -62,8 +85,6 @@ const OpenCardDescriptionForm = (props) => {
 
 OpenCardDescriptionForm.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
-    handleCancelDesc: PropTypes.func.isRequired,
-    onDescInputChange: PropTypes.func.isRequired,
     initialValues: PropTypes.shape({
         openCardDescription: PropTypes.string.isRequired,
     }).isRequired,
