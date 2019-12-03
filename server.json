@@ -1,17 +1,22 @@
 {
     "tables": [
         {
-            "id": "8f76d930-0f81-11ea-a81e-a908a8640844",
-            "title": "dwadaswad",
+            "id": "00d58d10-11cb-11ea-81ac-95c0278a25a3",
+            "title": "New table",
             "cardIds": []
         },
         {
-            "id": "2a492b70-105e-11ea-b016-77a86307ab9f",
-            "title": "dwd",
-            "cardIds": ["22a90a50-1597-11ea-a45e-0f2dd71a150b"]
+            "id": "eec95a80-15a2-11ea-a350-f95c5d2295f8",
+            "title": "New table",
+            "cardIds": ["f4541da0-15a2-11ea-a350-f95c5d2295f8"]
         },
         {
-            "id": "00d58d10-11cb-11ea-81ac-95c0278a25a3",
+            "id": "f90a0490-15a2-11ea-a350-f95c5d2295f8",
+            "title": "New tabledwad",
+            "cardIds": []
+        },
+        {
+            "id": "28107b10-15a4-11ea-83bf-ff5bb6fa5715",
             "title": "New table",
             "cardIds": []
         }
@@ -19,18 +24,19 @@
     "cards": [
         {
             "done": false,
-            "assigned": "02",
+            "assigned": "",
             "desc": "",
-            "id": "22a90a50-1597-11ea-a45e-0f2dd71a150b",
-            "text": "dawdawd",
-            "tableId": "2a492b70-105e-11ea-b016-77a86307ab9f"
+            "id": "f4541da0-15a2-11ea-a350-f95c5d2295f8",
+            "text": "dddddds",
+            "tableId": "eec95a80-15a2-11ea-a350-f95c5d2295f8"
         }
     ],
     "order": {
         "order": [
-            "2a492b70-105e-11ea-b016-77a86307ab9f",
+            "f90a0490-15a2-11ea-a350-f95c5d2295f8",
             "00d58d10-11cb-11ea-81ac-95c0278a25a3",
-            "8f76d930-0f81-11ea-a81e-a908a8640844"
+            "eec95a80-15a2-11ea-a350-f95c5d2295f8",
+            "28107b10-15a4-11ea-83bf-ff5bb6fa5715"
         ]
     },
     "assigned": [

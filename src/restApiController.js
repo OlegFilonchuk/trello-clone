@@ -92,12 +92,12 @@ export const deleteTable = (tableId) => api.delete(`${tables}/${tableId}`);
 
 export const getAssigned = () => api.get(assigned);
 
-export const validateCardTitle = async (values) => {
+export const validateCardText = async (values) => {
     const { data } = await getCards();
     const titles = data.map((card) => card.text.toLowerCase());
-    if (titles.includes(values.cardTitle.toLowerCase())) {
+    if (titles.includes(values.cardText.toLowerCase())) {
         throw new SubmissionError({
-            cardTitle: 'A card with this title already exists!',
+            cardText: 'A card with this title already exists!',
         });
     }
 };

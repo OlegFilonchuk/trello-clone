@@ -4,7 +4,7 @@ import { IconButton, makeStyles, TextField } from '@material-ui/core';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import ClearOutlinedIcon from '@material-ui/icons/ClearOutlined';
 import { Field, reduxForm } from 'redux-form';
-import { validateCardTitle } from '../../../restApiController';
+import { validateCardText } from '../../../restApiController';
 
 const useStyles = makeStyles({
     newCard: {
@@ -43,7 +43,7 @@ const NewCardForm = (props) => {
     const classes = useStyles();
 
     const confirmTitle = async (values) => {
-        await validateCardTitle(values);
+        await validateCardText(values);
         handleConfirmNewCard();
     };
 

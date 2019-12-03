@@ -8,7 +8,7 @@ import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined'
 import ReduxTableTitleForm from './TableTitleForm';
 import { changeTitleAction, removeTableAction } from '../../redux/reducers/tablesReducer';
 import { createCardAction } from '../../redux/reducers/cardsReducer';
-import { selectCardsForTable } from '../../selectors';
+import { selectCardsForTable } from '../../redux/selectors';
 import Card from '../Card';
 import NewCardForm from './NewCardForm';
 
@@ -17,9 +17,9 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: '#ededed',
-        padding: 20,
-        margin: 10,
-        width: 380,
+        padding: 10,
+        margin: 5,
+        minWidth: 300,
     },
     list: {
         flexGrow: 1,
@@ -62,7 +62,7 @@ class Table extends Component {
         titleInputValue: this.props.table.title,
     };
 
-    handleAddButton = () => {
+    handleAddTable = () => {
         this.setState({
             isCreatingCard: true,
         });
@@ -74,7 +74,7 @@ class Table extends Component {
         });
     };
 
-    handleConfirmNewCard = (ev) => {
+    handleConfirmNewCard = () => {
         const { createCard, table } = this.props;
 
         if (!this.state.newCardText) return;
@@ -96,7 +96,7 @@ class Table extends Component {
         });
     };
 
-    handleCancelButton = () => {
+    handleCancel = () => {
         this.setState({
             newCardText: '',
             isCreatingCard: false,
@@ -118,7 +118,7 @@ class Table extends Component {
         });
     };
 
-    handleRemoveTableButton = () => {
+    handleRemoveTable = () => {
         this.props.removeTable(this.props.table.id);
     };
 
@@ -181,7 +181,7 @@ class Table extends Component {
 
                                     {!isCreatingCard ? (
                                         <IconButton
-                                            onClick={this.handleAddButton}
+                                            onClick={this.handleAddTable}
                                             className={classes.createButton}
                                             title="Create new card"
                                         >
@@ -192,7 +192,7 @@ class Table extends Component {
                                             onSubmit={this.handleConfirmNewCard}
                                             handleConfirmNewCard={this.handleConfirmNewCard}
                                             handleCardTitleChange={this.handleTextFieldChange}
-                                            handleCancelButton={this.handleCancelButton}
+                                            handleCancelButton={this.handleCancel}
                                         />
                                     )}
                                 </List>
@@ -201,7 +201,7 @@ class Table extends Component {
 
                         <IconButton
                             className={classes.removeTableButton}
-                            onClick={this.handleRemoveTableButton}
+                            onClick={this.handleRemoveTable}
                             title="Remove this table"
                         >
                             <DeleteForeverOutlinedIcon />

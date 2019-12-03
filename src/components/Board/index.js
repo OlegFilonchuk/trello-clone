@@ -12,26 +12,29 @@ import {
 } from '../../redux/reducers/tablesReducer';
 import { fetchCardsAction } from '../../redux/reducers/cardsReducer';
 import { fetchOrderAction, changeOrderAction } from '../../redux/reducers/orderReducer';
-import { selectAllTables, selectOrder } from '../../selectors';
+import { getTablesInOrder, selectAllTables, selectOrder } from '../../redux/selectors';
 import { fetchAssignedAction } from '../../redux/reducers/assignedReducer';
 
 const useStyles = makeStyles({
     tableList: {
         display: 'flex',
         flexFlow: 'row nowrap',
+        alignItems: 'flex-start',
     },
     createTableButton: {
         alignSelf: 'flex-start',
         margin: 10,
+        minWidth: 200,
     },
 });
+
+const TABLE = 'table';
 
 /**
  * Representing a board
  */
 const Board = () => {
     const dispatch = useDispatch();
-    const table = 'table';
 
     useEffect(() => {
         dispatch(fetchOrderAction());
@@ -42,6 +45,7 @@ const Board = () => {
 
     const tables = useSelector(selectAllTables);
     const order = useSelector(selectOrder);
+    const orderedTables = useSelector(getTablesInOrder);
 
     const classes = useStyles();
 
@@ -49,14 +53,8 @@ const Board = () => {
      * gets a list of tables
      * @returns {Array.<Table>}
      */
-    const renderTables = () => {
-        if (tables.length) {
-            const tablesList = order.map((tableId) => tables.find((item) => item.id === tableId));
-            return tablesList.map((item, index) => (
-                <Table key={item.id} table={item} index={index} />
-            ));
-        }
-    };
+    const renderTables = () =>
+        orderedTables.map((item, index) => <Table key={item.id} table={item} index={index} />);
 
     /**
      * handles drag end
@@ -77,7 +75,7 @@ const Board = () => {
         if (destination.droppableId === source.droppableId && destination.index === source.index)
             return;
 
-        if (type === table) {
+        if (type === TABLE) {
             const newTableOrder = [...order];
             newTableOrder.splice(source.index, 1);
             newTableOrder.splice(destination.index, 0, draggableId);
@@ -132,7 +130,7 @@ const Board = () => {
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="all-tables" direction="horizontal" type={table}>
+            <Droppable droppableId="all-tables" direction="horizontal" type={TABLE}>
                 {(provided) => (
                     <Container {...provided.droppableProps} innerRef={provided.innerRef}>
                         <List className={classes.tableList}>

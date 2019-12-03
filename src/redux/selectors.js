@@ -1,6 +1,6 @@
 /**
  * selects all cards from state
- * @param state
+ * @param {Object} state
  * @returns {Array<Object>}
  */
 export const selectAllCards = (state) => state.cards;
@@ -25,7 +25,7 @@ export const selectCardsForTable = (state, tableCardIds) => {
  * @param {Array} state.tables
  * @param {Object} ownProps
  * @param {string} ownProps.tableId
- * @returns {*|NodePath|number|T|T}
+ * @returns {Object}
  */
 export const selectTableById = (state, ownProps) =>
     state.tables.find((item) => item.id === ownProps.tableId);
@@ -45,3 +45,10 @@ export const selectAllTables = (state) => state.tables;
 export const selectOrder = (state) => state.order;
 
 export const selectAllAssigned = (state) => state.assigned;
+
+export const getTablesInOrder = ({ tables, order }) => {
+    if (tables.length) {
+        return order.map((tableId) => tables.find((item) => item.id === tableId));
+    }
+    return [];
+};

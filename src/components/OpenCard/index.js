@@ -6,12 +6,11 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import {
     removeCardAction,
     changeDescAction,
-    changeTextAction,
     changeAssignedAction,
     changeDoneAction,
 } from '../../redux/reducers/cardsReducer';
-import { selectAllAssigned, selectTableById } from '../../selectors';
-import OpenCardTitleForm from './OpenCardTitleForm';
+import { selectAllAssigned, selectTableById } from '../../redux/selectors';
+import OpenCardTextForm from './OpenCardTextForm';
 import OpenCardDescriptionForm from './OpenCardDescriptionForm';
 import OpenCardAssignedForm from './OpenCardAssignedForm';
 import ReduxOpenCardDoneForm from './OpenCardDoneForm';
@@ -25,10 +24,6 @@ const useStyles = makeStyles({
     description: {
         cursor: 'pointer',
         paddingBottom: 30,
-    },
-    titleText: {
-        paddingTop: 7,
-        paddingBottom: 7,
     },
     title: {
         paddingBottom: 30,
@@ -54,11 +49,12 @@ const useStyles = makeStyles({
 const OpenCard = (props) => {
     const { card } = props;
 
+    const dispatch = useDispatch();
+
+    const classes = useStyles();
+
     const [isChangingDesc, toggleIsChangingDesc] = useState(false);
     const [descValue, changeDescValue] = useState(card.desc);
-
-    const [isChangingText, toggleIsChangingText] = useState(false);
-    const [textValue, changeTextValue] = useState(card.text);
 
     const [isChangingAssigned, toggleIsChangingAssigned] = useState(false);
     const [assignedValue, changeAssignedValue] = useState(card.assigned);
@@ -67,9 +63,6 @@ const OpenCard = (props) => {
 
     const table = useSelector((state) => selectTableById(state, { tableId: card.tableId }));
     const assigned = useSelector(selectAllAssigned);
-    const dispatch = useDispatch();
-
-    const classes = useStyles();
 
     const handleRemoveButtonClick = () => dispatch(removeCardAction(card));
 
@@ -85,15 +78,6 @@ const OpenCard = (props) => {
     const handleCancelDesc = () => {
         toggleIsChangingDesc(false);
         changeDescValue(card.desc);
-    };
-
-    const handleTextClick = () => toggleIsChangingText(true);
-
-    const onTextInputChange = (ev) => changeTextValue(ev.target.value);
-
-    const handleConfirmText = () => {
-        dispatch(changeTextAction(textValue, card.id));
-        toggleIsChangingText(false);
     };
 
     const handleAssignedClick = () => toggleIsChangingAssigned(true);
@@ -113,26 +97,14 @@ const OpenCard = (props) => {
     return (
         <Container className={classes.openCard} onClick={(ev) => ev.stopPropagation()}>
             <Typography variant="caption">Title</Typography>
+
             <div className={classes.title}>
-                {!isChangingText ? (
-                    <Typography
-                        variant="h4"
-                        component="h2"
-                        onClick={handleTextClick}
-                        className={classes.titleText}
-                    >
-                        {card.text}
-                    </Typography>
-                ) : (
-                    <OpenCardTitleForm
-                        onSubmit={handleConfirmText}
-                        handleConfirmText={handleConfirmText}
-                        onTextInputChange={onTextInputChange}
-                        initialValues={{
-                            cardTitle: textValue,
-                        }}
-                    />
-                )}
+                <OpenCardTextForm
+                    card={card}
+                    initialValues={{
+                        cardText: card.text,
+                    }}
+                />
             </div>
 
             <Typography variant="caption">Description</Typography>
@@ -147,6 +119,7 @@ const OpenCard = (props) => {
                     </Typography>
                 ) : (
                     <OpenCardDescriptionForm
+                        card={card}
                         onSubmit={handleConfirmDesc}
                         initialValues={{
                             openCardDescription: descValue,
