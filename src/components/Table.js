@@ -14,10 +14,13 @@ const useStyles = makeStyles({
     table: {
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: '#ededed',
+        backgroundColor: 'rgba(179,255,224,0.98)',
         padding: 10,
         margin: 5,
         minWidth: 300,
+        '&:hover $removeTableButton': {
+            opacity: 1,
+        },
     },
     list: {
         flexGrow: 1,
@@ -36,6 +39,14 @@ const useStyles = makeStyles({
     },
     removeTableButton: {
         alignSelf: 'flex-end',
+        opacity: 0,
+        transition: 'opacity .2s ease-in-out',
+    },
+    footer: {
+        display: 'flex',
+        paddingLeft: 10,
+        paddingRight: 10,
+        justifyContent: 'space-between',
     },
 });
 
@@ -83,19 +94,20 @@ const Table = (props) => {
                             >
                                 {renderCards()}
                                 {provided.placeholder}
-
-                                {<NewCardForm table={table} />}
                             </List>
                         )}
                     </Droppable>
+                    <div className={classes.footer}>
+                        <NewCardForm table={table} />
 
-                    <IconButton
-                        className={classes.removeTableButton}
-                        onClick={handleRemoveTable}
-                        title="Remove this table"
-                    >
-                        <DeleteForeverOutlinedIcon />
-                    </IconButton>
+                        <IconButton
+                            className={classes.removeTableButton}
+                            onClick={handleRemoveTable}
+                            title="Remove this table"
+                        >
+                            <DeleteForeverOutlinedIcon />
+                        </IconButton>
+                    </div>
                 </Paper>
             )}
         </Draggable>
