@@ -1,3 +1,5 @@
+import { createSelector } from 'reselect';
+
 /**
  * selects all cards from state
  * @param {Object} state
@@ -12,12 +14,8 @@ export const selectAllCards = (state) => state.cards;
  * @param {Array<string>} tableCardIds
  * @returns {Array<Object>}
  */
-export const selectCardsForTable = (state, tableCardIds) => {
-    const { cards } = state;
-    return cards.length
-        ? tableCardIds.map((cardId) => cards.find((item) => item.id === cardId))
-        : [];
-};
+export const selectCardsForTable = ({ cards }, tableCardIds) =>
+    cards.length ? tableCardIds.map((cardId) => cards.find((item) => item.id === cardId)) : [];
 
 /**
  * selects a table from state by id
@@ -46,9 +44,9 @@ export const selectOrder = (state) => state.order;
 
 export const selectAllAssigned = (state) => state.assigned;
 
-export const getTablesInOrder = ({ tables, order }) => {
-    if (tables.length) {
-        return order.map((tableId) => tables.find((item) => item.id === tableId));
-    }
-    return [];
-};
+// export const getTablesInOrder = ({ tables, order }) =>
+//     tables.length ? order.map((tableId) => tables.find((item) => item.id === tableId)) : [];
+
+export const selectTablesInOrder = createSelector(selectAllTables, selectOrder, (tables, order) =>
+    tables.length ? order.map((tableId) => tables.find((item) => item.id === tableId)) : []
+);

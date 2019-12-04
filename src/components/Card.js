@@ -73,8 +73,10 @@ class Card extends Component {
         const {
             index,
             card: { id, text },
+            card,
             classes,
         } = this.props;
+        const { isOpen } = this.state;
 
         return (
             <Draggable draggableId={id} index={index}>
@@ -99,9 +101,9 @@ class Card extends Component {
                                 <DeleteOutlinedIcon fontSize="small" />
                             </IconButton>
                         </CardActions>
-                        <Modal open={this.state.isOpen} onClose={this.handleClose}>
+                        <Modal open={isOpen} onClose={this.handleClose}>
                             <Paper className={classes.paper}>
-                                <OpenCard card={this.props.card} />
+                                <OpenCard card={card} />
                             </Paper>
                         </Modal>
                     </MaterialCard>

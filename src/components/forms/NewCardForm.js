@@ -12,7 +12,6 @@ const useStyles = makeStyles({
     newCard: {
         display: 'flex',
         alignItems: 'center',
-        padding: 12,
     },
 });
 

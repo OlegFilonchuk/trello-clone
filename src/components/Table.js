@@ -44,6 +44,7 @@ const useStyles = makeStyles({
     },
     footer: {
         display: 'flex',
+        flexDirection: 'row wrap',
         paddingLeft: 10,
         paddingRight: 10,
         justifyContent: 'space-between',

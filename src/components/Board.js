@@ -10,7 +10,7 @@ import {
     createTableAction,
 } from '../redux/reducers/tablesReducer';
 import { changeOrderAction } from '../redux/reducers/orderReducer';
-import { getTablesInOrder, selectAllTables, selectOrder } from '../redux/selectors';
+import { selectAllTables, selectOrder, selectTablesInOrder } from '../redux/selectors';
 import { fetchAllAction } from '../redux/thunk';
 
 const useStyles = makeStyles({
@@ -40,7 +40,7 @@ const Board = () => {
 
     const tables = useSelector(selectAllTables);
     const order = useSelector(selectOrder);
-    const orderedTables = useSelector(getTablesInOrder);
+    const orderedTables = useSelector(selectTablesInOrder);
 
     const classes = useStyles();
 

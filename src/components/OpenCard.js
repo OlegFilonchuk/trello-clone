@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     },
     footer: {
         display: 'flex',
-        alignItems: 'flex-end',
+        alignItems: 'flex-start',
     },
     footerText: {
         flex: 1,

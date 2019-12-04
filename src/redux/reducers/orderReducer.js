@@ -1,29 +1,10 @@
 import produce from 'immer';
 import { CREATE_TABLE, REMOVE_TABLE } from './tablesReducer';
-import { getOrder, updateOrder } from '../../restApiController';
+import { updateOrder } from '../../restApiController';
 import { FETCH_ALL } from '../thunk';
 
 const FETCH_ORDER = '[order]FETCH_ORDER';
 const CHANGE_ORDER = '[order]CHANGE_ORDER';
-
-/**
- * fetches order from server
- * @returns {Function}
- */
-export const fetchOrderAction = () => async (dispatch) => {
-    try {
-        const { data } = await getOrder();
-
-        dispatch({
-            type: FETCH_ORDER,
-            payload: {
-                order: data.order,
-            },
-        });
-    } catch (e) {
-        // console.error(e);
-    }
-};
 
 /**
  * updates order on server and client

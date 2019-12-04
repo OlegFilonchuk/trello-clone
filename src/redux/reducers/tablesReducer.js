@@ -3,7 +3,6 @@ import uuidv1 from 'uuid/v1';
 import {
     updateOrder,
     createTable,
-    getTables,
     updateCard,
     updateCardIds,
     updateTable,
@@ -17,25 +16,6 @@ export const LOCAL_DRAG_END = '[tables]LOCAL_DRAG_END';
 export const CHANGE_TITLE = '[tables]CHANGE_TITLE';
 export const CREATE_TABLE = '[tables]CREATE_TABLE';
 export const REMOVE_TABLE = '[tables]REMOVE_TABLE';
-
-/**
- * fetches tables from server
- * @returns {Function}
- */
-export const fetchTablesAction = () => async (dispatch) => {
-    try {
-        const { data } = await getTables();
-
-        dispatch({
-            type: FETCH_TABLES,
-            payload: {
-                tables: data,
-            },
-        });
-    } catch (e) {
-        // console.error(e);
-    }
-};
 
 /**
  * handles a drag inside one table

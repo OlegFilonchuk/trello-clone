@@ -1,6 +1,6 @@
 import produce from 'immer';
 import uuidv1 from 'uuid/v1';
-import { getCards, postCard, updateCardIds, deleteCard, updateCard } from '../../restApiController';
+import { postCard, updateCardIds, deleteCard, updateCard } from '../../restApiController';
 import { GLOBAL_DRAG_END, REMOVE_CARD, CREATE_CARD } from '../../constants';
 import { FETCH_ALL } from '../thunk';
 
@@ -11,31 +11,10 @@ export const CHANGE_ASSIGNED = '[cards]CHANGE_ASSIGNED';
 export const CHANGE_DONE = '[cards]CHANGE_DONE';
 
 /**
- * fetches cards from server
- * @returns {Function}
- */
-export const fetchCardsAction = () => async (dispatch) => {
-    // const rawRes = await fetch(`${api}/cards`);
-    try {
-        const { data } = await getCards();
-
-        dispatch({
-            type: FETCH_CARDS,
-            payload: {
-                cards: data,
-            },
-        });
-    } catch (e) {
-        // console.error(e);
-    }
-};
-
-/**
  * adds a new card to server and client
  * @param {Object} newCard
  * @returns {Promise<Object>}
  */
-
 export const createCardAction = (newCard) => async (dispatch, getState) => {
     newCard.id = uuidv1();
 
