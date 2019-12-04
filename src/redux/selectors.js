@@ -8,31 +8,11 @@ import { createSelector } from 'reselect';
 export const selectAllCards = (state) => state.cards;
 
 /**
- * selects cards from state for certain table
- * @param {Object} state
- * @param {Array} state.cards
- * @param {Array<string>} tableCardIds
- * @returns {Array<Object>}
- */
-export const selectCardsForTable = ({ cards }, tableCardIds) =>
-    cards.length ? tableCardIds.map((cardId) => cards.find((item) => item.id === cardId)) : [];
-
-/**
- * selects a table from state by id
- * @param {Object} state
- * @param {Array} state.tables
- * @param {Object} ownProps
- * @param {string} ownProps.tableId
- * @returns {Object}
- */
-export const selectTableById = (state, ownProps) =>
-    state.tables.find((item) => item.id === ownProps.tableId);
-
-/**
  * selects all tables from state
  * @param {Object} state
  * @returns {Array<Object>}
  */
+
 export const selectAllTables = (state) => state.tables;
 
 /**
@@ -44,8 +24,26 @@ export const selectOrder = (state) => state.order;
 
 export const selectAllAssigned = (state) => state.assigned;
 
-// export const getTablesInOrder = ({ tables, order }) =>
-//     tables.length ? order.map((tableId) => tables.find((item) => item.id === tableId)) : [];
+/**
+ * selects cards from state for certain table
+ * @param {Object} state
+ * @param {Array} state.cards
+ * @param {String} tableId
+ * @returns {Array<Object>}
+ */
+export const getCardsForTable = ({ cards }, tableId) =>
+    cards.length ? cards.filter((item) => item.tableId === tableId) : [];
+
+/**
+ * selects a table from state by id
+ * @param {Object} state
+ * @param {Array} state.tables
+ * @param {Object} ownProps
+ * @param {string} ownProps.tableId
+ * @returns {Object}
+ */
+export const selectTableById = (state, ownProps) =>
+    state.tables.find((item) => item.id === ownProps.tableId);
 
 export const selectTablesInOrder = createSelector(selectAllTables, selectOrder, (tables, order) =>
     tables.length ? order.map((tableId) => tables.find((item) => item.id === tableId)) : []

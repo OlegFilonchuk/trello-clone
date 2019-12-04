@@ -5,7 +5,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Typography, List, IconButton, Paper, makeStyles } from '@material-ui/core';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import { removeTableAction } from '../redux/reducers/tablesReducer';
-import { selectCardsForTable } from '../redux/selectors';
+import { getCardsForTable } from '../redux/selectors';
 import Card from './Card';
 import NewCardForm from './forms/NewCardForm';
 import TableTitle from './TableTitle';
@@ -59,7 +59,7 @@ const Table = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const cards = useSelector((state) => selectCardsForTable(state, table.cardIds));
+    const cards = useSelector((state) => getCardsForTable(state, table.id));
 
     const handleRemoveTable = () => dispatch(removeTableAction(table.id));
 
