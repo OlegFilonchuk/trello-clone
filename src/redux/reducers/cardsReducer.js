@@ -2,6 +2,7 @@ import produce from 'immer';
 import uuidv1 from 'uuid/v1';
 import { getCards, postCard, updateCardIds, deleteCard, updateCard } from '../../restApiController';
 import { GLOBAL_DRAG_END, REMOVE_CARD, CREATE_CARD } from '../../constants';
+import { FETCH_ALL } from '../thunk';
 
 export const FETCH_CARDS = '[cards]FETCH_CARDS';
 export const CHANGE_DESC = '[cards]CHANGE_DESC';
@@ -174,6 +175,7 @@ export const cardsReducer = produce((draft = [], action) => {
 
     switch (type) {
         case FETCH_CARDS:
+        case FETCH_ALL:
             payload.cards.forEach((item) => draft.push(item));
             break;
 

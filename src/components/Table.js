@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     table: {
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: 'rgba(179,255,224,0.98)',
+        backgroundColor: 'rgba(200,255,234,0.98)',
         padding: 10,
         margin: 5,
         minWidth: 300,

@@ -1,5 +1,6 @@
 import produce from 'immer';
 import { getAssigned } from '../../restApiController';
+import { FETCH_ALL } from '../thunk';
 
 export const FETCH_ASSIGNED = 'FETCH_ASSIGNED';
 
@@ -23,6 +24,7 @@ export const assignedReducer = produce((draft = [], action) => {
 
     switch (type) {
         case FETCH_ASSIGNED:
+        case FETCH_ALL:
             payload.assigned.forEach((item) => draft.push(item));
             break;
 

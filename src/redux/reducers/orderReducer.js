@@ -1,6 +1,7 @@
 import produce from 'immer';
 import { CREATE_TABLE, REMOVE_TABLE } from './tablesReducer';
 import { getOrder, updateOrder } from '../../restApiController';
+import { FETCH_ALL } from '../thunk';
 
 const FETCH_ORDER = '[order]FETCH_ORDER';
 const CHANGE_ORDER = '[order]CHANGE_ORDER';
@@ -57,6 +58,7 @@ export const orderReducer = produce((draft = [], action) => {
 
     switch (type) {
         case FETCH_ORDER:
+        case FETCH_ALL:
             payload.order.forEach((item) => draft.push(item));
             break;
 

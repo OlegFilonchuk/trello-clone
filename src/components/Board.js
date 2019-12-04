@@ -7,13 +7,11 @@ import Table from './Table';
 import {
     localDragEndAction,
     globalDragEndAction,
-    fetchTablesAction,
     createTableAction,
 } from '../redux/reducers/tablesReducer';
-import { fetchCardsAction } from '../redux/reducers/cardsReducer';
-import { fetchOrderAction, changeOrderAction } from '../redux/reducers/orderReducer';
+import { changeOrderAction } from '../redux/reducers/orderReducer';
 import { getTablesInOrder, selectAllTables, selectOrder } from '../redux/selectors';
-import { fetchAssignedAction } from '../redux/reducers/assignedReducer';
+import { fetchAllAction } from '../redux/thunk';
 
 const useStyles = makeStyles({
     tableList: {
@@ -37,10 +35,7 @@ const Board = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchOrderAction());
-        dispatch(fetchTablesAction());
-        dispatch(fetchCardsAction());
-        dispatch(fetchAssignedAction());
+        dispatch(fetchAllAction());
     }, [dispatch]);
 
     const tables = useSelector(selectAllTables);
@@ -118,7 +113,7 @@ const Board = () => {
     /**
      * handles table creating
      */
-    const handleCreateTableButton = () => {
+    const handleCreateTable = () => {
         const newTable = {
             id: '',
             title: 'New table',
@@ -137,7 +132,7 @@ const Board = () => {
                             {renderTables()}
                             {provided.placeholder}
                             <Button
-                                onClick={handleCreateTableButton}
+                                onClick={handleCreateTable}
                                 className={classes.createTableButton}
                             >
                                 <AddOutlinedIcon fontSize="large" />

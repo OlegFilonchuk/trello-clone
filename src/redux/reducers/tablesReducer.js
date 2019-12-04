@@ -10,6 +10,7 @@ import {
     deleteTable,
 } from '../../restApiController';
 import { CREATE_CARD, REMOVE_CARD, GLOBAL_DRAG_END } from '../../constants';
+import { FETCH_ALL } from '../thunk';
 
 export const FETCH_TABLES = '[tables]FETCH_TABLES';
 export const LOCAL_DRAG_END = '[tables]LOCAL_DRAG_END';
@@ -187,6 +188,7 @@ export const tablesReducer = produce((draft = [], action) => {
 
     switch (type) {
         case FETCH_TABLES:
+        case FETCH_ALL:
             payload.tables.forEach((item) => draft.push(item));
             break;
 
